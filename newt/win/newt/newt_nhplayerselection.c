@@ -49,7 +49,7 @@ newt_player_selection_role (void) {
     winid window;
     anything identifier;
     menu_item *menu_list;
-    int chosen,items,item;
+    int chosen,items,item=0;
     char rolename[BUFSZ];
     char selection[BUFSZ];
     char thisch, lastch;
@@ -113,7 +113,7 @@ newt_player_selection_race (void) {
     winid window;
     anything identifier;
     menu_item *menu_list;
-    int chosen,items,item;
+    int chosen,items,item=0;
     char rolename[BUFSZ];
     char selection[BUFSZ];
     char thisch, lastch;
@@ -173,7 +173,7 @@ newt_player_selection_gender (void) {
     winid window;
     anything identifier;
     menu_item *menu_list;
-    int chosen,item,items;
+    int chosen,item=0,items;
     char rolename[BUFSZ];
     char selection[BUFSZ];
     char thisch, lastch;
@@ -234,7 +234,7 @@ newt_player_selection_alignment (void) {
     winid window;
     anything identifier;
     menu_item *menu_list;
-    int chosen,items,item;
+    int chosen,items,item=0;
     char rolename[BUFSZ];
     char selection[BUFSZ];
     char thisch, lastch;

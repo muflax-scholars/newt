@@ -166,7 +166,8 @@ newt_nh_poskey (x, y, mod)
 {
     SDL_Event event;
     int retval;
-    int newMapX, newMapY;
+    int newMapX=1;
+    int newMapY=1;
 
 #ifdef DEBUG
     printf("- newt_nh_poskey();\n");
@@ -325,7 +326,7 @@ newt_get_extcmd(input)
     char *input;
 {
     int amountFound;
-    int previousFind;
+    int previousFind=0;
     int stepping;
 
     amountFound=0;
