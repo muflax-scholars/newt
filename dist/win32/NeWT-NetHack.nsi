@@ -1,6 +1,6 @@
 Name "Ne.W.T. for NetHack"
 OutFile "newt-a.b.c-nethack_win32-d.exe"
-InstallDir "$PROGRAMFILES\NeWT"
+InstallDir "$PROGRAMFILES\NeWT\NetHack"
 
 ;--------------------------------
 
