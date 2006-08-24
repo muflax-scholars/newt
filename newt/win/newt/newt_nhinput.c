@@ -1,4 +1,5 @@
 #include "hack.h"
+#include "func_tab.h"
 
 #include "newt_globals.h"
 #include "newt_nhinput.h"
@@ -322,6 +323,31 @@ newt_nh_poskey (x, y, mod)
 
 /* ------------------------------------------------------------------------- */
 
+void
+newt_get_extcmd(input)
+    char *input;
+{
+    int amountFound;
+    int previousFind;
+    int stepping;
+
+    amountFound=0;
+    for (stepping = 0; extcmdlist[stepping].ef_txt; stepping++) {
+        if (extcmdlist[stepping].ef_txt[0] == '?') continue;
+        if (strncmp(input, extcmdlist[stepping].ef_txt, strlen(input)-1)==0) {
+            amountFound++;
+            previousFind=stepping;
+        }
+    }
+
+    if (amountFound==1) {
+        strcpy(input, extcmdlist[previousFind].ef_txt);
+        strcat(input, "_");
+    }
+}
+
+/* ------------------------------------------------------------------------- */
+
 /*
 getlin(const char *ques, char *input)
 		-- Prints ques as a prompt and reads a single line of text,
@@ -341,10 +367,13 @@ newt_getlin (ques, input)
     char *input;
 {
 	char ch;
+    int extcmd;
 
 #ifdef DEBUG
     printf("- newt_getlin(\"%s\", \"%s\");\n",ques,input);
 #endif
+
+    extcmd = strcmp("#",ques)==0;
 
 	newt_wait_synch();
 	newt_putstr(WIN_MESSAGE, ATR_NONE, ques);
@@ -375,6 +404,7 @@ newt_getlin (ques, input)
 					input[strlen(input)+1]=0;
 					input[strlen(input)-1]=ch;
 					input[strlen(input)]='_';
+                    newt_get_extcmd(input);
 				};
 				break;
 		}
@@ -482,17 +512,26 @@ int get_ext_cmd(void)
 int
 newt_get_ext_cmd (void)
 {
+    char input[BUFSZ];
+    int  stepping;
+
 #ifdef DEBUG
     printf("- newt_get_ext_cmd();\n");
 #endif
 
-    /* user wnats extended menu ? If users does, then nethack makes
+    /* user wants extended menu ? If users does, then nethack makes
        is easy for us :D */
     if (iflags.extmenu) return extcmd_via_menu();
 
-    /*TODO*/
-    return extcmd_via_menu(); /* remove this when adding interface specific
-                                    ext_cmd code. */
+    newt_getlin("#", (char *)&input);
+    if (strlen(input)<1) return -1;
+    for (stepping = 0; extcmdlist[stepping].ef_txt; stepping++) {
+        if (strncmp(input, extcmdlist[stepping].ef_txt, strlen(input))==0) {
+            return stepping;
+        }
+    }
+
+    return -1; /* failed */
 };
 
 /* ------------------------------------------------------------------------- */
