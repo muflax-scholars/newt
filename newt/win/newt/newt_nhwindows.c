@@ -129,11 +129,10 @@ void
 newt_clear_nhwindow (window)
     winid window;
 {
-    SDL_Rect srcrect, dstrect;
+    SDL_Rect dstrect;
 	newt_window_rec *textwindow;
 	int counter;
 
-    int x_count, y_count;
 #ifdef DEBUG
     printf("- newt_clear_nhwindow(%d);\n", window);
 #endif
@@ -151,25 +150,10 @@ newt_clear_nhwindow (window)
 */
         memset(newt_ascii_map, 0, sizeof(newt_ascii_map));
 
-        if (newt_mapbg) {
-            for (y_count=0; y_count<(newt_win_map_tiles->h+(newt_mapbg->h-1))/(newt_mapbg->h); y_count++)
-            {
-                for (x_count=0; x_count<(newt_win_map_tiles->w+(newt_mapbg->w-1))/(newt_mapbg->w); x_count++)
-                {
-                    srcrect.x=srcrect.y=0;
-                    srcrect.w=dstrect.w=newt_mapbg->w;
-                    srcrect.h=dstrect.h=newt_mapbg->h;
-                    dstrect.x=x_count*newt_mapbg->w;
-                    dstrect.y=y_count*newt_mapbg->h;
-                    SDL_BlitSurface(newt_mapbg, &srcrect, newt_win_map_tiles, &dstrect);
-                }
-            }
-        } else {
-            dstrect.x=dstrect.y=0;
-            dstrect.w=newt_win_map_tiles->w;
-            dstrect.h=newt_win_map_tiles->h;
-            SDL_FillRect(newt_win_map_tiles, &dstrect, 0x00000000);
-        }
+        dstrect.x=dstrect.y=0;
+        dstrect.w=newt_win_map_tiles->w;
+        dstrect.h=newt_win_map_tiles->h;
+        SDL_FillRect(newt_win_map_tiles, &dstrect, 0x00000000);
 
         dstrect.x=dstrect.y=0;
         dstrect.w=newt_win_map_ascii->w;
