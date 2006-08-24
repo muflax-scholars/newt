@@ -251,7 +251,7 @@ endif
 
 CFLAGSBASE  = -c $(cflags) -I$(INCL) $(WINPINC) $(cdebug)
 LFLAGSBASEC = $(linkdebug)
-LFLAGSBASEG = $(linkdebug) -mwindow
+LFLAGSBASEG = $(linkdebug) -mwindows
 
 #==========================================
 # Util builds
