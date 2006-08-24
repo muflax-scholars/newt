@@ -169,12 +169,18 @@ newt_nh_poskey (x, y, mod)
     int newMapX=1;
     int newMapY=1;
 
+    int joyMotionX=0;
+    int joyMotionY=0;
+    int joyMotion;
+    int joyRate=250;
+
 #ifdef DEBUG
     printf("- newt_nh_poskey();\n");
 #endif
 
     newt_current_msghistory=0;
 
+  joyMotion=SDL_GetTicks();  
   newt_wait_synch();
   while (1) {
     if (!SDL_PollEvent (NULL)) SDL_Delay(1);  /* give the system some time */
@@ -290,20 +296,23 @@ newt_nh_poskey (x, y, mod)
           */
           break;
         case SDL_JOYAXISMOTION:
-          printf("JOYSTICK MOTION: axis(%d) value(%d)\n", event.jaxis.axis, event.jaxis.value);
+          // TODO Make this threshold a user setting
+          if (abs(event.jaxis.value)<10000) event.jaxis.value=0;
+
           if (event.jaxis.axis==0) {
-            newt_map_curs_x+=(event.jaxis.value!=0) ? (event.jaxis.value/abs(event.jaxis.value)) : 0;
+            joyMotionX=(event.jaxis.value!=0) ? (event.jaxis.value/abs(event.jaxis.value)) : 0;    
           }
           if (event.jaxis.axis==1) {
-            newt_map_curs_y+=(event.jaxis.value!=0) ? (event.jaxis.value/abs(event.jaxis.value)) : 0;
+            joyMotionY=(event.jaxis.value!=0) ? (event.jaxis.value/abs(event.jaxis.value)) : 0;    
           }  
-            newt_windowQueueAdd(WIN_MAP);
+
+          newt_windowQueueAdd(WIN_MAP);
+          break;
         case SDL_MOUSEBUTTONDOWN:
           *x = newt_map_curs_x;
           *y = newt_map_curs_y;
           *mod = CLICK_1;
           return 0;  
-          break;
         case SDL_JOYBUTTONDOWN:
           *x = newt_map_curs_x;
           *y = newt_map_curs_y;
@@ -312,6 +321,19 @@ newt_nh_poskey (x, y, mod)
           break;
       }
     }
+      
+    if (SDL_GetTicks()-joyRate>joyMotion) {
+        newt_map_curs_x+=joyMotionX;
+        newt_map_curs_y+=joyMotionY;
+        joyMotion=SDL_GetTicks();  
+        if (!(joyMotionX||joyMotionY)) {
+            joyRate=250;
+        } else {
+            if (joyRate>50) joyRate-=25;
+        }
+        
+    }
+
     if (newt_windowQueueRender()) newt_wait_synch();
   }
 

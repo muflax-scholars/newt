@@ -133,6 +133,8 @@ newt_init_nhwindows (argcp, argv)
 	char nhversion[BUFSZ];
 	char version[BUFSZ];
 
+    int joyCount;
+
 #ifdef DEBUG
     char **debug_argv;
 #endif
@@ -177,6 +179,16 @@ newt_init_nhwindows (argcp, argv)
         exit(-1);
     }
     atexit(SDL_Quit);
+
+    for (joyCount=0;joyCount<SDL_NumJoysticks();joyCount++) {
+        printf("SDL Initialising Joystick '%d:%s' : ",joyCount,SDL_JoystickName(joyCount));
+        if (SDL_JoystickOpen(joyCount)) {
+            printf("Ok");
+        } else {
+            printf("FAILED");
+        }
+        printf("\n");
+    };
 
     newt_screen=SDL_SetVideoMode(800,600,32,
         SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
