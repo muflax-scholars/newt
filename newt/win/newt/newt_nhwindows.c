@@ -190,20 +190,20 @@ newt_clear_nhwindow (window)
 		dstrect.h=1;
 		SDL_FillRect(newt_screen,&dstrect,newt_Message_Border);
 
-    newt_message_blank=TRUE;
+        newt_message_blank=TRUE;
     } else
 	if (window==WIN_STATUS) {
         dstrect.x=0;
-        dstrect.y=newt_screen->h-(newt_fontsize*2);
+        dstrect.y=newt_screen->h-(newt_fontsize*2)+1;
         dstrect.w=newt_screen->w;
-        dstrect.h=newt_fontsize*2;
+        dstrect.h=newt_fontsize*2-1;
         SDL_FillRect(newt_screen, &dstrect, newt_Status_bg);
 
 		dstrect.x=0;
 		dstrect.y=newt_screen->h-(newt_fontsize*2);
 		dstrect.w=newt_screen->w;
 		dstrect.h=1;
-		SDL_FillRect(newt_screen,&dstrect,newt_Message_Border);
+		SDL_FillRect(newt_screen,&dstrect,newt_Status_Border);
 	} else {
 		textwindow=(newt_window_rec *)window;
 		for (counter=0; counter<textwindow->textline_amount; counter++) {
@@ -317,7 +317,7 @@ newt_display_nhwindow (window, blocking)
     if (window==WIN_MAP) {
 
       if (!flags.perm_invent) newt_margin_left=0;
-      maparea_y=(int)newt_screen->h-(newt_positionbarmode==NEWT_POSITIONBARMODE_NONE ? 3 : 4)*newt_fontsize+1;
+      maparea_y=(int)newt_screen->h-(newt_positionbarmode==NEWT_POSITIONBARMODE_NONE ? 3 : 4)*newt_fontsize;
       maparea_x=newt_screen->w-(newt_margin_left+newt_margin_right);
 
       if (maparea_x < 1 || maparea_y < 1) return;
@@ -475,7 +475,7 @@ newt_display_nhwindow (window, blocking)
 			dstrect.y=newt_screen->h-(newt_fontsize*3);
 			dstrect.w=newt_screen->w;
 			dstrect.h=newt_fontsize;
-			SDL_FillRect(newt_screen, &dstrect, newt_positionbarmode== newt_Position_bg);
+			SDL_FillRect(newt_screen, &dstrect, newt_Position_bg);
 
             /* highlight */
 			if (newt_positionbarmode==NEWT_POSITIONBARMODE_FULL) {

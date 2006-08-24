@@ -212,6 +212,7 @@ newt_nh_poskey (x, y, mod)
     InformationTextFade=255-((SDL_GetTicks()-newt_internalMessageTime)/10);
     if (InformationTextFade>0&&strlen(newt_internalMessageText)) {
         newt_windowQueueAdd(WIN_MAP);
+        // XXX newt_windowQueueAdd(WIN_INVEN);
         while (newt_windowQueueRender()) {};
         textsurface = TTF_RenderText_Shaded(newt_font, newt_internalMessageText, newt_Info_fg, newt_Info_bg);
         dstrect.x=newt_screen->w-(textsurface->w+10);
@@ -226,7 +227,6 @@ newt_nh_poskey (x, y, mod)
         SDL_BlitSurface(textsurface, &srcrect, newt_screen, &dstrect);
         SDL_FreeSurface(textsurface);
         SyncRequired=1;
-        SDL_Flip(newt_screen);
     }
     if (SyncRequired) newt_wait_synch();
     
