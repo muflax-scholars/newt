@@ -180,6 +180,8 @@ newt_nh_poskey (x, y, mod)
     SDL_Rect srcrect;
     SDL_Rect dstrect;
 
+    char tmpText[BUFSZ];
+
     int SyncRequired;
 
 #ifdef DEBUG
@@ -238,6 +240,11 @@ newt_nh_poskey (x, y, mod)
             SDL_WM_ToggleFullScreen(newt_screen);
             iflags.wc2_fullscreen=!iflags.wc2_fullscreen;
             newt_windowQueueAdd(WIN_MAP);
+            if (iflags.wc2_fullscreen) {
+                newt_internalMessage("Window Mode: Fullscreen");
+            } else {
+                newt_internalMessage("Window Mode: Windowed");
+            }
            } else
           switch (event.key.keysym.sym) {
             case SDLK_F3:
@@ -252,6 +259,7 @@ newt_nh_poskey (x, y, mod)
               newt_windowQueueAdd(WIN_STATUS);
               newt_windowQueueAdd(WIN_MAP);
               if (flags.perm_invent&&WIN_INVEN!=WIN_ERR) newt_windowQueueAdd(WIN_INVEN);
+              newt_internalMessage("Fit Mode: Resize window to fit");
               break;
             case SDLK_F4:
               newt_ZoomMode++;
@@ -264,6 +272,11 @@ newt_nh_poskey (x, y, mod)
               newt_deltazoom=TRUE;
               newt_windowQueueAdd(WIN_MAP);
               if (flags.perm_invent&&WIN_INVEN!=WIN_ERR) newt_windowQueueAdd(WIN_INVEN);
+              if (newt_win_map==newt_win_map_tiles) {
+                  newt_internalMessage("Display Mode: Tiles");
+              } else {
+                  newt_internalMessage("Display Mode: ASCII");
+              }
               break;
             case SDLK_F6:
               if ((++newt_positionbarmode)>NEWT_POSITIONBARMODE_END) {
@@ -275,10 +288,10 @@ newt_nh_poskey (x, y, mod)
                       newt_internalMessage("PositionBar Mode: None");
                       break;
                   case NEWT_POSITIONBARMODE_FULL:
-                      newt_internalMessage("PositionBar Mode: Full");
+                      newt_internalMessage("PositionBar Mode: Full map");
                       break;
                   case NEWT_POSITIONBARMODE_ZOOM:
-                      newt_internalMessage("PositionBar Mode: Zoom");
+                      newt_internalMessage("PositionBar Mode: Current view");
                       break;
               }
               newt_windowQueueAdd(WIN_MAP);
@@ -319,6 +332,8 @@ newt_nh_poskey (x, y, mod)
           newt_windowQueueAdd(WIN_STATUS);
           newt_windowQueueAdd(WIN_MAP);
           if (flags.perm_invent&&WIN_INVEN!=WIN_ERR) newt_windowQueueAdd(WIN_INVEN);
+          sprintf(tmpText,"Window manager resize: %dx%d",event.resize.w,event.resize.h);
+          newt_internalMessage(tmpText);
           break;
         case SDL_MOUSEMOTION:
             if ( newt_zoomed_map &&
