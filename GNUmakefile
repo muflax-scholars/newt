@@ -116,8 +116,8 @@ distfiles_zip: \
 
 distfiles_unixbin:	\
 	$(DISTDIR)/Unix\ Installer/$(FULLNAME)-full_unix-$(RELEASE).bin.sh \
-	$(DISTDIR)/Unix\ Installer/$(FULLNAME)-$(NETHACK)-$(RELEASE).bin.sh \
-	$(DISTDIR)/Unix\ Installer/$(FULLNAME)-$(SLASHEM)-$(RELEASE).bin.sh
+	$(DISTDIR)/Unix\ Installer/$(FULLNAME)-$(NETHACK)_unix-$(RELEASE).bin.sh \
+	$(DISTDIR)/Unix\ Installer/$(FULLNAME)-$(SLASHEM)_unix-$(RELEASE).bin.sh
 
 distfiles: distfiles_targz distfiles_tarbz2 distfiles_zip distfiles_unixbin
 
@@ -174,15 +174,15 @@ $(DISTDIR)/Unix\ Installer/$(FULLNAME)-full_unix-$(RELEASE).bin.sh: $(DISTDIR)/$
 	cd $(DISTDIR)/Unix\ Installer; $(MD5) $(FULLNAME)-full_unix-$(RELEASE).bin.sh > $(FULLNAME)-full_unix-$(RELEASE).bin.sh.md5
 	cd $(DISTDIR)/Unix\ Installer; $(SHA256) $(FULLNAME)-full_unix-$(RELEASE).bin.sh > $(FULLNAME)-full_unix-$(RELEASE).bin.sh.sha256
 
-$(DISTDIR)/Unix\ Installer/$(FULLNAME)-$(NETHACK)-$(RELEASE).bin.sh: $(DISTDIR)/$(FULLNAME) $(DISTDIR)/Unix\ Installer
-	cd $(DISTDIR); mv $(FULLNAME)/slashem .slashem; makeself $(FULLNAME) Unix\ Installer/$(FULLNAME)-$(NETHACK)-$(RELEASE).bin.sh $(FULLNAME) "make nethack-home"; mv .slashem $(FULLNAME)/slashem
-	cd $(DISTDIR)/Unix\ Installer; $(MD5) $(FULLNAME)-$(NETHACK)-$(RELEASE).bin.sh > $(FULLNAME)-$(NETHACK)-$(RELEASE).bin.sh.md5
-	cd $(DISTDIR)/Unix\ Installer; $(SHA256) $(FULLNAME)-$(NETHACK)-$(RELEASE).bin.sh > $(FULLNAME)-$(NETHACK)-$(RELEASE).bin.sh.sha256
+$(DISTDIR)/Unix\ Installer/$(FULLNAME)-$(NETHACK)_unix-$(RELEASE).bin.sh: $(DISTDIR)/$(FULLNAME) $(DISTDIR)/Unix\ Installer
+	cd $(DISTDIR); mv $(FULLNAME)/slashem .slashem; makeself $(FULLNAME) Unix\ Installer/$(FULLNAME)-$(NETHACK)_unix-$(RELEASE).bin.sh $(FULLNAME) "make nethack-home"; mv .slashem $(FULLNAME)/slashem
+	cd $(DISTDIR)/Unix\ Installer; $(MD5) $(FULLNAME)-$(NETHACK)_unix-$(RELEASE).bin.sh > $(FULLNAME)-$(NETHACK)_unix-$(RELEASE).bin.sh.md5
+	cd $(DISTDIR)/Unix\ Installer; $(SHA256) $(FULLNAME)-$(NETHACK)_unix-$(RELEASE).bin.sh > $(FULLNAME)-$(NETHACK)_unix-$(RELEASE).bin.sh.sha256
 
-$(DISTDIR)/Unix\ Installer/$(FULLNAME)-$(SLASHEM)-$(RELEASE).bin.sh: $(DISTDIR)/$(FULLNAME) $(DISTDIR)/Unix\ Installer
-	cd $(DISTDIR); mv $(FULLNAME)/nethack .nethack; makeself $(FULLNAME) Unix\ Installer/$(FULLNAME)-$(SLASHEM)-$(RELEASE).bin.sh $(FULLNAME) "make slashem-home"; mv .nethack $(FULLNAME)/nethack
-	cd $(DISTDIR)/Unix\ Installer; $(MD5) $(FULLNAME)-$(SLASHEM)-$(RELEASE).bin.sh > $(FULLNAME)-$(SLASHEM)-$(RELEASE).bin.sh.md5
-	cd $(DISTDIR)/Unix\ Installer; $(SHA256) $(FULLNAME)-$(SLASHEM)-$(RELEASE).bin.sh > $(FULLNAME)-$(SLASHEM)-$(RELEASE).bin.sh.sha256
+$(DISTDIR)/Unix\ Installer/$(FULLNAME)-$(SLASHEM)_unix-$(RELEASE).bin.sh: $(DISTDIR)/$(FULLNAME) $(DISTDIR)/Unix\ Installer
+	cd $(DISTDIR); mv $(FULLNAME)/nethack .nethack; makeself $(FULLNAME) Unix\ Installer/$(FULLNAME)-$(SLASHEM)_unix-$(RELEASE).bin.sh $(FULLNAME) "make slashem-home"; mv .nethack $(FULLNAME)/nethack
+	cd $(DISTDIR)/Unix\ Installer; $(MD5) $(FULLNAME)-$(SLASHEM)_unix-$(RELEASE).bin.sh > $(FULLNAME)-$(SLASHEM)_unix-$(RELEASE).bin.sh.md5
+	cd $(DISTDIR)/Unix\ Installer; $(SHA256) $(FULLNAME)-$(SLASHEM)_unix-$(RELEASE).bin.sh > $(FULLNAME)-$(SLASHEM)_unix-$(RELEASE).bin.sh.sha256
 
 $(DISTDIR)/$(FULLNAME): $(DISTDIR)
 	cp -r _darcs/current $@
@@ -198,7 +198,7 @@ nethack-dmg:
 	@mkdir -p $(TESTDIR)/nethack $(DMGDIR)
 	@$(MAKE) PREFIX=$(TESTDIR)/nethack/ GAMEPERM=0755 CHOWN=true CHGRP=true -C nethack install >/dev/null
 	@chmod +x dist/macosx/makedmg-nethack
-	@dist/macosx/makedmg-nethack $(TESTDIR)/nethack/games $(DMGDIR) dist/macosx
+	@dist/macosx/makedmg-nethack $(TESTDIR)/nethack/games $(DMGDIR) dist/macosx $(VERSION) $(NETHACK) $(RELEASE)
 	@echo "dmg should now be located in $(DMGDIR)"
 	
 slashem-dmg:
@@ -206,7 +206,7 @@ slashem-dmg:
 	@mkdir -p $(TESTDIR)/slashem $(DMGDIR)
 	@$(MAKE) PREFIX=$(TESTDIR)/slashem/ GAMEPERM=0755 CHOWN=true CHGRP=true -C slashem install >/dev/null
 	@chmod +x dist/macosx/makedmg-slashem
-	@dist/macosx/makedmg-slashem $(TESTDIR)/slashem/local $(DMGDIR) dist/macosx
+	@dist/macosx/makedmg-slashem $(TESTDIR)/slashem/local $(DMGDIR) dist/macosx $(VERSION) $(SLASHEM) $(RELEASE)
 	@echo "dmg should now be located in $(DMGDIR)"
 
 
