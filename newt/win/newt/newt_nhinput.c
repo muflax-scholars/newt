@@ -262,10 +262,17 @@ newt_nh_poskey (x, y, mod)
               newt_internalMessage("Fit Mode: Resize window to fit");
               break;
             case SDLK_F4:
-              newt_ZoomMode++;
-              if (newt_ZoomMode>NEWT_ZOOMMODE_END) newt_ZoomMode=NEWT_ZOOMMODE_START;
+              if (newt_screen->w==(*(VideoModes+VideoMode))->w&&newt_screen->h==(*(VideoModes+VideoMode))->h) {
+                  if (++VideoMode>=VideoModeAmount) VideoMode=0;
+              }
+              newt_screen=SDL_SetVideoMode((*(VideoModes+VideoMode))->w,(*(VideoModes+VideoMode))->h,VideoBPP, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_ASYNCBLIT | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
               newt_deltazoom=TRUE;
+              newt_clear_nhwindow(WIN_MESSAGE);
+              newt_windowQueueAdd(WIN_STATUS);
               newt_windowQueueAdd(WIN_MAP);
+              if (flags.perm_invent&&WIN_INVEN!=WIN_ERR) newt_windowQueueAdd(WIN_INVEN);
+              sprintf(tmpText,"Video Mode: %dx%d",(*(VideoModes+VideoMode))->w,(*(VideoModes+VideoMode))->h);
+              newt_internalMessage(tmpText);
               break;
             case SDLK_F5:
               newt_win_map = (newt_win_map==newt_win_map_tiles) ? newt_win_map_ascii : newt_win_map_tiles;
@@ -296,6 +303,26 @@ newt_nh_poskey (x, y, mod)
               }
               newt_windowQueueAdd(WIN_MAP);
               if (flags.perm_invent&&WIN_INVEN!=WIN_ERR) newt_windowQueueAdd(WIN_INVEN);
+              break;
+            case SDLK_F8:
+              newt_ZoomMode++;
+              if (newt_ZoomMode>NEWT_ZOOMMODE_END) newt_ZoomMode=NEWT_ZOOMMODE_START;
+              newt_deltazoom=TRUE;
+              newt_windowQueueAdd(WIN_MAP);
+              switch (newt_ZoomMode) {
+                  case NEWT_ZOOMMODE_NORMAL:
+                      newt_internalMessage("Zoom Mode: Tileset 1:1");
+                      break;
+                  case NEWT_ZOOMMODE_FULLSCREEN:
+                      newt_internalMessage("Zoom Mode: Scale to screen");
+                      break;
+                  case NEWT_ZOOMMODE_HORIZONTAL:
+                      newt_internalMessage("Zoom Mode: Fit horizontally");
+                      break;
+                  case NEWT_ZOOMMODE_VERTICAL:
+                      newt_internalMessage("Zoom Mode: Fit vertically");
+                      break;
+              }
               break;
             case SDLK_F9:
               newt_Zoom_x-=64;
