@@ -56,8 +56,11 @@ mapbg.xpm: ../win/gnome/mapbg.xpm
 ASCII.ttf: ../win/newt/data/ASCII.ttf
 	cp ../win/newt/data/ASCII.ttf ASCII.ttf
 
-vera.ttf: ../win/newt/data/vera.ttf
-	cp ../win/newt/data/vera.ttf vera.ttf
+VeraSe.ttf: ../win/newt/data/VeraSe.ttf
+	cp ../win/newt/data/VeraSe.ttf VeraSe.ttf
+
+VeraMono.ttf: ../win/newt/data/VeraMono.ttf
+	cp ../win/newt/data/VeraMono.ttf VeraMono.ttf
 
 README-newt.txt: ../win/newt/doc/README
 	cp ../win/newt/doc/README README-newt.txt
@@ -152,7 +155,7 @@ spotless:
 	-rm -f nhdat x11tiles beostiles pet_mark.xbm rip.xpm mapbg.xpm
 	-rm -f rip.img GEM_RSC.RSC title.img nh16.img NetHack.ad
 # cleanup after newt
-	-rm -f ASCII.ttf vera.ttf README-newt.txt
+	-rm -f ASCII.ttf VeraSe.ttf VeraMono.ttf README-newt.txt
 # NetHack doesn't do this itself :(
 	-rm -f nhtiles.bmp
 

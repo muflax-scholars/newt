@@ -44,13 +44,13 @@ SDL_Surface *newt_telepathy;
 TTF_Font *newt_font_map;
 Sint32 newt_fontsize_map=16;
 TTF_Font *newt_font_menu;
-Sint32 newt_fontsize_menu=16;
+Sint32 newt_fontsize_menu=14;
 TTF_Font *newt_font_message;
 Sint32 newt_fontsize_message=12;
 TTF_Font *newt_font_status;
 Sint32 newt_fontsize_status=14;
 TTF_Font *newt_font_text;
-Sint32 newt_fontsize_text=16;
+Sint32 newt_fontsize_text=14;
 
 SDL_Surface *newt_tiles;
 

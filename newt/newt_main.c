@@ -282,7 +282,7 @@ newt_init_nhwindows (argcp, argv)
     newt_fontsize_map=TTF_FontHeight(newt_font_map);
 
     if (iflags.wc_fontsiz_menu) newt_fontsize_menu = iflags.wc_fontsiz_menu;
-    newt_font_menu = TTF_OpenFont((iflags.wc_font_menu && *iflags.wc_font_menu) ? iflags.wc_font_menu : "vera.ttf",newt_fontsize_menu);
+    newt_font_menu = TTF_OpenFont((iflags.wc_font_menu && *iflags.wc_font_menu) ? iflags.wc_font_menu : "VeraMono.ttf",newt_fontsize_menu);
     if (!newt_font_menu) {
         printf("Failed to load menu font.\n");
         exit(-1);
@@ -290,7 +290,7 @@ newt_init_nhwindows (argcp, argv)
     newt_fontsize_menu=TTF_FontHeight(newt_font_menu);
 
     if (iflags.wc_fontsiz_message) newt_fontsize_message = iflags.wc_fontsiz_message;
-    newt_font_message = TTF_OpenFont((iflags.wc_font_message && *iflags.wc_font_message) ? iflags.wc_font_message : "vera.ttf",newt_fontsize_message);
+    newt_font_message = TTF_OpenFont((iflags.wc_font_message && *iflags.wc_font_message) ? iflags.wc_font_message : "VeraSe.ttf",newt_fontsize_message);
     if (!newt_font_message) {
         printf("Failed to load message font.\n");
         exit(-1);
@@ -298,7 +298,7 @@ newt_init_nhwindows (argcp, argv)
     newt_fontsize_message=TTF_FontHeight(newt_font_message);
 
     if (iflags.wc_fontsiz_status) newt_fontsize_status = iflags.wc_fontsiz_status;
-    newt_font_status = TTF_OpenFont((iflags.wc_font_status && *iflags.wc_font_status) ? iflags.wc_font_status : "vera.ttf",newt_fontsize_status);
+    newt_font_status = TTF_OpenFont((iflags.wc_font_status && *iflags.wc_font_status) ? iflags.wc_font_status : "VeraSe.ttf",newt_fontsize_status);
     if (!newt_font_status) {
         printf("Failed to load status font.\n");
         exit(-1);
@@ -306,7 +306,7 @@ newt_init_nhwindows (argcp, argv)
     newt_fontsize_status=TTF_FontHeight(newt_font_status);
 
     if (iflags.wc_fontsiz_text) newt_fontsize_text = iflags.wc_fontsiz_text;
-    newt_font_text = TTF_OpenFont((iflags.wc_font_text && *iflags.wc_font_text) ? iflags.wc_font_text : "vera.ttf",newt_fontsize_text);
+    newt_font_text = TTF_OpenFont((iflags.wc_font_text && *iflags.wc_font_text) ? iflags.wc_font_text : "VeraMono.ttf",newt_fontsize_text);
     if (!newt_font_text) {
         printf("Failed to load text font.\n");
         exit(-1);
