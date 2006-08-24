@@ -35,6 +35,7 @@ struct window_procs newt_procs = {
     WC_MAP_MODE |
     WC_TILED_MAP |
     WC_MOUSE_SUPPORT |
+    WC_FONTSIZ_TEXT |
     WC_PLAYER_SELECTION,
 #ifdef POSITIONBAR_RCOPTION
     WC2_POSITIONBAR |
@@ -261,6 +262,7 @@ newt_init_nhwindows (argcp, argv)
     printf("Loaded tileset : \"%s\"\n",iflags.wc_tile_file );
 
     TTF_Init();
+    if (iflags.wc_fontsiz_text) newt_fontsize = iflags.wc_fontsiz_text;
     newt_font = TTF_OpenFont("ASCII.ttf",newt_fontsize);
     if (!newt_font) {
         printf("Failed to load default font from : \"%s\"\n", "ASCII.ttf");
