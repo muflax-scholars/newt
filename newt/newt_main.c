@@ -35,6 +35,11 @@ struct window_procs newt_procs = {
     WC_MAP_MODE |
     WC_TILED_MAP |
     WC_MOUSE_SUPPORT |
+    WC_FONT_MAP |
+    WC_FONT_MENU |
+    WC_FONT_MESSAGE |
+    WC_FONT_STATUS |
+    WC_FONT_TEXT |
     WC_FONTSIZ_MAP |
     WC_FONTSIZ_MENU |
     WC_FONTSIZ_MESSAGE |
@@ -269,41 +274,41 @@ newt_init_nhwindows (argcp, argv)
     TTF_Init();
 
     if (iflags.wc_fontsiz_map) newt_fontsize_map = iflags.wc_fontsiz_map;
-    newt_font_map = TTF_OpenFont("ASCII.ttf",newt_fontsize_map);
+    newt_font_map = TTF_OpenFont((iflags.wc_font_map && *iflags.wc_font_map) ? iflags.wc_font_map : "ASCII.ttf",newt_fontsize_map);
     if (!newt_font_map) {
-        printf("Failed to load default font from : \"%s\"\n", "ASCII.ttf");
+        printf("Failed to load map font.\n");
         exit(-1);
     }
     newt_fontsize_map=TTF_FontHeight(newt_font_map);
 
     if (iflags.wc_fontsiz_menu) newt_fontsize_menu = iflags.wc_fontsiz_menu;
-    newt_font_menu = TTF_OpenFont("vera.ttf",newt_fontsize_menu);
+    newt_font_menu = TTF_OpenFont((iflags.wc_font_menu && *iflags.wc_font_menu) ? iflags.wc_font_menu : "vera.ttf",newt_fontsize_menu);
     if (!newt_font_menu) {
-        printf("Failed to load default font from : \"%s\"\n", "vera.ttf");
+        printf("Failed to load menu font.\n");
         exit(-1);
     }
     newt_fontsize_menu=TTF_FontHeight(newt_font_menu);
 
     if (iflags.wc_fontsiz_message) newt_fontsize_message = iflags.wc_fontsiz_message;
-    newt_font_message = TTF_OpenFont("vera.ttf",newt_fontsize_message);
+    newt_font_message = TTF_OpenFont((iflags.wc_font_message && *iflags.wc_font_message) ? iflags.wc_font_message : "vera.ttf",newt_fontsize_message);
     if (!newt_font_message) {
-        printf("Failed to load default font from : \"%s\"\n", "vera.ttf");
+        printf("Failed to load message font.\n");
         exit(-1);
     }
     newt_fontsize_message=TTF_FontHeight(newt_font_message);
 
     if (iflags.wc_fontsiz_status) newt_fontsize_status = iflags.wc_fontsiz_status;
-    newt_font_status = TTF_OpenFont("vera.ttf",newt_fontsize_status);
+    newt_font_status = TTF_OpenFont((iflags.wc_font_status && *iflags.wc_font_status) ? iflags.wc_font_status : "vera.ttf",newt_fontsize_status);
     if (!newt_font_status) {
-        printf("Failed to load default font from : \"%s\"\n", "vera.ttf");
+        printf("Failed to load status font.\n");
         exit(-1);
     }
     newt_fontsize_status=TTF_FontHeight(newt_font_status);
 
     if (iflags.wc_fontsiz_text) newt_fontsize_text = iflags.wc_fontsiz_text;
-    newt_font_text = TTF_OpenFont("vera.ttf",newt_fontsize_text);
+    newt_font_text = TTF_OpenFont((iflags.wc_font_text && *iflags.wc_font_text) ? iflags.wc_font_text : "vera.ttf",newt_fontsize_text);
     if (!newt_font_text) {
-        printf("Failed to load default font from : \"%s\"\n", "vera.ttf");
+        printf("Failed to load text font.\n");
         exit(-1);
     }
     newt_fontsize_text=TTF_FontHeight(newt_font_text);
