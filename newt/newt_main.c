@@ -276,33 +276,33 @@ newt_init_nhwindows (argcp, argv)
     newt_fontsize_map=TTF_FontHeight(newt_font_map);
 
     if (iflags.wc_fontsiz_menu) newt_fontsize_menu = iflags.wc_fontsiz_menu;
-    newt_font_menu = TTF_OpenFont("ASCII.ttf",newt_fontsize_menu);
+    newt_font_menu = TTF_OpenFont("vera.ttf",newt_fontsize_menu);
     if (!newt_font_menu) {
-        printf("Failed to load default font from : \"%s\"\n", "ASCII.ttf");
+        printf("Failed to load default font from : \"%s\"\n", "vera.ttf");
         exit(-1);
     }
     newt_fontsize_menu=TTF_FontHeight(newt_font_menu);
 
     if (iflags.wc_fontsiz_message) newt_fontsize_message = iflags.wc_fontsiz_message;
-    newt_font_message = TTF_OpenFont("ASCII.ttf",newt_fontsize_message);
+    newt_font_message = TTF_OpenFont("vera.ttf",newt_fontsize_message);
     if (!newt_font_message) {
-        printf("Failed to load default font from : \"%s\"\n", "ASCII.ttf");
+        printf("Failed to load default font from : \"%s\"\n", "vera.ttf");
         exit(-1);
     }
     newt_fontsize_message=TTF_FontHeight(newt_font_message);
 
     if (iflags.wc_fontsiz_status) newt_fontsize_status = iflags.wc_fontsiz_status;
-    newt_font_status = TTF_OpenFont("ASCII.ttf",newt_fontsize_status);
+    newt_font_status = TTF_OpenFont("vera.ttf",newt_fontsize_status);
     if (!newt_font_status) {
-        printf("Failed to load default font from : \"%s\"\n", "ASCII.ttf");
+        printf("Failed to load default font from : \"%s\"\n", "vera.ttf");
         exit(-1);
     }
     newt_fontsize_status=TTF_FontHeight(newt_font_status);
 
     if (iflags.wc_fontsiz_text) newt_fontsize_text = iflags.wc_fontsiz_text;
-    newt_font_text = TTF_OpenFont("ASCII.ttf",newt_fontsize_text);
+    newt_font_text = TTF_OpenFont("vera.ttf",newt_fontsize_text);
     if (!newt_font_text) {
-        printf("Failed to load default font from : \"%s\"\n", "ASCII.ttf");
+        printf("Failed to load default font from : \"%s\"\n", "vera.ttf");
         exit(-1);
     }
     newt_fontsize_text=TTF_FontHeight(newt_font_text);

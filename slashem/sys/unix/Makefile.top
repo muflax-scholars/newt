@@ -95,7 +95,7 @@ CNF_SHARE_GNOMEND = x11bigtiles x11tiles pet_mark.xbm rip.xpm mapbg.xpm
 CNF_SHARE_PROXYND = gltile64.png gltile32.png gltile16.png \
 	gltile64.map gltile32.map gltile16.map
 # for newt
-CNF_SHARE_NEWTND = nhtiles.bmp gltile16.png gltile32.png ASCII.ttf README-newt.txt
+CNF_SHARE_NEWTND = nhtiles.bmp gltile16.png gltile32.png ASCII.ttf vera.ttf README-newt.txt
 
 # CNF_SHARE_DATND = $(CNF_SHARE_X11ND)
 # CNF_SHARE_DATND = $(CNF_SHARE_QTND)
@@ -253,6 +253,9 @@ mapbg.xpm:
 
 ASCII.ttf:
 	(cd dat ; $(MAKE) ASCII.ttf )
+
+vera.ttf:
+	(cd dat ; $(MAKE) vera.ttf )
 
 README-newt.txt:
 	(cd dat ; $(MAKE) README-newt.txt )
