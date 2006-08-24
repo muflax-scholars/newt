@@ -369,6 +369,7 @@ typedef unsigned char	uchar;
 #ifdef BRADS_PIT
 # define BRADS_TEXT "Brad's"
 #endif
+#define CHESSMOVES	/* Show monster movement in a chess-like manner */
 
 /* End of Section 5 */
 
