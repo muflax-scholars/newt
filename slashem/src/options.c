@@ -80,6 +80,9 @@ static struct Bool_Opt
 # else	/* systems that support multiple terminals, many monochrome */
 	{"color",         &iflags.wc_color, FALSE, SET_IN_GAME},	/*WC*/
 # endif
+#ifdef LINEOFSIGHT
+	{"lineofsight", &iflags.wc_lineofsight, TRUE, SET_IN_GAME},
+#endif
 	{"confirm",&flags.confirm, TRUE, SET_IN_GAME},
 #if defined(TERMLIB) && !defined(MAC_GRAPHICS_ENV)
 	{"DECgraphics", &iflags.DECgraphics, FALSE, SET_IN_GAME},
@@ -1023,6 +1026,13 @@ const char *optn;
 	return 1;
 }
 
+#ifdef LINEOFSIGHT_COLOUR
+static NEARDATA const char *lineofsight_colours[] = {
+	"black", "red", "green", "brown", "blue", "magenta", "cyan", "grey",
+	"no,colour", "orange", "bright green", "yellow", "bright blue", 
+	"bright magenta", "bright cyan", "white"
+};
+#endif
 void
 set_duplicate_opt_detection(on_or_off)
 int on_or_off;
@@ -1234,6 +1244,9 @@ boolean tinitial, tfrom_file;
 	boolean negated;
 	int i;
 	const char *fullname;
+#ifdef LINEOFSIGHT_COLOUR
+	int los_colour;
+#endif
 
 	initial = tinitial;
 	from_file = tfrom_file;
@@ -1443,6 +1456,26 @@ boolean tinitial, tfrom_file;
 	}
 #endif
 
+#ifdef LINEOFSIGHT_COLOUR
+	fullname = "los_colour";
+	if (match_optname(opts, fullname, 4, TRUE)) {
+	    if (negated) {
+		iflags.los_colour = CLR_BLUE;
+	    } else if ((op = string_for_opt(opts, FALSE)) != 0) {
+		if (!strncmpi(op, "gray", strlen(op)))
+		    iflags.los_colour = CLR_GRAY;
+		else
+		    for (los_colour=0; los_colour < CLR_MAX; los_colour++) {
+			if (!strncmpi(op, lineofsight_colours[los_colour], strlen(op))) {
+			    iflags.los_colour = los_colour;
+			    break;
+			}
+			if (los_colour == CLR_MAX-1) badoption(opts);
+		    }
+		}
+	    return;
+	}
+#endif
 	fullname = "msghistory";
 	if (match_optname(opts, fullname, 3, TRUE)) {
 		op = string_for_env_opt(fullname, opts, negated);
@@ -2601,6 +2634,11 @@ goodfruit:
 				    set_colors();
 			    }
 # endif
+			}
+#endif
+#ifdef LINEOFSIGHT
+			else if ((boolopt[i].addr) == &iflags.wc_lineofsight) {
+			    need_redraw = TRUE;
 			}
 #endif
                         else if ((boolopt[i].addr) == &flags.perm_invent)

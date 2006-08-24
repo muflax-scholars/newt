@@ -152,7 +152,6 @@ newt_init_nhwindows (argcp, argv)
 #ifdef DEBUG
     char **debug_argv;
 #endif
-    SDL_Rect dstrect;
 
 #ifdef DEBUG
     printf("- newt_init_nhwindows(%d, \"",*argcp);

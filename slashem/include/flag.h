@@ -246,6 +246,9 @@ struct instance_flags {
  * Window capability support.
  */
 	boolean wc_color;		/* use color graphics                  */
+#ifdef LINEOFSIGHT
+	boolean wc_lineofsight;		/* show line of sight                  */
+#endif	
 	boolean wc_hilite_pet;		/* hilight pets                        */
 	boolean wc_ascii_map;		/* show map using traditional ascii    */
 	boolean wc_tiled_map;		/* show map using tiles                */

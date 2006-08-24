@@ -1462,7 +1462,11 @@ show_glyph(x,y,glyph)
      * being we just turn off optimization and rely on the windowing port
      * to ignore redundant calls to print_glyph().
      */
+#ifdef LINEOFSIGHT
+    if (transp || (gbuf[y][x].glyph != glyph) || ((glyph!=cmap_to_glyph(S_stone)) && ((couldsee(x,y)!=couldsee_old(x,y)) || (cansee(x,y)!=cansee_old(x,y))))) {
+#else
     if (transp || gbuf[y][x].glyph != glyph) {
+#endif
 	gbuf[y][x].glyph = glyph;
 	gbuf[y][x].new   = 1;
 	if (gbuf_start[y] > x) gbuf_start[y] = x;
