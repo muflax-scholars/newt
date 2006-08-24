@@ -173,6 +173,7 @@ newt_nh_poskey (x, y, mod)
     int joyMotionY=0;
     int joyMotion;
     int joyRate=250;
+    int joyCursor=0;
 
 #ifdef DEBUG
     printf("- newt_nh_poskey();\n");
@@ -306,6 +307,43 @@ newt_nh_poskey (x, y, mod)
             joyMotionY=(event.jaxis.value!=0) ? (event.jaxis.value/abs(event.jaxis.value)) : 0;    
           }  
 
+          if ((!joyCursor)&&(joyMotionX||joyMotionY)&&SDL_GetTicks()-joyRate>joyMotion) {
+              joyMotion=SDL_GetTicks();  
+              if (!(joyMotionX||joyMotionY)) {
+                  joyRate=250;
+              } else {
+                  if (joyRate>150) joyRate-=25;
+              }
+              if (joyMotionX<0) {
+                if (joyMotionY<0) {
+                    return 'y';
+                } else
+                if (joyMotionY>0) {
+                    return 'b';
+                } else {
+                    return 'h';
+                }
+              } else
+              if (joyMotionX>0) {
+                if (joyMotionY<0) {
+                    return 'u';
+                } else
+                if (joyMotionY>0) {
+                    return 'n';
+                } else {
+                    return 'l';
+                }
+              } else {
+                if (joyMotionY<0) {
+                    return 'k';
+                } else
+                if (joyMotionY>0) {
+                    return 'j';
+                }
+              }
+              return 0;  
+          }
+
           newt_windowQueueAdd(WIN_MAP);
           break;
         case SDL_MOUSEBUTTONDOWN:
@@ -314,15 +352,18 @@ newt_nh_poskey (x, y, mod)
           *mod = CLICK_1;
           return 0;  
         case SDL_JOYBUTTONDOWN:
+          joyCursor=1;
+          break;
+        case SDL_JOYBUTTONUP:
+          joyCursor=0;
           *x = newt_map_curs_x;
           *y = newt_map_curs_y;
           *mod = CLICK_1;
           return 0;  
-          break;
       }
     }
       
-    if (SDL_GetTicks()-joyRate>joyMotion) {
+    if (joyCursor&&SDL_GetTicks()-joyRate>joyMotion) {
         newt_map_curs_x+=joyMotionX;
         newt_map_curs_y+=joyMotionY;
         joyMotion=SDL_GetTicks();  
