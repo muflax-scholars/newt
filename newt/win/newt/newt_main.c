@@ -225,7 +225,7 @@ newt_init_nhwindows (argcp, argv)
         };
     }
 
-    newt_screen=SDL_SetVideoMode(640,48,VideoBPP, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_ASYNCBLIT );
+    newt_screen=SDL_SetVideoMode(640,480,VideoBPP, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_ASYNCBLIT );
     VideoModes=SDL_ListModes(newt_screen->format, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_FULLSCREEN | SDL_ASYNCBLIT);
 
     VideoModeAmount=0;
