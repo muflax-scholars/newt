@@ -402,7 +402,7 @@ newt_getlin (ques, input)
                     input[strlen(input)+1]=0;
                     input[strlen(input)-1]=ch;
                     input[strlen(input)]='_';
-                    newt_get_extcmd(input);
+                    if (extcmd) newt_get_extcmd(input);
                 };
                 break;
         }
