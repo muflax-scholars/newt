@@ -173,22 +173,43 @@ newt_init_nhwindows (argcp, argv)
         }
     }
 
-    if (SDL_Init(SDL_INIT_EVERYTHING)) {
-        printf("SDL_Init: init video subsystem failed. \"%s\"\n",
-            SDL_GetError());
+    if (SDL_Init(SDL_INIT_NOPARACHUTE)) {
+        printf("SDL_Init: init failed. \"%s\"\n", SDL_GetError());
         exit(-1);
     }
     atexit(SDL_Quit);
 
-    for (joyCount=0;joyCount<SDL_NumJoysticks();joyCount++) {
-        printf("Initialising Joystick '%d:%s' : ",joyCount,SDL_JoystickName(joyCount));
-        if (SDL_JoystickOpen(joyCount)) {
-            printf("Ok");
-        } else {
-            printf("FAILED");
-        }
-        printf("\n");
-    };
+    if (SDL_InitSubSystem(SDL_INIT_TIMER)) {
+        printf("SDL_InitSubSystem: init subsystem(TIMER) failed. \"%s\"\n", SDL_GetError());
+        exit(-1);
+    }
+
+    if (SDL_InitSubSystem(SDL_INIT_VIDEO)) {
+        printf("SDL_InitSubSystem: init subsystem(VIDEO) failed. \"%s\"\n", SDL_GetError());
+        exit(-1);
+    }
+
+    if (SDL_InitSubSystem(SDL_INIT_AUDIO)) {
+        printf("SDL_InitSubSystem: init subsystem(AUDIO) failed. \"%s\"\n", SDL_GetError());
+        // exit(-1);
+    }
+
+    if (SDL_InitSubSystem(SDL_INIT_JOYSTICK)) {
+        printf("SDL_InitSubSystem: init subsystem(JOYSTICK) failed. \"%s\"\n", SDL_GetError());
+        // exit(-1);
+    }
+
+    if (SDL_WasInit(SDL_INIT_JOYSTICK)) {
+        for (joyCount=0;joyCount<SDL_NumJoysticks();joyCount++) {
+            printf("Initialising Joystick '%d:%s' : ",joyCount,SDL_JoystickName(joyCount));
+            if (SDL_JoystickOpen(joyCount)) {
+                printf("Ok");
+            } else {
+                printf("FAILED");
+            }
+            printf("\n");
+        };
+    }
 
     newt_screen=SDL_SetVideoMode(800,600,32,
         SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
