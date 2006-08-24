@@ -314,7 +314,7 @@ newt_display_nhwindow (window, blocking)
     if (window==WIN_MAP) {
 
       if (!flags.perm_invent) newt_margin_left=0;
-      maparea_y=(int)newt_screen->h-(newt_positionbarmode==NEWT_POSITIONBARMODE_NONE ? 3 : 4)*newt_fontsize;
+      maparea_y=(int)newt_screen->h-(newt_positionbarmode==NEWT_POSITIONBARMODE_NONE ? 3 : 4)*newt_fontsize+1;
       maparea_x=newt_screen->w-(newt_margin_left+newt_margin_right);
 
       if (maparea_x < 1 || maparea_y < 1) return;
@@ -332,30 +332,38 @@ newt_display_nhwindow (window, blocking)
             case NEWT_ZOOMMODE_NORMAL:
                 newt_Zoom_x=NEWT_ZOOMMULT;
                 newt_Zoom_y=NEWT_ZOOMMULT;
+                dstrect.w=(newt_win_map->w*newt_Zoom_x)/NEWT_ZOOMMULT;
+                dstrect.h=(newt_win_map->h*newt_Zoom_y)/NEWT_ZOOMMULT;
                 break;
             case NEWT_ZOOMMODE_FULLSCREEN:
                 newt_Zoom_x=(maparea_x*NEWT_ZOOMMULT)/(newt_win_map->w);
                 newt_Zoom_y=
                     (maparea_y*NEWT_ZOOMMULT) /
                     (newt_win_map->h);
+                dstrect.w=maparea_x;
+                dstrect.h=maparea_y;
                 break;
             case NEWT_ZOOMMODE_HORIZONTAL:
                 newt_Zoom_x=(maparea_x*NEWT_ZOOMMULT)/(newt_win_map->w);
                 newt_Zoom_y=newt_Zoom_x;
+                dstrect.w=maparea_x;
+                dstrect.h=(newt_win_map->h*newt_Zoom_y)/NEWT_ZOOMMULT;
                 break;
             case NEWT_ZOOMMODE_VERTICAL:
                 newt_Zoom_y=
                     (maparea_y*NEWT_ZOOMMULT) /
                     (newt_win_map->h);
                 newt_Zoom_x=newt_Zoom_y;
+                dstrect.w=(newt_win_map->w*newt_Zoom_x)/NEWT_ZOOMMULT;
+                dstrect.h=maparea_y;
                 break;
             case NEWT_ZOOMMODE_CUSTOM:
+                dstrect.w=(newt_win_map->w*newt_Zoom_x)/NEWT_ZOOMMULT;
+                dstrect.h=(newt_win_map->h*newt_Zoom_y)/NEWT_ZOOMMULT;
                 break;
         }
 
-        /* calc zoomed (destination) size */
-        dstrect.w=(newt_win_map->w*newt_Zoom_x)/NEWT_ZOOMMULT;
-        dstrect.h=(newt_win_map->h*newt_Zoom_y)/NEWT_ZOOMMULT;
+        /* ensure zoomed (destination) size */
         if (dstrect.w>maparea_x) dstrect.w=maparea_x;
         if (dstrect.h>maparea_y) dstrect.h=maparea_y;
 

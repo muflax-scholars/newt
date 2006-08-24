@@ -27,7 +27,7 @@
 /* yes, CUSTOM *must* be after END ! */
 #define NEWT_ZOOMMODE_CUSTOM         4
 
-#define NEWT_ZOOMMULT                1024
+#define NEWT_ZOOMMULT                16384
 
 #define NEWT_MORE "-- more --"
 
