@@ -151,5 +151,5 @@ spotless:
 # cleanup after newt
 	-rm -f ASCII.ttf README-newt.txt
 # NetHack doesn't do this itself :(
-	-rm nhtiles.bmp
+	-rm -f nhtiles.bmp
 
