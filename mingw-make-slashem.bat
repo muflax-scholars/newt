@@ -6,6 +6,7 @@ mkdir slashem\win\newt
 xcopy /E /-Y newt\* slashem\win\newt\
 cd slashem\sys\winnt
 call nhsetup
+copy win32api.h ..\..\include\
 cd ..\..\src
 mingw32-make -f Makefile.gcc spotless
 mingw32-make -f Makefile.gcc all
