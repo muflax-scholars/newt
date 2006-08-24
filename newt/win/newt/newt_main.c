@@ -232,6 +232,7 @@ newt_init_nhwindows (argcp, argv)
     printf("Available %dbpp video modes:\n", VideoBPP);
     while (*(VideoModes+VideoModeAmount)) {
         printf("    %3d: %dx%d\n",VideoModeAmount,(*(VideoModes+VideoModeAmount))->w,(*(VideoModes+VideoModeAmount))->h);
+        if ((iflags.wc_tile_height*ROWNO+newt_fontsize*4)<(*(VideoModes+VideoModeAmount))->h&&(*(VideoModes+VideoModeAmount))->h<(*(VideoModes+VideoMode))->h) VideoMode=VideoModeAmount;
         VideoModeAmount++;
     }
 
