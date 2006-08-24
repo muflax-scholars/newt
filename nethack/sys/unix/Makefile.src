@@ -214,8 +214,14 @@ WINBEOBJ =
 #
 # Files for the newt interface.
 #
-SDLCONFIG = sdl11-config
-#SDLCONFIG = sdl-config
+ifndef SDLCONFIG
+	OS := $(shell uname -s)
+	ifeq ($(OS),FreeBSD)
+		SDLCONFIG := sdl11-config
+	else
+		SDLCONFIG := sdl-config
+	endif
+endif
 WINNEWTDIR = ../win/newt/
 WINNEWTINCLUDE = -I$(WINNEWTDIR)
 #WINNEWTMODECFLAGS=-O2

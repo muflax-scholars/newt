@@ -25,7 +25,7 @@ all:	$(VARDAT) spec_levs quest_levs dungeon
 	(cd ../util ; make tile2beos)
 
 ../util/tile2bmp:
-	(cd ../util ; make tile2bmp)
+	(cd ../util ; $(MAKE) tile2bmp)
 
 x11tiles: ../util/tile2x11 ../win/share/monsters.txt ../win/share/objects.txt \
 				../win/share/other.txt

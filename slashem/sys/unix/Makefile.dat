@@ -25,25 +25,25 @@ all:	$(VARDAT) spec_levs quest_levs dungeon
 	(cd ../util ; make tile2beos)
 
 ../util/tile2png:
-	(cd ../util ; make tile2png)
+	(cd ../util ; $(MAKE) tile2png)
 
 ../util/magtile:
-	(cd ../util ; make magtile)
+	(cd ../util ; $(MAKE) magtile)
 
 ../util/bigtile:
 	(cd ../util ; make bigtile)
 
 ../util/txtmerge:
-	(cd ../util ; make txtmerge)
+	(cd ../util ; $(MAKE) txtmerge)
 
 ../util/txtbg:
-	(cd ../util ; make txtbg)
+	(cd ../util ; $(MAKE) txtbg)
 
 ../util/mapmerge:
 	(cd ../util ; make mapmerge)
 
 ../util/tile2bmp:
-	(cd ../util ; make tile2bmp)
+	(cd ../util ; $(MAKE) tile2bmp)
 
 x11tiles: ../util/tile2x11 ../win/share/monsters.txt ../win/share/objects.txt \
 				../win/share/other.txt
