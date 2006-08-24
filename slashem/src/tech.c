@@ -1075,6 +1075,7 @@ int tech_no;
 			     * so that the zombie's HP relate roughly to how
 			     * much of the original corpse was left.
 			     */
+			    if (obj->oeaten)
 			    obj->oeaten =
 				    eaten_stat(mons[corpsenm].cnutrit, obj);
 			    obj->corpsenm = corpsenm;

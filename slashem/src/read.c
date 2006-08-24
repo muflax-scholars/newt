@@ -1290,6 +1290,7 @@ register struct obj	*sobj;
 			    maybe_tame(mtmp, sobj);
 		    }
 		}
+		break;
 	case SPE_COMMAND_UNDEAD:
 	    if (u.uswallow) {
 		if (is_undead(u.ustuck->data)) maybe_tame(u.ustuck, sobj);
@@ -1303,8 +1304,8 @@ register struct obj	*sobj;
 			    is_undead(mtmp->data))
 			maybe_tame(mtmp, sobj);
 		}
-		break;
 	    }
+		break;
 	case SCR_GENOCIDE:
 		You("have found a scroll of genocide!");
 		known = TRUE;
