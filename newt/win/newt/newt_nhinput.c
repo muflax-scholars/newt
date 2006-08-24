@@ -180,6 +180,8 @@ newt_nh_poskey (x, y, mod)
     SDL_Rect srcrect;
     SDL_Rect dstrect;
 
+    int SyncRequired;
+
 #ifdef DEBUG
     printf("- newt_nh_poskey();\n");
 #endif
@@ -189,8 +191,46 @@ newt_nh_poskey (x, y, mod)
   joyMotion=SDL_GetTicks();  
   newt_wait_synch();
   while (1) {
+      
+    if (joyCursor&&SDL_GetTicks()-joyRate>joyMotion) {
+        newt_map_curs_x+=joyMotionX;
+        newt_map_curs_y+=joyMotionY;
+        joyMotion=SDL_GetTicks();  
+        if (!(joyMotionX||joyMotionY)) {
+            joyRate=250;
+        } else {
+            if (joyRate>50) joyRate-=25;
+        }
+        
+    }
+
+    SyncRequired=0;
+    if ((SyncRequired=newt_windowQueueRender())) while (newt_windowQueueRender()) {};
+    /* display informational text */
+    InformationTextFade=255-((SDL_GetTicks()-newt_internalMessageTime)/10);
+    if (InformationTextFade>0&&strlen(newt_internalMessageText)) {
+        newt_windowQueueAdd(WIN_MAP);
+        while (newt_windowQueueRender()) {};
+        textsurface = TTF_RenderText_Shaded(newt_font, newt_internalMessageText, newt_Info_fg, newt_Info_bg);
+        dstrect.x=newt_screen->w-(textsurface->w+10);
+        dstrect.y=newt_fontsize+10;
+        srcrect.x=srcrect.y=0;
+        srcrect.w=textsurface->w;
+        srcrect.h=textsurface->h;
+        dstrect.w=textsurface->w;
+        dstrect.h=textsurface->h;
+        
+        SDL_SetAlpha(textsurface,SDL_SRCALPHA,InformationTextFade);
+        SDL_BlitSurface(textsurface, &srcrect, newt_screen, &dstrect);
+        SDL_FreeSurface(textsurface);
+        SyncRequired=1;
+        SDL_Flip(newt_screen);
+    }
+    if (SyncRequired) newt_wait_synch();
+    
     if (!SDL_PollEvent (NULL)) SDL_Delay(1);  /* give the system some time */
-      while (SDL_PollEvent (&event)) {
+
+    while (SDL_PollEvent (&event)) {
       switch(event.type) {
         case SDL_KEYDOWN:
           if ((event.key.keysym.mod & KMOD_ALT) && (event.key.keysym.sym==SDLK_RETURN)) {
@@ -380,45 +420,7 @@ newt_nh_poskey (x, y, mod)
           return 0;  
       }
     }
-      
-    if (joyCursor&&SDL_GetTicks()-joyRate>joyMotion) {
-        newt_map_curs_x+=joyMotionX;
-        newt_map_curs_y+=joyMotionY;
-        joyMotion=SDL_GetTicks();  
-        if (!(joyMotionX||joyMotionY)) {
-            joyRate=250;
-        } else {
-            if (joyRate>50) joyRate-=25;
-        }
-        
-    }
-
-    newt_windowQueueRender();
-    
-        /* display informational text */
-        InformationTextFade=255-((SDL_GetTicks()-newt_internalMessageTime)/5);
-        if (InformationTextFade>0&&strlen(newt_internalMessageText)) {
-			//textsurface = TTF_RenderText_Solid(newt_font, newt_internalMessageText, newt_Info_fg);
-			textsurface = TTF_RenderText_Shaded(newt_font, newt_internalMessageText, newt_Info_fg, newt_Info_bg);
-			dstrect.x=newt_screen->w-(textsurface->w+10);
-			dstrect.y=newt_fontsize+10;
-			srcrect.x=srcrect.y=0;
-			srcrect.w=textsurface->w;
-			srcrect.h=textsurface->h;
-			dstrect.w=textsurface->w;
-			dstrect.h=textsurface->h;
-            
-            SDL_SetAlpha(textsurface,SDL_SRCALPHA,InformationTextFade);
-			SDL_BlitSurface(textsurface, &srcrect, newt_screen, &dstrect);
-            SDL_FreeSurface(textsurface);
-            //newt_windowQueueAdd(WIN_MAP);
-        }
-        newt_wait_synch();
-
   }
-
-  /*TODO*/
-  return (int)getchar();
 };
 
 /* ------------------------------------------------------------------------- */
