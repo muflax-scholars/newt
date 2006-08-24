@@ -34,7 +34,7 @@
 
 GAME = slashem
 # The GNU Make has a problem if you include a drive spec below (unfortunately).
-GAMEDIR = \games\slam32d
+GAMEDIR = ..\binary
 
 #
 # Directories
@@ -59,6 +59,7 @@ UTIL = ..\util
 WTTY = ..\win\tty
 WIN32 = ..\win\win32
 WGTK = ..\win\gtk
+WNEWT = ..\win\newt
 WSHR = ..\win\share
 
 #
@@ -152,6 +153,12 @@ USE_DLB = Y
 # USE_GTK = Y
 
 #
+# Uncomment the line below if you want to compile with the Ne.W.T. windowsystem.
+# You will also need to define NEWT_GRAPHICS in config.h.
+
+USE_NEWT = Y
+
+#
 # Uncomment the line below if you want to compile with the proxy system.
 # You will also need to define PROXY_GRAPHICS in config.h.
 
@@ -178,11 +185,17 @@ USE_DLB = Y
 # nothing below this line should have to be changed
 #
 
-SOUND = ntsound.o
+#SOUND = ntsound.o
 
-#SOUND =
+SOUND =
 
 GAMEFILE = $(GAMEDIR)\$(GAME).exe
+
+MINGW = c:/mingw
+MSYS = c:/msys/1.0/local
+SDLCFLAGS = -I$(MINGW)/include -I$(MSYS)/include -I$(MINGW)/include/SDL -I$(MSYS)/include/SDL
+SDLLFLAGS = -L$(MINGW)/lib -L$(MSYS)/lib -mwindows
+SDLLIBS = -lmingw32 -lSDLmain -lSDL -lSDL_mixer -lSDL_image -lSDL_ttf
 
 # Changing this conditional block is not recommended
 ifeq ($(USE_DLB),Y)
@@ -216,7 +229,7 @@ CFLAGS = -c -O -I../include $(DLBFLG)
 LFLAGS =
 
 # Comment out this line if you have also commented out TTY_GRAPHICS in config.h
-CFLAGS += -DWIN32CON
+# CFLAGS += -DWIN32CON
 endif
 
 # The pkg-config executable
@@ -234,6 +247,8 @@ GTKLIBS = $(PKG_CONFIG) --libs gtk+-2.0 libpng
 # Select Windowing system(s) below
 # GTK windowing system
 WINGTKCFLAGS=
+
+WINNEWTCFLAGS=-DSLASHEM $(SDLCFLAGS)
 
 # Set the WINSRC, WINOBJ, and WINLIB lines to correspond to your desired
 # combination of windowing systems.  Also set windowing systems in config.h.
@@ -270,6 +285,22 @@ WINGTKOBJ1 = gtk.o gtkgetlin.o gtkstatus.o gtkmenu.o gtkyn.o gtkextcmd.o \
 WINGTKOBJ2 = gtktile.o gtkhackrc.o gtkprefs.o gtkprogress.o gtkint.o gtkext.o
 endif
 #
+# Files for a Ne.W.T. port
+ifeq ($(USE_NEWT),Y)
+WINNEWTSRC = ../win/newt/newt_main.c \
+						 ../win/newt/newt_nhinput.c \
+						 ../win/newt/newt_nhmenus.c \
+						 ../win/newt/newt_nhoutput.c \
+						 ../win/newt/newt_nhwindows.c \
+						 ../win/newt/newt_nhunixtty.c \
+						 ../win/newt/newt_nhpaletted.c \
+						 ../win/newt/newt_globals.c \
+						 ../win/newt/newt_nhplayerselection.c
+WINNEWTOBJ = newt_main.o newt_nhinput.o newt_nhmenus.o newt_nhoutput.o \
+						 newt_nhwindows.o newt_nhunixtty.o newt_nhpaletted.o \
+						 newt_globals.o newt_nhplayerselection.o
+endif
+#
 # Files for a proxy interface.
 ifeq ($(USE_PROXY),Y)
 WINPROXYSRC = ../win/proxy/winproxy.c ../win/proxy/callback.c
@@ -299,8 +330,8 @@ PROXYCLNTSRC = ../win/proxy/proxysvc.c ../win/proxy/proxycb.c \
 	../win/proxy/prxyconn.c
 PROXYCLNTOBJ = proxysvc.o proxycb.o prxymap.o prxychar.o prxytile.o prxyconn.o
 
-WINSRC = $(WINTTYSRC)
-WOBJ01 = $(WINTTYOBJ)
+WINSRC = $(WINNEWTSRC)
+WOBJ01 = $(WINNEWTOBJ)
 WOBJ02 =
 WOBJ03 =
 WOBJ04 =
@@ -327,6 +358,12 @@ WINSRC += $(PROXYUTLSRC) $(PROXYSHRSRC)
 WOBJ04 += tile.o
 WOBJ05 += $(PROXYUTLOBJ) $(PROXYSHROBJ)
 endif	# USE_PROXY
+else  # USE_GTK
+ifeq ($(USE_NEWT),Y)
+WINSRC += $(WINNEWTSRC)
+WOBJ04 += tile.o
+LFLAGS += $(SDLLFLAGS)
+endif	# USE_NEWT
 endif	# USE_GTK
 endif	# USE_MSWIN
 
@@ -366,6 +403,10 @@ ifeq ($(USE_GTK),Y)
 WINGTKLIB =
 endif
 
+ifeq ($(USE_NEWT),Y)
+WINNEWTLIB = $(SDLLIBS) -lwinmm
+endif
+
 ifeq ($(USE_PROXY),Y)
 WINPROXYLIB = libwsock32.a
 endif
@@ -378,6 +419,10 @@ endif
 
 ifeq ($(USE_GTK),Y)
 WINLIB +=$(WINGTKLIB)
+endif
+
+ifeq ($(USE_NEWT),Y)
+WINLIB +=$(WINNEWTLIB)
 endif
 
 ifeq ($(USE_PROXY),Y)
@@ -630,6 +675,12 @@ endif
 	$(COPY) $(subst /,\,$(DOC)\guidebook.txt	$(GAMEDIR))
 	$(COPY) $(subst /,\,$(DOC)\recover.txt		$(GAMEDIR))
 	$(COPY) $(subst /,\,$(DOC)\slashem.txt		$(GAMEDIR))
+ifeq ($(USE_NEWT),Y)
+	$(COPY) $(subst /,\,../win/newt/data/*.* $(GAMEDIR))
+	$(COPY) $(subst /,\,../win/newt/dll/*.* $(GAMEDIR))
+	$(COPY) $(subst /,\,tiles.bmp $(GAMEDIR)/nhtiles.bmp)
+	$(COPY) $(subst /,\,tiles32.bmp $(GAMEDIR))
+endif
 	$(ECHO) install done > install.tag
 
 #  The main target.
@@ -661,12 +712,19 @@ $(GAMEFILE): cc-gtk.exe gamedir.tag utility.tag $(NHALLOCDLL) $(NHALLOCA) \
 	$(COPY) $(GAME).exe $(GAMEFILE)
 	$(DEL) $(GAME).exe
 else
+ifeq ($(USE_NEWT),Y)
+$(GAMEFILE): gamedir.tag utility.tag $(NHALLOCDLL) $(NHALLOCA) $(ALLOBJ) $(GAME).lnk tiles.bmp tiles32.bmp
+	$(LINK) $(LFLAGS) $(GTKGCCFLAGS) -o$(GAME).exe $(GAME).lnk
+	$(COPY) $(GAME).exe $(GAMEFILE)
+	$(DEL) $(GAME).exe
+else
 $(GAMEFILE): gamedir.tag utility.tag $(NHALLOCDLL) $(NHALLOCA) \
 		$(ALLOBJ) $(GAME).lnk $(GAMEDIR)/nhdefkey.dll \
 		$(GAMEDIR)/nh340key.dll $(GAMEDIR)/nhraykey.dll
 	$(LINK) $(LFLAGS) $(GTKGCCFLAGS) -o$(GAME).exe $(GAME).lnk
 	$(COPY) $(GAME).exe $(GAMEFILE)
 	$(DEL) $(GAME).exe
+endif
 endif
 
 nhdefkey.o:
@@ -1767,6 +1825,24 @@ gnyesno.o: ../win/gnome/gnyesno.c ../win/gnome/gnbind.h ../win/gnome/gnyesno.h
 gnworn.o: ../win/gnome/gnworn.c ../win/gnome/gnworn.h ../win/gnome/gnglyph.h \
 		../win/gnome/gnsignal.h ../win/gnome/gnomeprv.h
 	$(CCOMPILE) $(CFLAGS) $(GNOMEINC) -o$@ ../win/gnome/gnworn.c
+newt_main.o: ../win/newt/newt_main.c ../win/newt/newt_main.h ../win/newt/newt_nhwindows.h ../win/newt/newt_nhmenus.h ../win/newt/newt_nhinput.h ../win/newt/newt_nhoutput.h ../win/newt/newt_nhunixtty.h ../win/newt/newt_nhpaletted.h ../win/newt/newt_globals.h
+	$(CCOMPILE) $(CFLAGS) $(WINNEWTCFLAGS) -o newt_main.o -c ../win/newt/newt_main.c
+newt_nhinput.o: ../win/newt/newt_nhinput.c ../win/newt/newt_main.h ../win/newt/newt_nhwindows.h ../win/newt/newt_nhinput.h ../win/newt/newt_nhoutput.h ../win/newt/newt_globals.h
+	$(CCOMPILE) $(CFLAGS) $(WINNEWTCFLAGS) -o newt_nhinput.o -c ../win/newt/newt_nhinput.c
+newt_nhmenus.o: ../win/newt/newt_nhmenus.c ../win/newt/newt_main.h ../win/newt/newt_nhmenus.h ../win/newt/newt_nhwindows.h ../win/newt/newt_nhinput.h ../win/newt/newt_nhoutput.h ../win/newt/newt_globals.h
+	$(CCOMPILE) $(CFLAGS) $(WINNEWTCFLAGS) -o newt_nhmenus.o -c ../win/newt/newt_nhmenus.c
+newt_nhoutput.o: ../win/newt/newt_nhoutput.c ../win/newt/newt_nhmenus.h ../win/newt/newt_nhwindows.h ../win/newt/newt_nhinput.h ../win/newt/newt_nhoutput.h ../win/newt/newt_globals.h
+	$(CCOMPILE) $(CFLAGS) $(WINNEWTCFLAGS) -o newt_nhoutput.o -c ../win/newt/newt_nhoutput.c
+newt_nhpaletted.o: ../win/newt/newt_nhpaletted.c ../win/newt/newt_nhpaletted.h
+	$(CCOMPILE) $(CFLAGS) $(WINNEWTCFLAGS) -o newt_nhpaletted.o -c ../win/newt/newt_nhpaletted.c
+newt_nhunixtty.o: ../win/newt/newt_nhunixtty.c ../win/newt/newt_nhunixtty.h
+	$(CCOMPILE) $(CFLAGS) $(WINNEWTCFLAGS) -o newt_nhunixtty.o -c ../win/newt/newt_nhunixtty.c
+newt_nhwindows.o: ../win/newt/newt_nhwindows.c ../win/newt/newt_main.h ../win/newt/newt_nhmenus.h ../win/newt/newt_nhwindows.h ../win/newt/newt_nhinput.h ../win/newt/newt_globals.h
+	$(CCOMPILE) $(CFLAGS) $(WINNEWTCFLAGS) -o newt_nhwindows.o -c ../win/newt/newt_nhwindows.c
+newt_globals.o: ../win/newt/newt_globals.c ../win/newt/newt_globals.h
+	$(CCOMPILE) $(CFLAGS) $(WINNEWTCFLAGS) -o newt_globals.o -c ../win/newt/newt_globals.c
+newt_nhplayerselection.o: ../win/newt/newt_nhplayerselection.c ../win/newt/newt_main.h ../win/newt/newt_nhwindows.h ../win/newt/newt_nhmenus.h
+	$(CCOMPILE) $(CFLAGS) $(WINNEWTCFLAGS) -o newt_nhplayerselection.o -c ../win/newt/newt_nhplayerselection.c
 wingem.o: ../win/gem/wingem.c $(HACK_H) $(INCL)/func_tab.h $(INCL)/dlb.h \
 		$(INCL)/patchlevel.h $(INCL)/wingem.h
 	$(CCOMPILE) $(CFLAGS) -o$@ ../win/gem/wingem.c
