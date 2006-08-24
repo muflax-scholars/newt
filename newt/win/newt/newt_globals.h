@@ -5,8 +5,8 @@
 #include <SDL_ttf.h>
 
 #define NEWT_VERSION_VERSION         1
-#define NEWT_VERSION_RELEASE         1
-#define NEWT_VERSION_PATCHLEVEL      1
+#define NEWT_VERSION_RELEASE         2
+#define NEWT_VERSION_PATCHLEVEL      0
 
 #define NEWT_DEFAULT_TILESET         "nhtiles.bmp"
 #define NEWT_DEFAULT_TILESET_WIDTH   16
