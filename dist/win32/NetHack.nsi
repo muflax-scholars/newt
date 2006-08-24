@@ -29,7 +29,7 @@ Section "Start Menu Shortcuts"
   SetOutPath $INSTDIR
   CreateDirectory "$SMPROGRAMS\Ne.W.T. for NetHack"
   CreateShortCut "$SMPROGRAMS\Ne.W.T. for NetHack\Play Ne.W.T. for NetHack.lnk" "$INSTDIR\NeWT.exe" "" "$INSTDIR\NeWT.exe" 0
-  CreateShortCut "$SMPROGRAMS\Ne.W.T. for NetHack\Manual.lnk" "$INSTDIR\manual\index.html" "" "$INSTDIR\manual\index.html" 0
+  CreateShortCut "$SMPROGRAMS\Ne.W.T. for NetHack\Manual.lnk" "$INSTDIR\Guidebook.txt" "" "$INSTDIR\Guidebook.txt" 0
   CreateShortCut "$SMPROGRAMS\Ne.W.T. for NetHack\Darkarts Studios.lnk" "http://www.darkarts.co.za" "" "http://www.darkarts.co.za" 0
   CreateShortCut "$SMPROGRAMS\Ne.W.T. for NetHack\Uninstall Ne.W.T. for NetHack.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
 SectionEnd
