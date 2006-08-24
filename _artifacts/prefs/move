@@ -1,1 +1,0 @@
-darcs mv '%(from)s' '%(to)s'
