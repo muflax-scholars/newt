@@ -332,6 +332,12 @@ newt_print_glyph (window, x, y, glyph)
             srcrect.h=dstrect.h;
             SDL_BlitSurface(newt_infrared, &srcrect, newt_win_map_tiles, &dstrect);
         }
+        if ( mon && sensemon( mon) ) {
+            srcrect.x=srcrect.y=0;
+            srcrect.w=dstrect.w;
+            srcrect.h=dstrect.h;
+            SDL_BlitSurface(newt_telepathy, &srcrect, newt_win_map_tiles, &dstrect);
+        }
     }
 
     if ((newt_ascii_map[y][x].special&MG_PET) && iflags.hilite_pet) {

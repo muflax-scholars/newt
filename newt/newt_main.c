@@ -315,6 +315,21 @@ newt_init_nhwindows (argcp, argv)
         SDL_SetAlpha( newt_infrared, SDL_SRCALPHA, SDL_ALPHA_TRANSPARENT + (SDL_ALPHA_OPAQUE - SDL_ALPHA_TRANSPARENT)/5);
     }
 
+    newt_telepathy = SDL_CreateRGBSurface(
+        SDL_SWSURFACE | SDL_SRCALPHA,
+        iflags.wc_tile_width, iflags.wc_tile_height, VideoBPP,
+        newt_screen->format->Rmask,
+        newt_screen->format->Gmask,
+        newt_screen->format->Bmask,
+        newt_screen->format->Amask);
+    dstrect.x=dstrect.y=0;
+    dstrect.w=iflags.wc_tile_width;
+    dstrect.h=iflags.wc_tile_height;
+    if (newt_telepathy) {
+        SDL_FillRect( newt_telepathy, (SDL_Rect *)&dstrect, SDL_MapRGB(newt_telepathy->format,0,0xFF,0));
+        SDL_SetAlpha( newt_telepathy, SDL_SRCALPHA, SDL_ALPHA_TRANSPARENT + (SDL_ALPHA_OPAQUE - SDL_ALPHA_TRANSPARENT)/5);
+    }
+
   iflags.window_inited=TRUE;
 }
 

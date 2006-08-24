@@ -39,6 +39,7 @@ SDL_Rect newt_screen_mapRect;
 SDL_Surface *newt_lineofsight;
 #endif
 SDL_Surface *newt_infrared;
+SDL_Surface *newt_telepathy;
 
 TTF_Font *newt_font;
 SDL_Surface *newt_tiles;
