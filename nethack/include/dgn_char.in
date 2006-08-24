@@ -1,0 +1,139 @@
+#
+# lines starting with hash '#' are comments.
+# lines starting with a fullstop '.' are counter start/end points
+#
+# first word is the define (S_ is auto-prefixed), rest of line is a comment
+#
+
+.MAXPCHARS
+
+# begin dungeon characters 
+
+.MAXDCHARS
+unexplored
+vstone
+hstone
+tlcornstone
+trcornstone
+blcornstone
+brcornstone
+crstone
+tustone
+tdstone
+tlstone
+trstone
+vwall
+hwall
+tlcorn
+trcorn
+blcorn
+brcorn
+crwall
+tuwall
+tdwall
+tlwall
+trwall
+ndoor
+vodoor
+hodoor
+vcdoor	closed door, vertical wall 
+hcdoor	closed door, horizontal wall 
+bars		Added by KMH 
+tree		Added by KMH 
+room
+darkroom
+corr
+litcorr
+upstair
+dnstair
+upladder
+dnladder
+altar
+grave
+throne
+sink
+fountain
+pool
+ice
+lava
+vodbridge
+hodbridge
+vcdbridge	closed drawbridge, vertical wall 
+hcdbridge	closed drawbridge, horizontal wall 
+air
+cloud
+water
+.MAXDCHARS	maximum of mapped dungeon characters 
+
+# end dungeon characters, begin traps 
+
+.MAXTCHARS
+arrow_trap
+dart_trap
+falling_rock_trap
+squeaky_board
+bear_trap
+land_mine
+rolling_boulder_trap
+sleeping_gas_trap
+rust_trap
+fire_trap
+pit
+spiked_pit
+hole
+trap_door
+teleportation_trap
+level_teleporter
+magic_portal
+web
+statue_trap
+magic_trap
+anti_magic_trap
+polymorph_trap
+.MAXTCHARS	maximum of mapped trap characters 
+
+# end traps, begin special effects 
+
+.MAXECHARS
+vbeam		The 4 zap beam symbols.  Do NOT separate. 
+hbeam		To change order or add, see function     
+lslant	zapdir_to_glyph() in display.c.	    
+rslant
+digbeam	dig beam symbol 
+flashbeam	camera flash symbol 
+boomleft	thrown boomerang, open left, e.g ')'    
+boomright	thrown boomerand, open right, e.g. '('  
+ss1		4 magic shield glyphs 
+ss2
+ss3
+ss4
+
+# The 8 swallow symbols.  Do NOT separate.  To change order or add, see 
+# the function swallow_to_glyph() in display.c.			 
+
+sw_tl		swallow top left [1]			
+sw_tc		swallow top center [2]	Order:	
+sw_tr		swallow top right [3]		
+sw_ml		swallow middle left [4]	1 2 3	
+sw_mr		swallow middle right [6]	4 5 6	
+sw_bl		swallow bottom left [7]	7 8 9	
+sw_bc		swallow bottom center [8]		
+sw_br		swallow bottom right [9]		
+
+.MAXEXPCHARS
+explode1	explosion top left			
+explode2	explosion top center			
+explode3	explosion top right		 Ex.	
+explode4	explosion middle left		
+explode5	explosion middle center	 /-\	
+explode6	explosion middle right	 |@|	
+explode7	explosion bottom left	 \-/	
+explode8	explosion bottom center		
+explode9	explosion bottom right		
+
+.MAXEXPCHARS	number of explosion characters 
+.MAXECHARS	maximum of mapped effects characters 
+    
+# end effects 
+  
+.MAXPCHARS	maximum number of mapped characters 

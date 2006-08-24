@@ -132,7 +132,7 @@ STATIC_DCL int FDECL(set_corn, (int,int, int,int, int,int, int,int));
 STATIC_DCL int FDECL(set_crosswall, (int, int));
 STATIC_DCL void FDECL(set_seenv, (struct rm *, int, int, int, int));
 STATIC_DCL void FDECL(t_warn, (struct rm *));
-STATIC_DCL int FDECL(wall_angle, (struct rm *));
+STATIC_DCL int FDECL(wall_angle, (struct rm *, int, int));
 
 #ifdef INVISIBLE_OBJECTS
 /*
@@ -179,7 +179,7 @@ magic_map_background(x, y, show)
     if (!cansee(x,y) && !lev->waslit) {
 	/* Floor spaces are dark if unlit.  Corridors are dark if unlit. */
 	if (lev->typ == ROOM && glyph == cmap_to_glyph(S_room))
-	    glyph = cmap_to_glyph(S_stone);
+	    glyph = cmap_to_glyph(S_darkroom);
 	else if (lev->typ == CORR && glyph == cmap_to_glyph(S_litcorr))
 	    glyph = cmap_to_glyph(S_corr);
     }
@@ -306,9 +306,9 @@ unmap_object(x, y)
 	/* turn remembered dark room squares dark */
 	if (!lev->waslit && lev->glyph == cmap_to_glyph(S_room) &&
 							    lev->typ == ROOM)
-	    lev->glyph = cmap_to_glyph(S_stone);
+	    lev->glyph = cmap_to_glyph(S_darkroom);
     } else
-	levl[x][y].glyph = cmap_to_glyph(S_stone);	/* default val */
+	levl[x][y].glyph = cmap_to_glyph(S_unexplored);	/* default val */
 }
 
 
@@ -561,14 +561,14 @@ feel_location(x, y)
 		    map_background(x, y, 1);
 		} else {
 		    lev->glyph = lev->waslit ? cmap_to_glyph(S_room) :
-					       cmap_to_glyph(S_stone);
+					       cmap_to_glyph(S_darkroom);
 		    show_glyph(x,y,lev->glyph);
 		}
-	    } else if ((lev->glyph >= cmap_to_glyph(S_stone) &&
-			lev->glyph < cmap_to_glyph(S_room)) ||
+	    } else if ((lev->glyph >= cmap_to_glyph(S_unexplored) &&
+			lev->glyph < cmap_to_glyph(S_darkroom)) ||
 		       glyph_is_invisible(levl[x][y].glyph)) {
 		lev->glyph = lev->waslit ? cmap_to_glyph(S_room) :
-					   cmap_to_glyph(S_stone);
+					   cmap_to_glyph(S_darkroom);
 		show_glyph(x,y,lev->glyph);
 	    }
 	} else {
@@ -608,7 +608,7 @@ feel_location(x, y)
 	/* Floor spaces are dark if unlit.  Corridors are dark if unlit. */
 	if (lev->typ == ROOM &&
 		    lev->glyph == cmap_to_glyph(S_room) && !lev->waslit)
-	    show_glyph(x,y, lev->glyph = cmap_to_glyph(S_stone));
+	    show_glyph(x,y, lev->glyph = cmap_to_glyph(S_darkroom));
 	else if (lev->typ == CORR &&
 		    lev->glyph == cmap_to_glyph(S_litcorr) && !lev->waslit)
 	    show_glyph(x,y, lev->glyph = cmap_to_glyph(S_corr));
@@ -756,7 +756,7 @@ newsym(x,y)
 	    if (lev->glyph == cmap_to_glyph(S_litcorr) && lev->typ == CORR)
 		show_glyph(x, y, lev->glyph = cmap_to_glyph(S_corr));
 	    else if (lev->glyph == cmap_to_glyph(S_room) && lev->typ == ROOM)
-		show_glyph(x, y, lev->glyph = cmap_to_glyph(S_stone));
+		show_glyph(x, y, lev->glyph = cmap_to_glyph(S_darkroom));
 	    else
 		goto show_mem;
 	} else {
@@ -932,7 +932,7 @@ swallowed(first)
 	/* Clear old location */
 	for (y = lasty-1; y <= lasty+1; y++)
 	    for (x = lastx-1; x <= lastx+1; x++)
-		if (isok(x,y)) show_glyph(x,y,cmap_to_glyph(S_stone));
+		if (isok(x,y)) show_glyph(x,y,cmap_to_glyph(S_unexplored));
     }
 
     swallower = monsndx(u.ustuck->data);
@@ -1001,13 +1001,13 @@ under_water(mode)
 	for (y = lasty-1; y <= lasty+1; y++)
 	    for (x = lastx-1; x <= lastx+1; x++)
 		if (isok(x,y))
-		    show_glyph(x,y,cmap_to_glyph(S_stone));
+		    show_glyph(x,y,cmap_to_glyph(S_unexplored));
     }
     for (x = u.ux-1; x <= u.ux+1; x++)
 	for (y = u.uy-1; y <= u.uy+1; y++)
 	    if (isok(x,y) && is_pool(x,y)) {
 		if (Blind && !(x == u.ux && y == u.uy))
-		    show_glyph(x,y,cmap_to_glyph(S_stone));
+		    show_glyph(x,y,cmap_to_glyph(S_unexplored));
 		else	
 		    newsym(x,y);
 	    }
@@ -1181,7 +1181,7 @@ docrt()
     for (x = 1; x < COLNO; x++) {
 	lev = &levl[x][0];
 	for (y = 0; y < ROWNO; y++, lev++)
-	    if (lev->glyph != cmap_to_glyph(S_stone))
+	    if (lev->glyph != cmap_to_glyph(S_unexplored))
 		show_glyph(x,y,lev->glyph);
     }
 
@@ -1290,9 +1290,9 @@ show_glyph(x,y,glyph)
     }
 
 
-static gbuf_entry nul_gbuf = { 0, cmap_to_glyph(S_stone) };
+static gbuf_entry nul_gbuf = { 0, cmap_to_glyph(S_unexplored) };
 /*
- * Turn the 3rd screen into stone.
+ * Turn the 3rd screen into unexplored area.
  */
 void
 clear_glyph_buffer()
@@ -1310,7 +1310,7 @@ clear_glyph_buffer()
 }
 
 /*
- * Assumes that the indicated positions are filled with S_stone glyphs.
+ * Assumes that the indicated positions are filled with S_unexplored glyphs.
  */
 void
 row_refresh(start,stop,y)
@@ -1319,7 +1319,7 @@ row_refresh(start,stop,y)
     register int x;
 
     for (x = start; x <= stop; x++)
-	if (gbuf[y][x].glyph != cmap_to_glyph(S_stone))
+	if (gbuf[y][x].glyph != cmap_to_glyph(S_unexplored))
 	    print_glyph(WIN_MAP,x,y,gbuf[y][x].glyph);
 }
 
@@ -1371,6 +1371,164 @@ flush_screen(cursor_on_u)
 /* ========================================================================= */
 
 /*
+ * is_stone_cmap()
+ *
+ * checks if a typ at a specific map location is a stone type,
+ * or if othertypes is TRUE it checks if it's something that a
+ * stone typ could connect to.
+ */
+STATIC_OVL int
+is_stone_cmap(x,y,othertypes)
+    int x,y;
+    int othertypes;
+{
+    int within;
+
+    within=(x>0) && (y>=0) && (x<=79) && (y<=20);
+    return ( othertypes && (!within) ) ||
+	   ( within &&
+	     levl[x][y].seenv &&
+	     ( (levl[x][y].typ==STONE) ||
+	       othertypes && 
+	       ( (IS_WALL(levl[x][y].typ) ) ||
+	         (levl[x][y].typ==SDOOR) ||
+	         (levl[x][y].typ==SCORR) ) ) );
+}
+
+/* ========================================================================= */
+
+/*
+ * get_stone_cmap()
+ *
+ * calculate the cmap for a stone typ at a specific area
+ */
+STATIC_OVL int
+get_stone_cmap(x,y,iterate)
+    xchar x,y;
+    int iterate;
+{
+    int u,d,l,r;
+    int cmap;
+
+    if (!flags.passages) return S_unexplored;
+    
+    if (iterate) {
+	u=is_stone_cmap(x,y-1,FALSE);
+	d=is_stone_cmap(x,y+1,FALSE);
+	l=is_stone_cmap(x-1,y,FALSE);
+	r=is_stone_cmap(x+1,y,FALSE);
+    
+	if (u) {
+	    cmap=get_stone_cmap(x,y-1,FALSE);
+#ifdef DISPLAY_LAYERS
+	    levl[x][y-1].mem_bg=cmap;
+#else
+	    levl[x][y-1].glyph=cmap_to_glyph(cmap);
+#endif
+	    show_glyph(x,y-1, cmap_to_glyph(cmap));
+	}
+	if (d) {
+	    cmap=get_stone_cmap(x,y+1,FALSE);
+#ifdef DISPLAY_LAYERS
+	    levl[x][y+1].mem_bg=cmap;
+#else
+	    levl[x][y+1].glyph=cmap_to_glyph(cmap);
+#endif
+	    show_glyph(x,y+1, cmap_to_glyph(cmap));
+	}
+	if (l) {
+	    cmap=get_stone_cmap(x-1,y,FALSE);
+#ifdef DISPLAY_LAYERS
+	    levl[x-1][y].mem_bg=cmap;
+#else
+	    levl[x-1][y].glyph=cmap_to_glyph(cmap);
+#endif
+	    show_glyph(x-1,y, cmap_to_glyph(cmap));
+	}
+	if (r) {
+	    cmap=get_stone_cmap(x+1,y,FALSE);
+#ifdef DISPLAY_LAYERS
+	    levl[x+1][y].mem_bg=cmap;
+#else
+	    levl[x+1][y].glyph=cmap_to_glyph(cmap);
+#endif
+	    show_glyph(x+1,y, cmap_to_glyph(cmap));
+	}
+
+    }
+    
+    u=is_stone_cmap(x,y-1,TRUE);
+    d=is_stone_cmap(x,y+1,TRUE);
+    l=is_stone_cmap(x-1,y,TRUE);
+    r=is_stone_cmap(x+1,y,TRUE);
+    
+    if (u) {	
+	if (d) {
+	    if (l) {
+		if (r) {
+		    return S_crstone;
+		} else {
+		    return S_tlstone;
+		}
+	    } else {
+		if (r) {
+		    return S_trstone;
+		} else {
+		    return S_vstone;
+		}
+	    }
+	} else {
+	    if (l) {
+		if (r) {
+		    return S_tustone;
+		} else {
+		    return S_brcornstone;
+		}
+	    } else {
+		if (r) {
+		    return S_blcornstone;
+		} else {
+		    return S_vstone;
+		}
+	    }
+	}
+    } else {
+	if (d) {
+	    if (l) {
+		if (r) {
+		    return S_tdstone;
+		} else {
+		    return S_trcornstone;
+		}
+	    } else {
+		if (r) {
+		    return S_tlcornstone;
+		} else {
+		    return S_vstone;
+		}
+	    }
+	} else {
+	    if (l) {
+		if (r) {
+		    return S_hstone;
+		} else {
+		    return S_hstone;
+		}
+	    } else {
+		if (r) {
+		    return S_hstone;
+		} else {
+		    return S_hstone;
+		}
+	    }
+	}
+    }
+    
+}
+
+/* ========================================================================= */
+
+/*
  * back_to_glyph()
  *
  * Use the information in the rm structure at the given position to create
@@ -1395,9 +1553,11 @@ back_to_glyph(x,y)
     switch (ptr->typ) {
 	case SCORR:
 	case STONE:
-	    idx = level.flags.arboreal ? S_tree : S_stone;
+	    idx = level.flags.arboreal ? S_tree : get_stone_cmap(x,y,TRUE);
 	    break;
-	case ROOM:		idx = S_room;	  break;
+	case ROOM:
+	    idx = (!cansee(x,y) && !ptr->waslit) ? S_darkroom : S_room;
+	    break;
 	case CORR:
 	    idx = (ptr->waslit || flags.lit_corridor) ? S_litcorr : S_corr;
 	    break;
@@ -1413,7 +1573,7 @@ back_to_glyph(x,y)
 	case TLWALL:
 	case TRWALL:
 	case SDOOR:
-	    idx = ptr->seenv ? wall_angle(ptr) : S_stone;
+	    idx = ptr->seenv ? wall_angle(ptr,x,y) : S_unexplored;
 	    break;
 	case DOOR:
 	    if (ptr->doormask) {
@@ -1454,11 +1614,11 @@ back_to_glyph(x,y)
 	    case DB_MOAT:  idx = S_pool; break;
 	    case DB_LAVA:  idx = S_lava; break;
 	    case DB_ICE:   idx = S_ice;  break;
-	    case DB_FLOOR: idx = S_room; break;
+	    case DB_FLOOR: idx = (!cansee(x,y) && !ptr->waslit) ? S_darkroom : S_room; break;
 	    default:
 		impossible("Strange db-under: %d",
 			   ptr->drawbridgemask & DB_UNDER);
-		idx = S_room; /* something is better than nothing */
+		idx = (!cansee(x,y) && !ptr->waslit) ? S_darkroom : S_room; /* something is better than nothing */
 		break;
 	    }
 	    break;
@@ -1467,7 +1627,7 @@ back_to_glyph(x,y)
 	    break;
 	default:
 	    impossible("back_to_glyph:  unknown level type [ = %d ]",ptr->typ);
-	    idx = S_room;
+	    idx = (!cansee(x,y) && !ptr->waslit) ? S_darkroom : S_room;
 	    break;
     }
 
@@ -1834,10 +1994,10 @@ set_seenv(lev, x0, y0, x, y)
 #define T_tdwall 4
 
 static const int wall_matrix[4][5] = {
-    { S_stone, S_tlcorn, S_trcorn, S_hwall, S_tdwall },	/* tdwall */
-    { S_stone, S_trcorn, S_brcorn, S_vwall, S_tlwall },	/* tlwall */
-    { S_stone, S_brcorn, S_blcorn, S_hwall, S_tuwall },	/* tuwall */
-    { S_stone, S_blcorn, S_tlcorn, S_vwall, S_trwall },	/* trwall */
+    { S_hstone, S_tlcorn, S_trcorn, S_hwall, S_tdwall },	/* tdwall */
+    { S_hstone, S_trcorn, S_brcorn, S_vwall, S_tlwall },	/* tlwall */
+    { S_hstone, S_brcorn, S_blcorn, S_hwall, S_tuwall },	/* tuwall */
+    { S_hstone, S_blcorn, S_tlcorn, S_vwall, S_trwall },	/* trwall */
 };
 
 
@@ -1900,8 +2060,9 @@ t_warn(lev)
  * seen vector (SV).
  */
 STATIC_OVL int
-wall_angle(lev)
+wall_angle(lev,x,y)
     struct rm *lev;
+    int x,y;
 {
     register unsigned int seenv = lev->seenv & 0xff;
     const int *row;
@@ -2015,6 +2176,7 @@ do_twall:
 			break;
 		}
 		idx = row[col];
+		if (idx==S_hstone) idx=get_stone_cmap(x,y,TRUE);
 		break;
 
 	case SDOOR:
@@ -2022,17 +2184,17 @@ do_twall:
 		/* fall through */
 	case VWALL:
 		switch (lev->wall_info & WM_MASK) {
-		    case 0: idx = seenv ? S_vwall : S_stone; break;
+		    case 0: idx = seenv ? S_vwall : get_stone_cmap(x,y,TRUE); break;
 		    case 1: idx = seenv & (SV1|SV2|SV3|SV4|SV5) ? S_vwall :
-								  S_stone;
+								  get_stone_cmap(x,y,TRUE);
 			    break;
 		    case 2: idx = seenv & (SV0|SV1|SV5|SV6|SV7) ? S_vwall :
-								  S_stone;
+								  get_stone_cmap(x,y,TRUE);
 			    break;
 		    default:
 			impossible("wall_angle: unknown vwall mode %d",
 				lev->wall_info & WM_MASK);
-			idx = S_stone;
+			idx = get_stone_cmap(x,y,TRUE);
 			break;
 		}
 		break;
@@ -2040,17 +2202,17 @@ do_twall:
 	case HWALL:
 horiz:
 		switch (lev->wall_info & WM_MASK) {
-		    case 0: idx = seenv ? S_hwall : S_stone; break;
+		    case 0: idx = seenv ? S_hwall : get_stone_cmap(x,y,TRUE); break;
 		    case 1: idx = seenv & (SV3|SV4|SV5|SV6|SV7) ? S_hwall :
-								  S_stone;
+								  get_stone_cmap(x,y,TRUE);
 			    break;
 		    case 2: idx = seenv & (SV0|SV1|SV2|SV3|SV7) ? S_hwall :
-								  S_stone;
+								  get_stone_cmap(x,y,TRUE);
 			    break;
 		    default:
 			impossible("wall_angle: unknown hwall mode %d",
 				lev->wall_info & WM_MASK);
-			idx = S_stone;
+			idx = get_stone_cmap(x,y,TRUE);
 			break;
 		}
 		break;
@@ -2058,12 +2220,12 @@ horiz:
 #define set_corner(idx, lev, which, outer, inner, name)	\
     switch ((lev)->wall_info & WM_MASK) {				    \
 	case 0:		 idx = which; break;				    \
-	case WM_C_OUTER: idx = seenv &  (outer) ? which : S_stone; break;   \
-	case WM_C_INNER: idx = seenv & ~(inner) ? which : S_stone; break;   \
+	case WM_C_OUTER: idx = seenv &  (outer) ? which : get_stone_cmap(x,y,TRUE); break;   \
+	case WM_C_INNER: idx = seenv & ~(inner) ? which : get_stone_cmap(x,y,TRUE); break;   \
 	default:							    \
 	    impossible("wall_angle: unknown %s mode %d", name,		    \
 		(lev)->wall_info & WM_MASK);				    \
-	    idx = S_stone;						    \
+	    idx = get_stone_cmap(x,y,TRUE);						    \
 	    break;							    \
     }
 
@@ -2124,7 +2286,7 @@ horiz:
 			row = cross_matrix[C_br];
 do_crwall:
 			if (seenv == SV4)
-			    idx = S_stone;
+			    idx = get_stone_cmap(x,y,TRUE);
 			else {
 			    seenv = seenv & ~SV4;	/* strip SV4 */
 			    if (seenv == SV0) {
@@ -2163,7 +2325,7 @@ do_crwall:
 			else if ( only(seenv, SV5|SV6|SV7) )
 			    idx = S_trcorn;
 			else if ( only(seenv, SV0|SV4) )
-			    idx = S_stone;
+			    idx = get_stone_cmap(x,y,TRUE);
 			else
 			    idx = S_crwall;
 			break;
@@ -2174,21 +2336,21 @@ do_crwall:
 			else if ( only(seenv, SV3|SV4|SV5) )
 			    idx = S_tlcorn;
 			else if ( only(seenv, SV2|SV6) )
-			    idx = S_stone;
+			    idx = get_stone_cmap(x,y,TRUE);
 			else
 			    idx = S_crwall;
 			break;
 
 		    default:
 			impossible("wall_angle: unknown crosswall mode");
-			idx = S_stone;
+			idx = get_stone_cmap(x,y,TRUE);
 			break;
 		}
 		break;
 
 	default:
 	    impossible("wall_angle: unexpected wall type %d", lev->typ);
-	    idx = S_stone;
+	    idx = get_stone_cmap(x,y,TRUE);
     }
     return idx;
 }

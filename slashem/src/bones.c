@@ -357,7 +357,7 @@ struct obj *corpse;
 	for(x=0; x<COLNO; x++) for(y=0; y<ROWNO; y++) {
 	    levl[x][y].seenv = 0;
 	    levl[x][y].waslit = 0;
-	    clear_memory_glyph(x, y, S_stone);
+	    clear_memory_glyph(x, y, S_unexplored);
 	}
 
 	fd = create_bonesfile(&u.uz, &bonesid, whynot);

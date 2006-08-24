@@ -15,7 +15,7 @@
 
 # make NetHack
 PREFIX	 = /usr/local
-GAME     = nethack-newt
+GAME     = nethack-lizard
 # GAME     = nethack.prg
 GAMEUID  = root
 GAMEGRP  = games

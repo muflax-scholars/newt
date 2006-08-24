@@ -204,7 +204,18 @@ const struct symdef def_warnsyms[WARNCOUNT] = {
  *  Note:  {ibm|dec|mac}_graphics[] arrays also depend on this symbol order.
  */
 const struct symdef defsyms[MAXPCHARS] = {
-/* 0*/	{' ', "dark part of a room",C(NO_COLOR)},	/* stone */
+/* 0*/	{' ', "unexplored area",C(NO_COLOR)},	/* unexplored */
+	{'|', "stone",		C(CLR_BROWN)},	/* vstone */
+	{'-', "stone",		C(CLR_BROWN)},	/* hstone */
+	{'-', "stone",		C(CLR_BROWN)},	/* tlcornstone */
+	{'-', "stone",		C(CLR_BROWN)},	/* trcornstone */
+	{'-', "stone",		C(CLR_BROWN)},	/* blcornstone */
+	{'-', "stone",		C(CLR_BROWN)},	/* brcornstone */
+	{'-', "stone",		C(CLR_BROWN)},	/* crstone */
+	{'-', "stone",		C(CLR_BROWN)},	/* tustone */
+	{'-', "stone",		C(CLR_BROWN)},	/* tdstone */
+/*10*/	{'|', "stone",		C(CLR_BROWN)},	/* tlstone */
+	{'|', "stone",		C(CLR_BROWN)},	/* trstone */
 	{'|', "wall",		C(CLR_GRAY)},	/* vwall */
 	{'-', "wall",		C(CLR_GRAY)},	/* hwall */
 	{'-', "wall",		C(CLR_GRAY)},	/* tlcorn */
@@ -224,6 +235,7 @@ const struct symdef defsyms[MAXPCHARS] = {
 	{'#', "iron bars",	C(HI_METAL)},	/* bars */
 	{'#', "tree",		C(CLR_GREEN)},	/* tree */
 	{'.', "floor of a room",C(CLR_GRAY)},	/* room */
+  	{'.', "dark part of a room",C(CLR_BLACK)},	/* dark room */
 /*20*/	{'#', "corridor",	C(CLR_GRAY)},	/* dark corr */
 	{'#', "lit corridor",	C(CLR_GRAY)},	/* lit corr (see mapglyph.c) */
 	{'<', "staircase up",	C(CLR_GRAY)},	/* upstair */
@@ -315,7 +327,18 @@ void NDECL((*ibmgraphics_mode_callback)) = 0;	/* set in tty_start_screen() */
 #endif /* PC9800 */
 
 static uchar ibm_graphics[MAXPCHARS] = {
-/* 0*/	g_FILLER(S_stone),
+/* 0*/	g_FILLER(S_unexplored),
+	0xb3,	/* S_vstone:	meta-3, vertical rule */
+	0xc4,	/* S_hstone:	meta-D, horizontal rule */
+	0xda,	/* S_tlcornstone:	meta-Z, top left corner */
+	0xbf,	/* S_trcornstone:	meta-?, top right corner */
+	0xc0,	/* S_blcornstone:	meta-@, bottom left */
+	0xd9,	/* S_brcornstone:	meta-Y, bottom right */
+	0xc5,	/* S_crstone:	meta-E, cross */
+	0xc1,	/* S_tustone:	meta-A, T up */
+	0xc2,	/* S_tdstone:	meta-B, T down */
+/*10*/	0xb4,	/* S_tlstone:	meta-4, T left */
+	0xc3,	/* S_trstone:	meta-C, T right */
 	0xb3,	/* S_vwall:	meta-3, vertical rule */
 	0xc4,	/* S_hwall:	meta-D, horizontal rule */
 	0xda,	/* S_tlcorn:	meta-Z, top left corner */
@@ -335,6 +358,7 @@ static uchar ibm_graphics[MAXPCHARS] = {
 	240,	/* S_bars:	equivalence symbol */
 	241,	/* S_tree:	plus or minus symbol */
 	0xfa,	/* S_room:	meta-z, centered dot */
+	g_FILLER(S_darkroom),	/* S_darkroom:	meta-z, centered dot */
 /*20*/	0xb0,	/* S_corr:	meta-0, light shading */
 	0xb1,	/* S_litcorr:	meta-1, medium shading */
 	g_FILLER(S_upstair),
@@ -414,7 +438,18 @@ static uchar ibm_graphics[MAXPCHARS] = {
 void NDECL((*decgraphics_mode_callback)) = 0;  /* set in tty_start_screen() */
 
 static uchar dec_graphics[MAXPCHARS] = {
-/* 0*/	g_FILLER(S_stone),
+/* 0*/	g_FILLER(S_unexplored),
+	0xf8,	/* S_vstone:	meta-x, vertical rule */
+	0xf1,	/* S_hstone:	meta-q, horizontal rule */
+	0xec,	/* S_tlcornstone:	meta-l, top left corner */
+	0xeb,	/* S_trcornstone:	meta-k, top right corner */
+	0xed,	/* S_blcornstone:	meta-m, bottom left */
+	0xea,	/* S_brcornstone:	meta-j, bottom right */
+	0xee,	/* S_crstone:	meta-n, cross */
+	0xf6,	/* S_tustone:	meta-v, T up */
+	0xf7,	/* S_tdstone:	meta-w, T down */
+/*10*/	0xf5,	/* S_tlstone:	meta-u, T left */
+	0xf4,	/* S_trstone:	meta-t, T right */
 	0xf8,	/* S_vwall:	meta-x, vertical rule */
 	0xf1,	/* S_hwall:	meta-q, horizontal rule */
 	0xec,	/* S_tlcorn:	meta-l, top left corner */
@@ -434,6 +469,7 @@ static uchar dec_graphics[MAXPCHARS] = {
 	0xfb,	/* S_bars:	meta-{, small pi */
 	0xe7,	/* S_tree:	meta-g, plus-or-minus */
 	0xfe,	/* S_room:	meta-~, centered dot */
+	g_FILLER(S_darkroom),	/* S_darkroom:	meta-~, centered dot */
 /*20*/	g_FILLER(S_corr),
 	g_FILLER(S_litcorr),
 	g_FILLER(S_upstair),
@@ -511,7 +547,18 @@ static uchar dec_graphics[MAXPCHARS] = {
 
 #ifdef MAC_GRAPHICS_ENV
 static uchar mac_graphics[MAXPCHARS] = {
-/* 0*/	g_FILLER(S_stone),
+/* 0*/	g_FILLER(S_unexplored),
+	0xba,	/* S_vstone */
+	0xcd,	/* S_hstone */
+	0xc9,	/* S_tlcornstone */
+	0xbb,	/* S_trcornstone */
+	0xc8,	/* S_blcornstone */
+	0xbc,	/* S_brcornstone */
+	0xce,	/* S_crstone */
+	0xca,	/* S_tustone */
+	0xcb,	/* S_tdstone */
+/*10*/	0xb9,	/* S_tlstone */
+	0xcc,	/* S_trstone */
 	0xba,	/* S_vwall */
 	0xcd,	/* S_hwall */
 	0xc9,	/* S_tlcorn */
@@ -531,6 +578,7 @@ static uchar mac_graphics[MAXPCHARS] = {
 	0xf0,	/* S_bars:	equivalency symbol */
 	0xf1,	/* S_tree:	plus-or-minus */
 	g_FILLER(S_Room),
+	g_FILLER(S_darkroom), /* S_darkroom */
 /*20*/	0xB0,	/* S_corr */
 	g_FILLER(S_litcorr),
 	g_FILLER(S_upstair),
@@ -823,6 +871,17 @@ boolean is_rlevel;
 # ifdef ASCIIGRAPH
 	} else {
 	    /* a la EPYX Rogue */
+	    showsyms[S_vstone]   = 0xba; /* all walls now use	*/
+	    showsyms[S_hstone]   = 0xcd; /* double line graphics	*/
+	    showsyms[S_tlcornstone]  = 0xc9;
+	    showsyms[S_trcornstone]  = 0xbb;
+	    showsyms[S_blcornstone]  = 0xc8;
+	    showsyms[S_brcornstone]  = 0xbc;
+	    showsyms[S_crstone]  = 0xce;
+	    showsyms[S_tustone]  = 0xca;
+	    showsyms[S_tdstone]  = 0xcb;
+	    showsyms[S_tlstone]  = 0xb9;
+	    showsyms[S_trstone]  = 0xcc;
 	    showsyms[S_vwall]   = 0xba; /* all walls now use	*/
 	    showsyms[S_hwall]   = 0xcd; /* double line graphics	*/
 	    showsyms[S_tlcorn]  = 0xc9;

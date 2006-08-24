@@ -143,6 +143,7 @@ static struct Bool_Opt
 #else
 	{"page_wait", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
+	{"passages", &flags.passages, TRUE, SET_IN_FILE},
 	{"perm_invent", &flags.perm_invent, FALSE, SET_IN_GAME},
 	{"popup_dialog",  &iflags.wc_popup_dialog, FALSE, SET_IN_GAME},	/*WC*/
 	{"prayconfirm", &flags.prayconfirm, TRUE, SET_IN_GAME},
@@ -610,6 +611,11 @@ initoptions()
 	/* result in the player's preferred fruit [better than "\033"].	*/
 	obj_descr[SLIME_MOLD].oc_name = "fruit";
 
+        if (flags.lit_corridor && iflags.use_color) {
+            showsyms[S_darkroom]=showsyms[S_room];
+        } else {
+            showsyms[S_darkroom]=showsyms[S_unexplored];
+        }
 	return;
 }
 
@@ -2237,6 +2243,9 @@ goodfruit:
 			    else lan_mail_finish();
 			}
 #endif
+			else if ((boolopt[i].addr) == &flags.passages) {
+			    need_redraw = TRUE;
+			}
 			else if ((boolopt[i].addr) == &flags.lit_corridor) {
 			    /*
 			     * All corridor squares seen via night vision or
@@ -2247,6 +2256,7 @@ goodfruit:
 			     */
 			    vision_recalc(2);		/* shut down vision */
 			    vision_full_recalc = 1;	/* delayed recalc */
+			    if (iflags.use_color) need_redraw = TRUE;  /* darkroom refresh */
 			}
 			else if ((boolopt[i].addr) == &iflags.use_inverse ||
 					(boolopt[i].addr) == &iflags.showrace ||
@@ -2550,8 +2560,14 @@ doset()
 	}
 
 	destroy_nhwindow(tmpwin);
-	if (need_redraw)
+	if (need_redraw) {
+	    if (flags.lit_corridor && iflags.use_color) {
+		showsyms[S_darkroom]=showsyms[S_room];
+	    } else {
+		showsyms[S_darkroom]=showsyms[S_unexplored];
+	    }
 	    (void) doredraw();
+	}
 	return 0;
 }
 

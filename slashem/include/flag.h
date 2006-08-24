@@ -71,6 +71,7 @@ struct flag {
 #ifdef MAC
 	boolean  page_wait;	/* put up a --More-- after a page of messages */
 #endif
+	boolean  passages;	/* part of visenhance, show passages */
 	boolean  perm_invent;	/* keep full inventories up until dismissed */
 	boolean  pickup;	/* whether you pickup or move and look */
 	boolean  pickup_thrown;		/* auto-pickup items you threw */
