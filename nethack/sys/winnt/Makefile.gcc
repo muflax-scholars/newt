@@ -188,7 +188,7 @@ WINPORT = \
 	$(O)tile.o
 
 WINPFLAG = -DTILES
-NHRES   = 
+NHRES   = $(O)newtres.o
 WINPINC = -I$(NEWT)
 WINPHDR = 
 WINPLIBS = $(SDLLIBS) -lwinmm
@@ -609,11 +609,16 @@ tileutil: $(U)gif2txt.exe $(U)gif2tx32.exe $(U)txt2ppm.exe
 	@echo Optional tile development utilities are up to date.
 
 ifeq  "$(GRAPHICAL)" "Y"
+ifeq "$(USE_NEWT)" "Y"
+$(NHRES): $(NEWT)/dist/win32/NeWT.rc $(WIN32)/NetHack.ico
+	@$(rc) -o$@ --include-dir $(WIN32) -i $(NEWT)/dist/win32/winhack.rc
+else
 $(NHRES): $(TILEBMP16) $(WIN32)/winhack.rc $(WIN32)/mnsel.bmp \
 	 $(WIN32)/mnselcnt.bmp $(WIN32)/mnunsel.bmp \
 	 $(WIN32)/petmark.bmp $(WIN32)/NetHack.ico $(WIN32)/rip.bmp \
 	 $(WIN32)/splash.bmp
 	@$(rc) -o$@ --include-dir $(WIN32) -i $(WIN32)/winhack.rc
+endif
 else
 $(NHRES): $(NTSYS)/console.rc $(NTSYS)/NetHack.ico 
 	@$(rc) -o$@ --include-dir $(NTSYS) -i $(NTSYS)/console.rc
@@ -629,7 +634,7 @@ $(O)gamedir.tag:
 
 ifeq  "$(GRAPHICAL)" "Y"
 ifeq "$(USE_NEWT)" "Y"
-$(GAMEFILE) : $(ALLOBJ) $(TILEBMP16) $(O)gamedir.tag
+$(GAMEFILE) : $(ALLOBJ) $(NHRES) $(TILEBMP16) $(O)gamedir.tag
 else
 $(GAMEFILE) : $(ALLOBJ) $(NHRES) $(O)gamedir.tag
 endif
