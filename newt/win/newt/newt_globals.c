@@ -58,6 +58,9 @@ Uint32 newt_Menu_bg = 0x00000020;
 
 Uint32 newt_Map_bg = 0x00000020;
 
+SDL_Color newt_Info_fg = {0xFF, 0xFF, 0x00, 0};
+SDL_Color newt_Info_bg = {0x00, 0x00, 0x00, 0};
+
 SDL_Color newt_Position_fg = {0xFF, 0xFF, 0xFF, 0};
 Uint32 newt_Position_bg = 0x00000020;
 Uint32 newt_Position_highlite = 0x00000040;
@@ -107,6 +110,13 @@ Uint32 newt_ZoomMode=NEWT_ZOOMMODE_NORMAL;
 
 Uint32 newt_prevmessage_firstcall=TRUE;
 Uint32 newt_message_blank=TRUE;
+
+char newt_internalMessageText[BUFSZ]="";
+Uint32 newt_internalMessageTime=0;
+void newt_internalMessage(char *msg) {
+    strncpy(newt_internalMessageText, msg, BUFSZ);
+    newt_internalMessageTime=SDL_GetTicks();
+}
 
 #ifdef POSITIONBAR
 Uint32 newt_positionbarmode=NEWT_POSITIONBARMODE_FULL;

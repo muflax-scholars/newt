@@ -93,6 +93,9 @@ extern Uint32 newt_Menu_bg;
 
 extern Uint32 newt_Map_bg;
 
+extern SDL_Color newt_Info_fg;
+extern SDL_Color newt_Info_bg;
+
 extern SDL_Color newt_Position_fg;
 extern Uint32 newt_Position_bg;
 extern Uint32 newt_Position_highlite;
@@ -126,5 +129,9 @@ extern Uint32 newt_ZoomMode;
 
 extern Uint32 newt_prevmessage_firstcall;
 extern Uint32 newt_message_blank;
+
+extern char newt_internalMessageText[BUFSZ];
+extern Uint32 newt_internalMessageTime;
+void newt_internalMessage(char *msg);
 
 #endif

@@ -175,6 +175,11 @@ newt_nh_poskey (x, y, mod)
     int joyRate=250;
     int joyCursor=0;
 
+    int InformationTextFade;
+    SDL_Surface *textsurface;
+    SDL_Rect srcrect;
+    SDL_Rect dstrect;
+
 #ifdef DEBUG
     printf("- newt_nh_poskey();\n");
 #endif
@@ -225,6 +230,17 @@ newt_nh_poskey (x, y, mod)
                 newt_positionbarmode=NEWT_POSITIONBARMODE_START;
               }
               newt_deltazoom=TRUE;
+              switch (newt_positionbarmode) {
+                  case NEWT_POSITIONBARMODE_NONE:
+                      newt_internalMessage("PositionBar Mode: None");
+                      break;
+                  case NEWT_POSITIONBARMODE_FULL:
+                      newt_internalMessage("PositionBar Mode: Full");
+                      break;
+                  case NEWT_POSITIONBARMODE_ZOOM:
+                      newt_internalMessage("PositionBar Mode: Zoom");
+                      break;
+              }
               newt_windowQueueAdd(WIN_MAP);
               if (flags.perm_invent&&WIN_INVEN!=WIN_ERR) newt_windowQueueAdd(WIN_INVEN);
               break;
@@ -235,6 +251,7 @@ newt_nh_poskey (x, y, mod)
               if (newt_Zoom_y<256) newt_Zoom_y=256;
               newt_ZoomMode=NEWT_ZOOMMODE_CUSTOM;
               newt_deltazoom=TRUE;
+              newt_internalMessage("Zoom Out");
               newt_windowQueueAdd(WIN_MAP);
               break;
             case SDLK_F10:
@@ -242,6 +259,7 @@ newt_nh_poskey (x, y, mod)
               newt_Zoom_y+=64;
               newt_ZoomMode=NEWT_ZOOMMODE_CUSTOM;
               newt_deltazoom=TRUE;
+              newt_internalMessage("Zoom In");
               newt_windowQueueAdd(WIN_MAP);
               break;
             default:
@@ -375,7 +393,28 @@ newt_nh_poskey (x, y, mod)
         
     }
 
-    if (newt_windowQueueRender()) newt_wait_synch();
+    newt_windowQueueRender();
+    
+        /* display informational text */
+        InformationTextFade=255-((SDL_GetTicks()-newt_internalMessageTime)/5);
+        if (InformationTextFade>0&&strlen(newt_internalMessageText)) {
+			//textsurface = TTF_RenderText_Solid(newt_font, newt_internalMessageText, newt_Info_fg);
+			textsurface = TTF_RenderText_Shaded(newt_font, newt_internalMessageText, newt_Info_fg, newt_Info_bg);
+			dstrect.x=newt_screen->w-(textsurface->w+10);
+			dstrect.y=newt_fontsize+10;
+			srcrect.x=srcrect.y=0;
+			srcrect.w=textsurface->w;
+			srcrect.h=textsurface->h;
+			dstrect.w=textsurface->w;
+			dstrect.h=textsurface->h;
+            
+            SDL_SetAlpha(textsurface,SDL_SRCALPHA,InformationTextFade);
+			SDL_BlitSurface(textsurface, &srcrect, newt_screen, &dstrect);
+            SDL_FreeSurface(textsurface);
+            //newt_windowQueueAdd(WIN_MAP);
+        }
+        newt_wait_synch();
+
   }
 
   /*TODO*/
