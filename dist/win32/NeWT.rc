@@ -1,2 +1,2 @@
 #define ICON_APPWND      100
-ICON_APPWND  ICON  "../win/winnt/nethack.ico"
+ICON_APPWND  ICON  "../win/win32/NetHack.ico"
