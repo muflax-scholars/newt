@@ -593,7 +593,7 @@ initoptions()
 	flags.end_around = 2;
 	iflags.runmode = RUN_LEAP;
 #ifdef CHESSMOVES	
-	iflags.monster_runmode = RUN_LEAP;
+	iflags.monster_runmode = RUN_TPORT;
 #endif
 #ifdef LINEOFSIGHT_COLOUR
     iflags.los_colour = CLR_BLUE;
