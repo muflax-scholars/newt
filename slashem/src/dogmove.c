@@ -845,10 +845,10 @@ register int after;	/* this is extra fast monster movement */
 		    register struct monst *mtmp2 = m_at(nx,ny);
 		    aligntyp align1, align2; /* For priests, minions etc. */
 
-			if (mtmp->isminion) align1 = EMIN(mtmp)->min_align;
+		    if (mtmp->isminion) align1 = EMIN(mtmp)->min_align;
 		    else if (is_unicorn(mtmp->data))
 			align1 = sgn(mtmp->data->maligntyp);
-			else if (mtmp->ispriest) align1 = EPRI(mtmp)->shralign;
+		    else if (mtmp->ispriest) align1 = EPRI(mtmp)->shralign;
 		    else align1 = A_NONE;
 		    if (mtmp2->isminion) align2 = EMIN(mtmp2)->min_align;
 		    else if (is_unicorn(mtmp2->data))
@@ -856,11 +856,11 @@ register int after;	/* this is extra fast monster movement */
 		    else if (mtmp2->ispriest) align2 = EPRI(mtmp2)->shralign;
 		    else align2 = A_NONE;
 
-			/* Mindless monsters and spelled monsters have no fear of 
-			 * attacking higher level monsters 
-			 */
-			if (((int)mtmp2->m_lev >= (int)mtmp->m_lev+2 && !is_spell && 
-				!mindless(mtmp->data)) ||
+		    /* Mindless monsters and spelled monsters have no fear of 
+		     * attacking higher level monsters 
+		     */
+		    if (((int)mtmp2->m_lev >= (int)mtmp->m_lev+2 && !is_spell && 
+			    !mindless(mtmp->data)) ||
 			(mtmp2->data == &mons[PM_FLOATING_EYE] && rn2(10) &&
 			 mtmp->mcansee && haseyes(mtmp->data) && mtmp2->mcansee
 			 && (perceives(mtmp->data) || !mtmp2->minvis)) ||
