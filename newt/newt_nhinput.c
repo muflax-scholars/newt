@@ -375,6 +375,7 @@ newt_nh_poskey (x, y, mod)
           }
           break;
         case SDL_MOUSEMOTION:
+            if (!iflags.wc_mouse_support) break;
             if ( newt_zoomed_map &&
                  event.motion.x >= newt_screen_mapRect.x &&
                  event.motion.y >= newt_screen_mapRect.y &&
@@ -459,6 +460,7 @@ newt_nh_poskey (x, y, mod)
           newt_windowQueueAdd(WIN_MAP);
           break;
         case SDL_MOUSEBUTTONDOWN:
+            if (!iflags.wc_mouse_support) break;
           *x = newt_map_curs_x;
           *y = newt_map_curs_y;
           *mod = CLICK_1;

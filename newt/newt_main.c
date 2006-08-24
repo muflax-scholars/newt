@@ -34,6 +34,7 @@ struct window_procs newt_procs = {
     WC_TILE_FILE |
     WC_MAP_MODE |
     WC_TILED_MAP |
+    WC_MOUSE_SUPPORT |
     WC_PLAYER_SELECTION,
 #ifdef POSITIONBAR_RCOPTION
     WC2_POSITIONBAR |
