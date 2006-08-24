@@ -1583,6 +1583,8 @@ E void FDECL(add_valid_menu_class, (int));
 E boolean FDECL(allow_all, (struct obj *));
 E boolean FDECL(allow_category, (struct obj *));
 E boolean FDECL(is_worn_by_type, (struct obj *));
+E boolean FDECL(mbag_explodes, (struct obj *, int));
+E void FDECL(destroy_mbag, (struct obj *, BOOLEAN_P));
 #ifdef USE_TRAMPOLI
 E int FDECL(ck_bag, (struct obj *));
 E int FDECL(in_container, (struct obj *));
@@ -1597,7 +1599,8 @@ E int FDECL(query_objlist, (const char *, struct obj *, int,
 E struct obj *FDECL(pick_obj, (struct obj *));
 E int NDECL(encumber_msg);
 E int NDECL(doloot);
-E int FDECL(use_container, (struct obj *,int));
+E boolean FDECL(container_gone, (int (*)(OBJ_P)));
+E int FDECL(use_container, (struct obj **,int));
 E int FDECL(loot_mon, (struct monst *,int *,boolean *));
 E const char *FDECL(safe_qbuf, (const char *,unsigned,
 				const char *,const char *,const char *));

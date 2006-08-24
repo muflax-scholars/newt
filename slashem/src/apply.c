@@ -3451,7 +3451,7 @@ doapply()
 	case SACK:
 	case BAG_OF_HOLDING:
 	case OILSKIN_SACK:
-		res = use_container(obj, 1);
+		res = use_container(&obj, 1);
 		break;
 	case BAG_OF_TRICKS:
 		bagotricks(obj);
@@ -3674,6 +3674,9 @@ doapply()
 			    break;
 		    if (!otmp)
 			You_cant("find any more pills in %s.", yname(obj));
+		    else if (!is_edible(otmp))
+			You("find, but cannot eat, a white pill in %s.",
+			  yname(obj));
 		    else {
 			check_unpaid(obj);
 			if (otmp->quan > 1L)
@@ -3704,12 +3707,15 @@ doapply()
 				You_feel("better.");
 				flags.botl = TRUE;
 			    } else pline(nothing_happens);
-			} else if (!Sick && rn2(3))
-			    make_sick(0L, xname(otmp), TRUE ,SICK_ALL);
-			else if (rn2(3)) {
+			} else if (!rn2(3))
+			    pline("Nothing seems to happen.");
+			else if (!Sick)
+			    make_sick(rn1(10,10), "bad pill", TRUE,
+			      SICK_VOMITABLE);
+			else {
 			    You("seem to have made your condition worse!");
 			    losehp(rn1(10,10), "a drug overdose", KILLED_BY);
-			} else pline("Nothing seems to happen.");
+			}
 		    }
 		} else You("seem to be out of medical supplies");
 		break;
