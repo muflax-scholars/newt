@@ -247,6 +247,9 @@ newt_nh_poskey (x, y, mod)
             }
            } else
           switch (event.key.keysym.sym) {
+            case SDLK_F1:
+              newt_internalMessage("F3-FitMode F4-VidMode F5-Tiles/ASCII F6-PositionBar F8-ZmMode F9-ZmOut F10-ZmIn");
+              break;
             case SDLK_F3:
               newt_screen=SDL_SetVideoMode(
                 newt_win_map->w+newt_margin_left,
