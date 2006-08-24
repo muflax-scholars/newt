@@ -58,8 +58,6 @@ newt_create_nhwindow (type)
     printf(");\n");
 #endif
 
-    /*TODO*/
-    /* you need to replace these values with your own unique window "ID"s. */
     switch (type) {
         case NHW_MESSAGE:
 			if (iflags.msg_history<20) iflags.msg_history=20;
@@ -226,8 +224,6 @@ newt_clear_nhwindow (window)
 		textwindow->glyph=NULL;
 
 	}
-    /* "window" is the result as you returned it from create_nhwindow */
-    /*TODO*/
 }
 
 /* ------------------------------------------------------------------------- */
