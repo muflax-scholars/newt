@@ -150,4 +150,6 @@ spotless:
 	-rm -f rip.img GEM_RSC.RSC title.img nh16.img NetHack.ad
 # cleanup after newt
 	-rm -f ASCII.ttf README-newt.txt
+# NetHack doesn't do this itself :(
+	-rm nhtiles.bmp
 
