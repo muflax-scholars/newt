@@ -2,4 +2,5 @@
 2005-03-25 20:55 mucknert type feature
 2005-03-25 20:55 mucknert describe gamma correction
 2005-03-25 20:55 mucknert note Add a way to correct gamma.  Sometimes i have the feeling that the game gets isplayed too dark, depending on ambient light. In tty I was forced to live with it. But this is SDL, baby... :) So how about a simple gamma correction?
+2005-03-28 01:12 clive depends #0008
 
