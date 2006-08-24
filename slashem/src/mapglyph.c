@@ -126,26 +126,26 @@ unsigned *ospecial;
 	    /* provide a visible difference if normal and lit corridor
 	     * use the same symbol */
 # ifdef LINEOFSIGHT
-	    if (iflags.use_color) {
-		if (iflags.wc_lineofsight) {
-		    if (!couldsee(x,y) || !cansee(x,y) || (offset == S_corr))
+        if (iflags.use_color) {
+            if (iflags.wc_lineofsight) {
+                if (!couldsee(x,y) || !cansee(x,y) || (offset == S_corr))
 #  ifdef LINEOFSIGHT_COLOUR
-			color = iflags.los_colour;
+                    color = iflags.los_colour;
 #  else		    
-			color = CLR_BLUE;
+                    color = CLR_BLUE;
 #  endif			
-		}
-		else if (offset == S_litcorr && ch == showsyms[S_corr])
-		    color = CLR_WHITE;
-	    }
+            }
+            else if (offset == S_litcorr && ch == showsyms[S_corr])
+                color = CLR_WHITE;
+        }
 # else
-	    if (iflags.use_color &&
-		offset == S_litcorr && ch == showsyms[S_corr])
-		color = CLR_WHITE;
+        if (iflags.use_color &&
+                offset == S_litcorr && ch == showsyms[S_corr])
+            color = CLR_WHITE;
 # endif
-	    else
+        else
 #endif
-	    cmap_color(offset);
+            cmap_color(offset);
     } else if ((offset = (glyph - GLYPH_OBJ_OFF)) >= 0) {	/* object */
 	if (offset == BOULDER && iflags.bouldersym) ch = iflags.bouldersym;
 	else ch = oc_syms[(int)objects[offset].oc_class];
