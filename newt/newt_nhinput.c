@@ -239,8 +239,17 @@ newt_nh_poskey (x, y, mod)
         case SDL_KEYDOWN:
           if ((event.key.keysym.mod & KMOD_ALT) && (event.key.keysym.sym==SDLK_RETURN)) {
             newt_deltazoom=TRUE;
-            SDL_WM_ToggleFullScreen(newt_screen);
             iflags.wc2_fullscreen=!iflags.wc2_fullscreen;
+#ifdef __WIN32__
+            /* Seems win32 does not support ToggleFullScreen */
+            newt_screen=SDL_SetVideoMode((*(VideoModes+VideoMode))->w,(*(VideoModes+VideoMode))->h,VideoBPP, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_ASYNCBLIT | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
+            newt_deltazoom=TRUE;
+            newt_clear_nhwindow(WIN_MESSAGE);
+            newt_windowQueueAdd(WIN_STATUS);
+            newt_windowQueueAdd(WIN_MAP);
+#else
+            SDL_WM_ToggleFullScreen(newt_screen);
+#endif
             newt_windowQueueAdd(WIN_MAP);
             if (iflags.wc2_fullscreen) {
                 newt_internalMessage("Window Mode: Fullscreen");
