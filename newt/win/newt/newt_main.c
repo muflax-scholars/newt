@@ -211,8 +211,25 @@ newt_init_nhwindows (argcp, argv)
         };
     }
 
-    newt_screen=SDL_SetVideoMode(800,600,32,
-        SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
+    newt_screen=SDL_SetVideoMode(640,48,VideoBPP, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_ASYNCBLIT );
+    VideoModes=SDL_ListModes(newt_screen->format, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_FULLSCREEN | SDL_ASYNCBLIT);
+
+    VideoModeAmount=0;
+    printf("Available %dbpp video modes:\n", VideoBPP);
+    while (*(VideoModes+VideoModeAmount)) {
+        printf("    %3d: %dx%d\n",VideoModeAmount,(*(VideoModes+VideoModeAmount))->w,(*(VideoModes+VideoModeAmount))->h);
+        VideoModeAmount++;
+    }
+
+    if (VideoMode>=VideoModeAmount) {
+        printf("Attempted to set impossibly enumerated video mode.\n");
+        exit(-1);
+    }
+
+    printf("Selected  %3d: %dx%d\n", VideoMode, (*(VideoModes+VideoMode))->w,(*(VideoModes+VideoMode))->h);
+
+    newt_screen=SDL_SetVideoMode((*(VideoModes+VideoMode))->w,(*(VideoModes+VideoMode))->h,VideoBPP, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_ASYNCBLIT | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
+
     if (!newt_screen) {
         printf("SDL_Init: setting video mode failed. \"%s\"\n",SDL_GetError());
         exit(-1);
@@ -253,7 +270,7 @@ newt_init_nhwindows (argcp, argv)
 #ifdef LINEOFSIGHT
     newt_lineofsight = SDL_CreateRGBSurface(
 	SDL_SWSURFACE | SDL_SRCALPHA,
-	iflags.wc_tile_width, iflags.wc_tile_height, 32,
+	iflags.wc_tile_width, iflags.wc_tile_height, VideoBPP,
 	newt_screen->format->Rmask,
 	newt_screen->format->Gmask,
 	newt_screen->format->Bmask,

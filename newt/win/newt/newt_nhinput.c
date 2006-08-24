@@ -245,8 +245,8 @@ newt_nh_poskey (x, y, mod)
                 newt_win_map->w+newt_margin_left,
                 newt_win_map->h +
                 ((newt_positionbarmode==NEWT_POSITIONBARMODE_NONE ? 3 : 4)*newt_fontsize),
-                32,
-                SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
+                VideoBPP,
+                SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_ASYNCBLIT | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
               newt_deltazoom=TRUE;
               newt_clear_nhwindow(WIN_MESSAGE);
               newt_windowQueueAdd(WIN_STATUS);
@@ -313,7 +313,7 @@ newt_nh_poskey (x, y, mod)
           }
           break;
         case SDL_VIDEORESIZE:
-          newt_screen=SDL_SetVideoMode(event.resize.w,event.resize.h,32,SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
+          newt_screen=SDL_SetVideoMode(event.resize.w,event.resize.h,VideoBPP,SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
           newt_deltazoom=TRUE;
           newt_clear_nhwindow(WIN_MESSAGE);
           newt_windowQueueAdd(WIN_STATUS);

@@ -7,6 +7,11 @@
 
 SDL_Surface *newt_screen;
 
+SDL_Rect **VideoModes;
+Uint32 VideoModeAmount=0;
+Uint32 VideoMode=0;
+Uint32 VideoBPP=32; // FIXME Changing this results in segfaults on startup
+
 SDL_Surface *newt_win_map=NULL;
 SDL_Surface *newt_win_map_tiles=NULL;
 SDL_Surface *newt_win_map_ascii=NULL;

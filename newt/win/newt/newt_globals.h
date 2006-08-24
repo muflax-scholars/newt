@@ -32,6 +32,10 @@
 #define NEWT_MORE "-- more --"
 
 extern SDL_Surface *newt_screen;
+extern SDL_Rect **VideoModes;
+extern Uint32 VideoModeAmount;
+extern Uint32 VideoMode;
+extern Uint32 VideoBPP;
 
 extern SDL_Surface *newt_win_map;
 extern SDL_Surface *newt_win_map_tiles;
