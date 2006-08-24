@@ -181,6 +181,7 @@ newt_init_nhwindows (argcp, argv)
             configfile);
             exit(-1);
         }
+        newt_fontsize_map = iflags.wc_tile_width;
     }
 
     if (SDL_Init(SDL_INIT_NOPARACHUTE)) {
