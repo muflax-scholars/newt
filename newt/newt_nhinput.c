@@ -28,7 +28,9 @@ newt_nhgetch (void)
     printf("- newt_nhgetch();\n");
 #endif
 
+    newt_disallowScreenResize = TRUE;
     while (!(retval=newt_nh_poskey(&x,&y,&mod)));
+    newt_disallowScreenResize = FALSE;
     return retval;
 };
 
@@ -360,7 +362,7 @@ newt_nh_poskey (x, y, mod)
           }
           break;
         case SDL_VIDEORESIZE:
-          if (!iflags.wc2_fullscreen) { // Yes, apparently some window managers are naughty
+          if (!iflags.wc2_fullscreen&&!newt_disallowScreenResize) { // Yes, apparently some window managers are naughty
               newt_screen=SDL_SetVideoMode(event.resize.w,event.resize.h,VideoBPP,SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
               newt_deltazoom=TRUE;
               newt_clear_nhwindow(WIN_MESSAGE);

@@ -142,4 +142,6 @@ extern char newt_internalMessageText[BUFSZ];
 extern Uint32 newt_internalMessageTime;
 void newt_internalMessage(char *msg);
 
+extern Uint32 newt_disallowScreenResize;
+
 #endif

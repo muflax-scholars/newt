@@ -126,6 +126,8 @@ void newt_internalMessage(char *msg) {
     newt_internalMessageTime=SDL_GetTicks();
 }
 
+Uint32 newt_disallowScreenResize = FALSE;
+
 #ifdef POSITIONBAR
 Uint32 newt_positionbarmode=NEWT_POSITIONBARMODE_FULL;
 #else
