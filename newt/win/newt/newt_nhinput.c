@@ -261,14 +261,37 @@ newt_nh_poskey (x, y, mod)
           newt_wait_synch();
           break;
         case SDL_MOUSEMOTION:
+            if ( newt_zoomed_map &&
+                 event.motion.x >= newt_screen_mapRect.x &&
+                 event.motion.y >= newt_screen_mapRect.y &&
+                 event.motion.x < newt_screen_mapRect.x+newt_screen_mapRect.w &&
+                 event.motion.y < newt_screen_mapRect.y+newt_screen_mapRect.h) {
+
+                newt_map_curs_x=(
+                    ( ( ( event.motion.x-newt_screen_mapRect.x ) *
+                        newt_map_visibleRect.w ) /
+                      newt_screen_mapRect.w + newt_map_visibleRect.x ) * COLNO /
+                    newt_win_map->w );
+
+                newt_map_curs_y=(
+                    ( ( ( event.motion.y-newt_screen_mapRect.y ) *
+                        newt_map_visibleRect.h ) /
+                      newt_screen_mapRect.h + newt_map_visibleRect.y ) * ROWNO /
+                    newt_win_map->h );
+
+            }
+
+          /* relative motion, leave the code in place for now, perhaps optionalise it later :D
           newt_map_curs_x+=(event.motion.xrel!=0) ? (event.motion.xrel/abs(event.motion.xrel)) : 0;
           newt_map_curs_y+=(event.motion.yrel!=0) ? (event.motion.yrel/abs(event.motion.yrel)) : 0;
           if (newt_map_curs_x<0) newt_map_curs_x=0;
           if (newt_map_curs_y<0) newt_map_curs_y=0;
           if (newt_map_curs_x>=COLNO) newt_map_curs_x=COLNO-1;
           if (newt_map_curs_y>=ROWNO) newt_map_curs_y=ROWNO-1;
+          */
           break;
         case SDL_JOYAXISMOTION:
+          printf("JOYSTICK MOTION: axis(%d) value(%d)\n", event.jaxis.axis, event.jaxis.value);
           if (event.jaxis.axis==0) {
             newt_map_curs_x+=(event.jaxis.value!=0) ? (event.jaxis.value/abs(event.jaxis.value)) : 0;
           }

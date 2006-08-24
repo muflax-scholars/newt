@@ -324,6 +324,7 @@ newt_display_nhwindow (window, blocking)
         if (dstrect.h>maparea_y) dstrect.h=maparea_y;
 
         /* create zoom destination surface */
+        if (newt_zoomed_map) SDL_FreeSurface(newt_zoomed_map); 
         newt_zoomed_map=SDL_CreateRGBSurface(
             SDL_SWSURFACE,
             dstrect.w,
@@ -355,6 +356,7 @@ newt_display_nhwindow (window, blocking)
         zoom_window=srcrect;
 
         /* zoom */
+        newt_map_visibleRect=srcrect;
         newt_stretch_fast(newt_win_map, (SDL_Rect *)&srcrect, newt_zoomed_map);
 
         /* zoom source & destination */
@@ -374,9 +376,8 @@ newt_display_nhwindow (window, blocking)
         dstrect.x+=newt_margin_left;
         dstrect.y+=newt_fontsize;
 
-        render_window=dstrect;
-
         /* blit zoomed surface */
+        newt_screen_mapRect=render_window=dstrect;
         SDL_BlitSurface(newt_zoomed_map, &srcrect, newt_screen, &dstrect);
 
         /* Cursor */
@@ -466,8 +467,6 @@ newt_display_nhwindow (window, blocking)
 			}
 
 		}
-
-        SDL_FreeSurface(newt_zoomed_map); newt_zoomed_map=NULL;
 
     } else
 	if (window==WIN_MESSAGE) {

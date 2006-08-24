@@ -19,6 +19,9 @@ newt_ascii_mapchar newt_ascii_map[ROWNO][COLNO];
 Uint32 newt_deltazoom=TRUE;
 SDL_Surface *newt_zoomed_map=NULL;
 
+SDL_Rect newt_map_visibleRect;
+SDL_Rect newt_screen_mapRect;
+
 SDL_Surface *newt_mapbg=NULL;
 #ifdef LINEOFSIGHT
 SDL_Surface *newt_lineofsight;

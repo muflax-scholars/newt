@@ -178,7 +178,7 @@ newt_init_nhwindows (argcp, argv)
     }
     atexit(SDL_Quit);
 
-    newt_screen=SDL_SetVideoMode(1024,768,32,
+    newt_screen=SDL_SetVideoMode(800,600,32,
         SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
     if (!newt_screen) {
         printf("SDL_Init: setting video mode failed. \"%s\"\n",SDL_GetError());

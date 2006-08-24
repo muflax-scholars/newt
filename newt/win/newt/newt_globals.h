@@ -52,6 +52,9 @@ extern newt_ascii_mapchar newt_ascii_map[ROWNO][COLNO];
 extern Uint32 newt_deltazoom;
 extern SDL_Surface *newt_zoomed_map;
 
+extern SDL_Rect newt_map_visibleRect;
+extern SDL_Rect newt_screen_mapRect;
+
 extern SDL_Surface *newt_mapbg;
 #ifdef LINEOFSIGHT
 extern SDL_Surface *newt_lineofsight;
