@@ -32,9 +32,7 @@ help:
 	@echo "to build Slashem in your home directory: $(MAKE) slashem-home"
 	@echo "to build * Both  in your home directory: $(MAKE) home"
 
-posthook:
-	@darcs record --repodir=./_darcs/ -a -m "autopatch" --run-posthook --posthook="darcs diff --last 1|grep '^>'|cut -c2-|mail -s 'darcs patch bundle applied' $(GAME)@darkarts.co.za"
-	@sh "util/posthook.sh" &
+posthook: snapshot
 
 install:
 	@echo "Nothing to do for 'install'"
@@ -97,6 +95,7 @@ spotless:
 	-rm -rf dist/$(GAME)*
 
 snapshot: $(DISTDIR)/$(FULLNAME)-full.tar.gz
+	-mkdir snapshot
 	-mv $(DISTDIR)/$(FULLNAME)-full.tar.gz* snapshot/.
 	-rm -rf $(DISTDIR)
 
