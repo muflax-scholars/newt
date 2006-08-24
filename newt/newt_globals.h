@@ -71,6 +71,7 @@ extern SDL_Rect newt_screen_mapRect;
 #ifdef LINEOFSIGHT
 extern SDL_Surface *newt_lineofsight;
 #endif
+extern SDL_Surface *newt_infrared;
 
 extern TTF_Font *newt_font;
 extern SDL_Surface *newt_tiles;

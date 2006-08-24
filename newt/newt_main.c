@@ -141,6 +141,7 @@ newt_init_nhwindows (argcp, argv)
 #ifdef DEBUG
     char **debug_argv;
 #endif
+    SDL_Rect dstrect;
 
 #ifdef DEBUG
     printf("- newt_init_nhwindows(%d, \"",*argcp);
@@ -296,6 +297,21 @@ newt_init_nhwindows (argcp, argv)
 	SDL_SetAlpha( newt_lineofsight, SDL_SRCALPHA, SDL_ALPHA_TRANSPARENT + (SDL_ALPHA_OPAQUE - SDL_ALPHA_TRANSPARENT)/3);
     }
 #endif
+
+    newt_infrared = SDL_CreateRGBSurface(
+        SDL_SWSURFACE | SDL_SRCALPHA,
+        iflags.wc_tile_width, iflags.wc_tile_height, VideoBPP,
+        newt_screen->format->Rmask,
+        newt_screen->format->Gmask,
+        newt_screen->format->Bmask,
+        newt_screen->format->Amask);
+    dstrect.x=dstrect.y=0;
+    dstrect.w=iflags.wc_tile_width;
+    dstrect.h=iflags.wc_tile_height;
+    if (newt_infrared) {
+        SDL_FillRect( newt_infrared, (SDL_Rect *)&dstrect, SDL_MapRGB(newt_infrared->format,0xFF,0,0));
+        SDL_SetAlpha( newt_infrared, SDL_SRCALPHA, SDL_ALPHA_TRANSPARENT + (SDL_ALPHA_OPAQUE - SDL_ALPHA_TRANSPARENT)/5);
+    }
 
   iflags.window_inited=TRUE;
 }

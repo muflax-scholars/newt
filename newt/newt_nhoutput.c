@@ -323,6 +323,17 @@ newt_print_glyph (window, x, y, glyph)
     }
 #endif
 
+    if ( glyph_is_monster( glyph ) && !cansee(x,y) ) {
+        register struct monst *mon;
+        mon = m_at(x,y);
+        if ( mon && see_with_infrared( mon) ) {
+            srcrect.x=srcrect.y=0;
+            srcrect.w=dstrect.w;
+            srcrect.h=dstrect.h;
+            SDL_BlitSurface(newt_infrared, &srcrect, newt_win_map_tiles, &dstrect);
+        }
+    }
+
     if ((newt_ascii_map[y][x].special&MG_PET) && iflags.hilite_pet) {
 		dstrect.x=x*iflags.wc_tile_width;
 		dstrect.y=y*iflags.wc_tile_height;

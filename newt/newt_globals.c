@@ -38,6 +38,7 @@ SDL_Rect newt_screen_mapRect;
 #ifdef LINEOFSIGHT
 SDL_Surface *newt_lineofsight;
 #endif
+SDL_Surface *newt_infrared;
 
 TTF_Font *newt_font;
 SDL_Surface *newt_tiles;
