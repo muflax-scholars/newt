@@ -428,9 +428,9 @@ newt_display_nhwindow (window, blocking)
         cursor.y+=render_window.y;
 
         SDL_GetClipRect(newt_screen,(SDL_Rect *)&newt_screen_clipping);
-        srcrect.y=0;
+        srcrect.y=newt_fontsize;
         srcrect.x=newt_margin_left;
-        srcrect.h=newt_screen->h;
+        srcrect.h=maparea_y;
         srcrect.w=newt_screen->w-(newt_margin_left+newt_margin_right);
         SDL_SetClipRect(newt_screen,(SDL_Rect *)&srcrect);
         
