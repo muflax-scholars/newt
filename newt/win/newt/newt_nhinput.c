@@ -265,6 +265,10 @@ newt_nh_poskey (x, y, mod)
               newt_internalMessage("Fit Mode: Resize window to fit");
               break;
             case SDLK_F4:
+              if (!VideoModes) {
+                  newt_internalMessage("* Not available with your graphic mode/settings");
+                  break;
+              }
               if (newt_screen->w==(*(VideoModes+VideoMode))->w&&newt_screen->h==(*(VideoModes+VideoMode))->h) {
                   if (++VideoMode>=VideoModeAmount) VideoMode=0;
               }

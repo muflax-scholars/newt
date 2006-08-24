@@ -225,25 +225,27 @@ newt_init_nhwindows (argcp, argv)
         };
     }
 
-    newt_screen=SDL_SetVideoMode(640,480,VideoBPP, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_ASYNCBLIT );
+    newt_screen=SDL_SetVideoMode(800,600,VideoBPP, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_ASYNCBLIT );
     VideoModes=SDL_ListModes(newt_screen->format, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_FULLSCREEN | SDL_ASYNCBLIT);
 
-    VideoModeAmount=0;
-    printf("Available %dbpp video modes:\n", VideoBPP);
-    while (*(VideoModes+VideoModeAmount)) {
-        printf("    %3d: %dx%d\n",VideoModeAmount,(*(VideoModes+VideoModeAmount))->w,(*(VideoModes+VideoModeAmount))->h);
-        if ((iflags.wc_tile_height*ROWNO+newt_fontsize*4)<(*(VideoModes+VideoModeAmount))->h&&(*(VideoModes+VideoModeAmount))->h<(*(VideoModes+VideoMode))->h) VideoMode=VideoModeAmount;
-        VideoModeAmount++;
+    if (VideoModes) {
+        VideoModeAmount=0;
+        printf("Available %dbpp video modes:\n", VideoBPP);
+        while (*(VideoModes+VideoModeAmount)) {
+            printf("    %3d: %dx%d\n",VideoModeAmount,(*(VideoModes+VideoModeAmount))->w,(*(VideoModes+VideoModeAmount))->h);
+            if ((iflags.wc_tile_height*ROWNO+newt_fontsize*4)<(*(VideoModes+VideoModeAmount))->h&&(*(VideoModes+VideoModeAmount))->h<(*(VideoModes+VideoMode))->h) VideoMode=VideoModeAmount;
+            VideoModeAmount++;
+        }
+
+        if (VideoMode>=VideoModeAmount) {
+            printf("Attempted to set impossibly enumerated video mode.\n");
+            exit(-1);
+        }
+
+        printf("Selected  %3d: %dx%d\n", VideoMode, (*(VideoModes+VideoMode))->w,(*(VideoModes+VideoMode))->h);
+
+        newt_screen=SDL_SetVideoMode((*(VideoModes+VideoMode))->w,(*(VideoModes+VideoMode))->h,VideoBPP, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_ASYNCBLIT | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
     }
-
-    if (VideoMode>=VideoModeAmount) {
-        printf("Attempted to set impossibly enumerated video mode.\n");
-        exit(-1);
-    }
-
-    printf("Selected  %3d: %dx%d\n", VideoMode, (*(VideoModes+VideoMode))->w,(*(VideoModes+VideoMode))->h);
-
-    newt_screen=SDL_SetVideoMode((*(VideoModes+VideoMode))->w,(*(VideoModes+VideoMode))->h,VideoBPP, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_ASYNCBLIT | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
 
     if (!newt_screen) {
         printf("SDL_Init: setting video mode failed. \"%s\"\n",SDL_GetError());
