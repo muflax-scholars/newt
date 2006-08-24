@@ -253,6 +253,7 @@ int newt_windowQueueRender()
             if (newt_windowRenderQueue_(cleanupForward)==cleanupWindow) newt_windowRenderQueue_(cleanupForward) = WIN_ERR; 
         }
     }
+
     rendered=0;
     if (newt_windowRenderQueueSize) {
         while (newt_windowRenderQueueSize) {
