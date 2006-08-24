@@ -1,5 +1,6 @@
 PATH=\msys\1.0\mingw\bin;\MinGW\bin\;%PATH%
 REM ---------- NetHack ----------
+del /S /Q nethack\binary
 del /S /Q nethack\win\newt
 mkdir nethack\win\newt
 xcopy /E /-Y newt\* nethack\win\newt\
