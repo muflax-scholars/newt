@@ -713,7 +713,8 @@ $(GAMEFILE): cc-gtk.exe gamedir.tag utility.tag $(NHALLOCDLL) $(NHALLOCA) \
 	$(DEL) $(GAME).exe
 else
 ifeq ($(USE_NEWT),Y)
-$(GAMEFILE): gamedir.tag utility.tag $(NHALLOCDLL) $(NHALLOCA) $(ALLOBJ) $(GAME).lnk tiles.bmp tiles32.bmp
+$(GAMEFILE): gamedir.tag utility.tag $(NHALLOCDLL) $(NHALLOCA) $(ALLOBJ) $(GAME).lnk \
+	tiles.bmp tiles32.bmp
 	$(LINK) $(LFLAGS) $(GTKGCCFLAGS) -o$(GAME).exe $(GAME).lnk
 	$(COPY) $(GAME).exe $(GAMEFILE)
 	$(DEL) $(GAME).exe
