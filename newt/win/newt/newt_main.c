@@ -13,6 +13,9 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <SDL_image.h>
+#ifdef USER_SOUNDS
+# include <SDL_mixer.h>
+#endif
 
 /* Interface definition, for windows.c */
 /*
@@ -189,11 +192,22 @@ newt_init_nhwindows (argcp, argv)
         exit(-1);
     }
 
+#ifdef USER_SOUNDS
+    
     if (SDL_InitSubSystem(SDL_INIT_AUDIO)) {
         printf("SDL_InitSubSystem: init subsystem(AUDIO) failed. \"%s\"\n", SDL_GetError());
         // exit(-1);
     }
 
+    if ((UseAudio=SDL_WasInit(SDL_INIT_AUDIO))) {
+        if (Mix_OpenAudio(44100,AUDIO_S16,1,512)<0) {
+            printf("Sound Initialisation Failed, going silent\n");
+            UseAudio=0;
+        }
+    }
+
+#endif    
+    
     if (SDL_InitSubSystem(SDL_INIT_JOYSTICK)) {
         printf("SDL_InitSubSystem: init subsystem(JOYSTICK) failed. \"%s\"\n", SDL_GetError());
         // exit(-1);

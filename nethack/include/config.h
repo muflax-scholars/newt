@@ -116,7 +116,7 @@
 
 #ifdef NEWT_GRAPHICS
 # define DEFAULT_WC_TILED_MAP
-/* # define USER_SOUNDS	*/	            /* Use sounds */
+# define USER_SOUNDS		            /* Use sounds */
 # ifdef USER_SOUNDS
 /* #  define USER_SOUNDS_REGEX */       /* Regular Expresion sound matches */
 # endif

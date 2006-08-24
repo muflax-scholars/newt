@@ -10,6 +10,9 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
+#ifdef USER_SOUNDS
+# include <SDL_mixer.h>
+#endif
 
 /* ------------------------------------------------------------------------- */
 
@@ -64,6 +67,10 @@ newt_putstr (window, attr, str)
     }
 
 	if (window==WIN_MESSAGE) {
+
+#if defined(USER_SOUNDS)
+        play_sound_for_message(str);
+#endif
 
         newt_prevmessage_firstcall=TRUE;
 
@@ -410,4 +417,36 @@ newt_raw_print_bold (str)
 
 /* ------------------------------------------------------------------------- */
 
+#ifdef USER_SOUNDS
+#define CHUNKAMOUNT 16
 
+Mix_Music *newt_music=NULL;
+Uint32 newt_chunknum = 0;
+Mix_Chunk *newt_chunk[CHUNKAMOUNT]={NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+
+void play_usersound(const char *filename, int volume) {                                                                                    
+    Mix_Music *musicNew;
+    Mix_Chunk *chunkNew;
+    
+    if (!UseAudio) return;
+
+    if ((chunkNew=Mix_LoadWAV(filename))) {
+        Mix_VolumeChunk(chunkNew,volume);
+        Mix_PlayChannel(-1,chunkNew,0);
+        if (newt_chunk[newt_chunknum]) Mix_FreeChunk(newt_chunk[newt_chunknum]);
+        newt_chunk[newt_chunknum]=chunkNew;
+        newt_chunknum=(newt_chunknum+1)&(CHUNKAMOUNT-1);
+    } else {
+    if ((musicNew=Mix_LoadMUS(filename))) {
+        Mix_VolumeMusic(volume);
+        Mix_PlayMusic(musicNew,0);
+        if (newt_music) Mix_FreeMusic(newt_music);
+        newt_music=musicNew;
+    } else
+        printf("[Warning] could not play file(type) '%s', sorry.\n",filename);
+    }
+}                                                                                                                                          
+
+#endif
+
+/* ------------------------------------------------------------------------- */

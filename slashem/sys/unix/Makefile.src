@@ -404,7 +404,7 @@ WINGLLIB = -lGL
 WINPROXYLIB = -lpthread
 #
 # libraries for newt
-WINNEWTLIB = `$(SDLCONFIG) --libs` -lSDL_image -lSDL_ttf
+WINNEWTLIB = `$(SDLCONFIG) --libs` -lSDL_image -lSDL_ttf -l SDL_mixer
 
 # Use this declaration if you only want to support the TTY windowing system
 WINLIB = $(WINNEWTLIB)

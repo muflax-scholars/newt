@@ -12,6 +12,10 @@ Uint32 VideoModeAmount=0;
 Uint32 VideoMode=0;
 Uint32 VideoBPP=32; // FIXME Changing this results in segfaults on startup
 
+#ifdef USER_SOUNDS
+Uint32 UseAudio=0;
+#endif
+
 SDL_Surface *newt_win_map=NULL;
 SDL_Surface *newt_win_map_tiles=NULL;
 SDL_Surface *newt_win_map_ascii=NULL;

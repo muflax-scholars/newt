@@ -37,6 +37,10 @@ extern Uint32 VideoModeAmount;
 extern Uint32 VideoMode;
 extern Uint32 VideoBPP;
 
+#ifdef USER_SOUNDS
+extern Uint32 UseAudio;
+#endif
+
 extern SDL_Surface *newt_win_map;
 extern SDL_Surface *newt_win_map_tiles;
 extern SDL_Surface *newt_win_map_ascii;
