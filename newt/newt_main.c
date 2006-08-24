@@ -527,9 +527,17 @@ newt_update_positionbar (features)
     char *debug_features;
     printf("- [done] newt_update_positionbar(");
     debug_features=features;
-    printf("(%2d,%c)",(unsigned char)*debug_features++,*debug_features++);
+    printf("(%2d,",*debug_features);
+    debug_features++;
+    printf("%c)",*debug_features);
+    debug_features++;
     while (*debug_features)
-        printf(",(%2d,%c)",(unsigned char)*debug_features++,*debug_features++);
+    {
+        printf(",(%2d,",*debug_features);
+        debug_features++;
+        printf("%c)",*debug_features);
+        debug_features++;
+    }
     printf(");\n");
 #endif
 
