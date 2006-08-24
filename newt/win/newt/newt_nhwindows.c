@@ -232,6 +232,43 @@ newt_clear_nhwindow (window)
 
 /* ------------------------------------------------------------------------- */
 
+void newt_windowQueueAdd(window)
+    winid window;
+{
+    newt_windowRenderQueue_((newt_windowRenderQueuePosition+newt_windowRenderQueueSize++)&1023)=window;
+}
+
+int newt_windowQueueRender()
+{
+    int cleanupForward;
+    int cleanupBackward;
+    int cleanupWindow;
+    int rendered;
+
+    for (cleanupBackward=newt_windowRenderQueuePosition+newt_windowRenderQueueSize;cleanupBackward>newt_windowRenderQueuePosition;cleanupBackward--) {
+        cleanupWindow=newt_windowRenderQueue_(cleanupBackward);
+        for (cleanupForward=newt_windowRenderQueuePosition; cleanupForward<cleanupBackward; cleanupForward++) {
+           if (newt_windowRenderQueue_(cleanupForward)==cleanupWindow) newt_windowRenderQueue_(cleanupForward) = WIN_ERR; 
+        }
+    }
+    rendered=0;
+    if (newt_windowRenderQueueSize) {
+    printf("Rendered Queue %d:", newt_windowRenderQueueSize);
+    while (newt_windowRenderQueueSize) {
+        if (newt_windowRenderQueue[newt_windowRenderQueuePosition]!=WIN_ERR) {
+            newt_display_nhwindow(newt_windowRenderQueue_(newt_windowRenderQueuePosition), FALSE);
+            rendered++;
+        }
+        newt_windowRenderQueuePosition=(newt_windowRenderQueuePosition+1)&1023;
+        newt_windowRenderQueueSize--;
+    }
+    printf("%d\n", rendered);
+    }
+
+    return rendered;
+}
+
+/* ------------------------------------------------------------------------- */
 /*
 display_nhwindow(window, boolean blocking)
 		-- Display the window on the screen.  If there is data

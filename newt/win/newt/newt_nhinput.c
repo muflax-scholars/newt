@@ -145,18 +145,18 @@ newt_convertkey_sdl2nh(sym, unicode, mod, manualfix)
 
 /*
 int nh_poskey(int *x, int *y, int *mod)
-		-- Returns a single character input from the user or a
-		   a positioning event (perhaps from a mouse).  If the
-		   return value is non-zero, a character was typed, else,
-		   a position in the MAP window is returned in x, y and mod.
-		   mod may be one of
+        -- Returns a single character input from the user or a
+           a positioning event (perhaps from a mouse).  If the
+           return value is non-zero, a character was typed, else,
+           a position in the MAP window is returned in x, y and mod.
+           mod may be one of
 
-			CLICK_1		- mouse click type 1
-			CLICK_2		- mouse click type 2
+            CLICK_1     - mouse click type 1
+            CLICK_2     - mouse click type 2
 
-		   The different click types can map to whatever the
-		   hardware supports.  If no mouse is supported, this
-		   routine always returns a non-zero character.
+           The different click types can map to whatever the
+           hardware supports.  If no mouse is supported, this
+           routine always returns a non-zero character.
 */
 int
 newt_nh_poskey (x, y, mod)
@@ -166,25 +166,25 @@ newt_nh_poskey (x, y, mod)
 {
     SDL_Event event;
     int retval;
+    int newMapX, newMapY;
 
 #ifdef DEBUG
     printf("- newt_nh_poskey();\n");
 #endif
 
-	newt_current_msghistory=0;
+    newt_current_msghistory=0;
 
   newt_wait_synch();
   while (1) {
     if (!SDL_PollEvent (NULL)) SDL_Delay(1);  /* give the system some time */
-	  while (SDL_PollEvent (&event)) {
+      while (SDL_PollEvent (&event)) {
       switch(event.type) {
         case SDL_KEYDOWN:
           if ((event.key.keysym.mod & KMOD_ALT) && (event.key.keysym.sym==SDLK_RETURN)) {
             newt_deltazoom=TRUE;
             SDL_WM_ToggleFullScreen(newt_screen);
             iflags.wc2_fullscreen=!iflags.wc2_fullscreen;
-            newt_display_nhwindow(WIN_MAP, FALSE);
-            newt_wait_synch();
+            newt_windowQueueAdd(WIN_MAP);
            } else
           switch (event.key.keysym.sym) {
             case SDLK_F3:
@@ -196,33 +196,29 @@ newt_nh_poskey (x, y, mod)
                 SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
               newt_deltazoom=TRUE;
               newt_clear_nhwindow(WIN_MESSAGE);
-              newt_display_nhwindow(WIN_STATUS,FALSE);
-              newt_display_nhwindow(WIN_MAP,FALSE);
-              if (flags.perm_invent&&WIN_INVEN!=WIN_ERR) newt_display_nhwindow(WIN_INVEN,FALSE);
-              newt_wait_synch();
+              newt_windowQueueAdd(WIN_STATUS);
+              newt_windowQueueAdd(WIN_MAP);
+              if (flags.perm_invent&&WIN_INVEN!=WIN_ERR) newt_windowQueueAdd(WIN_INVEN);
               break;
             case SDLK_F4:
               newt_ZoomMode++;
               if (newt_ZoomMode>NEWT_ZOOMMODE_END) newt_ZoomMode=NEWT_ZOOMMODE_START;
               newt_deltazoom=TRUE;
-              newt_display_nhwindow(WIN_MAP, FALSE);
-              newt_wait_synch();
+              newt_windowQueueAdd(WIN_MAP);
               break;
             case SDLK_F5:
               newt_win_map = (newt_win_map==newt_win_map_tiles) ? newt_win_map_ascii : newt_win_map_tiles;
               newt_deltazoom=TRUE;
-              newt_display_nhwindow(WIN_MAP, FALSE);
-              if (flags.perm_invent&&WIN_INVEN!=WIN_ERR) newt_display_nhwindow(WIN_INVEN,FALSE);
-              newt_wait_synch();
+              newt_windowQueueAdd(WIN_MAP);
+              if (flags.perm_invent&&WIN_INVEN!=WIN_ERR) newt_windowQueueAdd(WIN_INVEN);
               break;
             case SDLK_F6:
               if ((++newt_positionbarmode)>NEWT_POSITIONBARMODE_END) {
                 newt_positionbarmode=NEWT_POSITIONBARMODE_START;
               }
               newt_deltazoom=TRUE;
-              newt_display_nhwindow(WIN_MAP, FALSE);
-              if (flags.perm_invent&&WIN_INVEN!=WIN_ERR) newt_display_nhwindow(WIN_INVEN,FALSE);
-              newt_wait_synch();
+              newt_windowQueueAdd(WIN_MAP);
+              if (flags.perm_invent&&WIN_INVEN!=WIN_ERR) newt_windowQueueAdd(WIN_INVEN);
               break;
             case SDLK_F9:
               newt_Zoom_x-=64;
@@ -231,16 +227,14 @@ newt_nh_poskey (x, y, mod)
               if (newt_Zoom_y<256) newt_Zoom_y=256;
               newt_ZoomMode=NEWT_ZOOMMODE_CUSTOM;
               newt_deltazoom=TRUE;
-              newt_display_nhwindow(WIN_MAP, FALSE);
-              newt_wait_synch();
+              newt_windowQueueAdd(WIN_MAP);
               break;
             case SDLK_F10:
               newt_Zoom_x+=64;
               newt_Zoom_y+=64;
               newt_ZoomMode=NEWT_ZOOMMODE_CUSTOM;
               newt_deltazoom=TRUE;
-              newt_display_nhwindow(WIN_MAP, FALSE);
-              newt_wait_synch();
+              newt_windowQueueAdd(WIN_MAP);
               break;
             default:
               retval=newt_convertkey_sdl2nh(
@@ -256,10 +250,9 @@ newt_nh_poskey (x, y, mod)
           newt_screen=SDL_SetVideoMode(event.resize.w,event.resize.h,32,SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
           newt_deltazoom=TRUE;
           newt_clear_nhwindow(WIN_MESSAGE);
-          newt_display_nhwindow(WIN_STATUS,FALSE);
-          newt_display_nhwindow(WIN_MAP,FALSE);
-          if (flags.perm_invent&&WIN_INVEN!=WIN_ERR) newt_display_nhwindow(WIN_INVEN,FALSE);
-          newt_wait_synch();
+          newt_windowQueueAdd(WIN_STATUS);
+          newt_windowQueueAdd(WIN_MAP);
+          if (flags.perm_invent&&WIN_INVEN!=WIN_ERR) newt_windowQueueAdd(WIN_INVEN);
           break;
         case SDL_MOUSEMOTION:
             if ( newt_zoomed_map &&
@@ -268,20 +261,24 @@ newt_nh_poskey (x, y, mod)
                  event.motion.x < newt_screen_mapRect.x+newt_screen_mapRect.w &&
                  event.motion.y < newt_screen_mapRect.y+newt_screen_mapRect.h) {
 
-                newt_map_curs_x=(
+                newMapX=(
                     ( ( ( event.motion.x-newt_screen_mapRect.x ) *
                         newt_map_visibleRect.w ) /
                       newt_screen_mapRect.w + newt_map_visibleRect.x ) * COLNO /
                     newt_win_map->w );
 
-                newt_map_curs_y=(
+                newMapY=(
                     ( ( ( event.motion.y-newt_screen_mapRect.y ) *
                         newt_map_visibleRect.h ) /
                       newt_screen_mapRect.h + newt_map_visibleRect.y ) * ROWNO /
                     newt_win_map->h );
 
             }
-
+            if (newMapX!=newt_map_curs_x||newMapY!=newt_map_curs_y) {
+                newt_windowQueueAdd(WIN_MAP);
+                newt_map_curs_x=newMapX;
+                newt_map_curs_y=newMapY;
+            }
           /* relative motion, leave the code in place for now, perhaps optionalise it later :D
           newt_map_curs_x+=(event.motion.xrel!=0) ? (event.motion.xrel/abs(event.motion.xrel)) : 0;
           newt_map_curs_y+=(event.motion.yrel!=0) ? (event.motion.yrel/abs(event.motion.yrel)) : 0;
@@ -298,7 +295,8 @@ newt_nh_poskey (x, y, mod)
           }
           if (event.jaxis.axis==1) {
             newt_map_curs_y+=(event.jaxis.value!=0) ? (event.jaxis.value/abs(event.jaxis.value)) : 0;
-          }
+          }  
+            newt_windowQueueAdd(WIN_MAP);
         case SDL_MOUSEBUTTONDOWN:
           *x = newt_map_curs_x;
           *y = newt_map_curs_y;
@@ -313,8 +311,7 @@ newt_nh_poskey (x, y, mod)
           break;
       }
     }
-    newt_display_nhwindow(WIN_MAP, FALSE);
-    newt_wait_synch();
+    if (newt_windowQueueRender()) newt_wait_synch();
   }
 
   /*TODO*/
@@ -350,23 +347,23 @@ newt_get_extcmd(input)
 
 /*
 getlin(const char *ques, char *input)
-		-- Prints ques as a prompt and reads a single line of text,
-		   up to a newline.  The string entered is returned without the
-		   newline.  ESC is used to cancel, in which case the string
-		   "\033\000" is returned.
-		-- getlin() must call flush_screen(1) before doing anything.
-		-- This uses the top line in the tty window-port, other
-		   ports might use a popup.
-		-- getlin() can assume the input buffer is at least BUFSZ
-		   bytes in size and must truncate inputs to fit, including
-		   the nul character.
+        -- Prints ques as a prompt and reads a single line of text,
+           up to a newline.  The string entered is returned without the
+           newline.  ESC is used to cancel, in which case the string
+           "\033\000" is returned.
+        -- getlin() must call flush_screen(1) before doing anything.
+        -- This uses the top line in the tty window-port, other
+           ports might use a popup.
+        -- getlin() can assume the input buffer is at least BUFSZ
+           bytes in size and must truncate inputs to fit, including
+           the nul character.
 */
 void
 newt_getlin (ques, input)
     const char *ques;
     char *input;
 {
-	char ch;
+    char ch;
     int extcmd;
 
 #ifdef DEBUG
@@ -375,69 +372,69 @@ newt_getlin (ques, input)
 
     extcmd = strcmp("#",ques)==0;
 
-	newt_wait_synch();
-	newt_putstr(WIN_MESSAGE, ATR_NONE, ques);
+    newt_wait_synch();
+    newt_putstr(WIN_MESSAGE, ATR_NONE, ques);
 
-	*input=0;
+    *input=0;
 
-	strcat(input,"_");
+    strcat(input,"_");
 
-	newt_msghistory[(iflags.msg_history-1)*2+0]=realloc(newt_msghistory[(iflags.msg_history-1)*2+0],strlen(newt_msghistory[(iflags.msg_history-1)*2+0])+1+BUFSZ+1);
+    newt_msghistory[(iflags.msg_history-1)*2+0]=realloc(newt_msghistory[(iflags.msg_history-1)*2+0],strlen(newt_msghistory[(iflags.msg_history-1)*2+0])+1+BUFSZ+1);
 
-	ch=0;
-	while (ch!='\n'&&ch!='\033') {
-		sprintf(newt_msghistory[(iflags.msg_history-1)*2+0],"%s %s", ques, input);
-		newt_display_nhwindow(WIN_MESSAGE, FALSE);
-		ch=newt_nhgetch();
-		switch (ch) {
-			case '\b':
-				if (strlen(input)>1) input[strlen(input)-2]='_';
-				if (strlen(input)>1) input[strlen(input)-1]=0;
-				break;
-			case '\033':
-				input[0]='\033';
-				input[1]=0;
-			case '\n':
-				break;
-			default:
-				if (strlen(input)<BUFSZ-1) {
-					input[strlen(input)+1]=0;
-					input[strlen(input)-1]=ch;
-					input[strlen(input)]='_';
+    ch=0;
+    while (ch!='\n'&&ch!='\033') {
+        sprintf(newt_msghistory[(iflags.msg_history-1)*2+0],"%s %s", ques, input);
+        newt_display_nhwindow(WIN_MESSAGE, FALSE);
+        ch=newt_nhgetch();
+        switch (ch) {
+            case '\b':
+                if (strlen(input)>1) input[strlen(input)-2]='_';
+                if (strlen(input)>1) input[strlen(input)-1]=0;
+                break;
+            case '\033':
+                input[0]='\033';
+                input[1]=0;
+            case '\n':
+                break;
+            default:
+                if (strlen(input)<BUFSZ-1) {
+                    input[strlen(input)+1]=0;
+                    input[strlen(input)-1]=ch;
+                    input[strlen(input)]='_';
                     newt_get_extcmd(input);
-				};
-				break;
-		}
-	}
+                };
+                break;
+        }
+    }
 
-	input[strlen(input)-1]=0;
-	newt_clear_nhwindow(WIN_MESSAGE);
+    input[strlen(input)-1]=0;
+    newt_clear_nhwindow(WIN_MESSAGE);
 };
 
 /* ------------------------------------------------------------------------- */
 
 /*
 char yn_function(const char *ques, const char *choices, char default)
-		-- Print a prompt made up of ques, choices and default.
-		   Read a single character response that is contained in
-		   choices or default.  If choices is NULL, all possible
-		   inputs are accepted and returned.  This overrides
-		   everything else.  The choices are expected to be in
-		   lower case.  Entering ESC always maps to 'q', or 'n',
-		   in that order, if present in choices, otherwise it maps
-		   to default.  Entering any other quit character (SPACE,
-		   RETURN, NEWLINE) maps to default.
-		-- If the choices string contains ESC, then anything after
-		   it is an acceptable response, but the ESC and whatever
-		   follows is not included in the prompt.
-		-- If the choices string contains a '#' then accept a count.
-		   Place this value in the global "yn_number" and return '#'.
-		-- This uses the top line in the tty window-port, other
-		   ports might use a popup.
-		-- If choices is NULL, all possible inputs are accepted and
-		   returned, preserving case (upper or lower.) This means that
-		   if the calling function needs an exact match, it must handle
-		   user input correctness itself.
+        -- Print a prompt made up of ques, choices and default.
+           Read a single character response that is contained in
+           choices or default.  If choices is NULL, all possible
+           inputs are accepted and returned.  This overrides
+           everything else.  The choices are expected to be in
+           lower case.  Entering ESC always maps to 'q', or 'n',
+           in that order, if present in choices, otherwise it maps
+           to default.  Entering any other quit character (SPACE,
+           RETURN, NEWLINE) maps to default.
+        -- If the choices string contains ESC, then anything after
+           it is an acceptable response, but the ESC and whatever
+           follows is not included in the prompt.
+        -- If the choices string contains a '#' then accept a count.
+           Place this value in the global "yn_number" and return '#'.
+        -- This uses the top line in the tty window-port, other
+           ports might use a popup.
+        -- If choices is NULL, all possible inputs are accepted and
+           returned, preserving case (upper or lower.) This means that
+           if the calling function needs an exact match, it must handle
+           user input correctness itself.
 */
 char
 newt_yn_function (ques, choices, def)
@@ -445,41 +442,41 @@ newt_yn_function (ques, choices, def)
     const char *choices;
     CHAR_P def;
 {
-	char str[BUFSZ];
-	char choicedisp[BUFSZ];
-	char *ch;
-	char input;
-	int any;
+    char str[BUFSZ];
+    char choicedisp[BUFSZ];
+    char *ch;
+    char input;
+    int any;
 
 #ifdef DEBUG
     printf("- newt_yn_function(\"%s\",\"%s\",'%c');\n",
         ques, choices, def);
 #endif
-	/*TODO*/
-	/* still need the '#' stuff */
-	any=FALSE;
-	if (choices) {
-		strcpy(choicedisp, choices);
-		ch=(char *)&choicedisp;
-		while (*ch++) {
-			if (*ch=='\033') {
-				*ch=0;
-				any=TRUE;
-			}
-		}
-		if (def) {
-			sprintf((char *)&str,"%s [%s] (%c)",ques,choicedisp,def);
-		} else {
-			sprintf((char *)&str,"%s [%s]",ques,choicedisp);
-		}
-	} else {
-		any=TRUE;
-		if (def) {
-			sprintf((char *)&str,"%s (%c)",ques,def);
-		} else {
-			sprintf((char *)&str,"%s",ques);
-		}
-	}
+    /*TODO*/
+    /* still need the '#' stuff */
+    any=FALSE;
+    if (choices) {
+        strcpy(choicedisp, choices);
+        ch=(char *)&choicedisp;
+        while (*ch++) {
+            if (*ch=='\033') {
+                *ch=0;
+                any=TRUE;
+            }
+        }
+        if (def) {
+            sprintf((char *)&str,"%s [%s] (%c)",ques,choicedisp,def);
+        } else {
+            sprintf((char *)&str,"%s [%s]",ques,choicedisp);
+        }
+    } else {
+        any=TRUE;
+        if (def) {
+            sprintf((char *)&str,"%s (%c)",ques,def);
+        } else {
+            sprintf((char *)&str,"%s",ques);
+        }
+    }
 
   newt_raw_print((char *)&str);
   if (any) {
@@ -491,7 +488,7 @@ newt_yn_function (ques, choices, def)
       if (strchr(choices, 'q')) input='q';
       if (strchr(choices, 'n')) input='n';
       input=def;
-    } else		if (input==' '||input=='\n') {
+    } else      if (input==' '||input=='\n') {
       input=def;
     }
     if (strchr(choices, input)) break;
@@ -505,9 +502,9 @@ newt_yn_function (ques, choices, def)
 
 /*
 int get_ext_cmd(void)
-		-- Get an extended command in a window-port specific way.
-		   An index into extcmdlist[] is returned on a successful
-		   selection, -1 otherwise.
+        -- Get an extended command in a window-port specific way.
+           An index into extcmdlist[] is returned on a successful
+           selection, -1 otherwise.
 */
 int
 newt_get_ext_cmd (void)

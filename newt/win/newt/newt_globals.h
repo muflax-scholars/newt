@@ -49,6 +49,10 @@ typedef struct {
 
 extern newt_ascii_mapchar newt_ascii_map[ROWNO][COLNO];
 
+extern Uint32 newt_windowRenderQueue[1024];
+extern Uint32 newt_windowRenderQueuePosition;
+extern Uint32 newt_windowRenderQueueSize;
+
 extern Uint32 newt_deltazoom;
 extern SDL_Surface *newt_zoomed_map;
 

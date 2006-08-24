@@ -414,7 +414,9 @@ newt_wait_synch (void)
 #ifdef DEBUG
     printf("- [done] newt_wait_synch();\n");
 #endif
-	  if (iflags.window_inited) SDL_Flip(newt_screen);
+    if (iflags.window_inited) {
+        SDL_Flip(newt_screen);
+    }
 };
 
 /* ------------------------------------------------------------------------- */

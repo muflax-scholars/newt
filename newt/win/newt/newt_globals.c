@@ -16,6 +16,10 @@ Sint32 newt_win_map_ascii_fontheight;
 
 newt_ascii_mapchar newt_ascii_map[ROWNO][COLNO];
 
+Uint32 newt_windowRenderQueue[1024];
+Uint32 newt_windowRenderQueuePosition=0;
+Uint32 newt_windowRenderQueueSize=0;
+
 Uint32 newt_deltazoom=TRUE;
 SDL_Surface *newt_zoomed_map=NULL;
 
