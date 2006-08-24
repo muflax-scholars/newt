@@ -300,6 +300,7 @@ newt_display_nhwindow (window, blocking)
   int hasglyphs;
   SDL_Surface *glyph_surface_tmp;
   SDL_Surface *glyph_surface;
+    SDL_Rect newt_screen_clipping;  
 
 #ifdef DEBUG
     printf("- newt_display_nhwindow(%d, %d);\n", window, blocking);
@@ -426,6 +427,13 @@ newt_display_nhwindow (window, blocking)
 		cursor.y=((newt_win_map->h*newt_Zoom_y/NEWT_ZOOMMULT)*(int)(newt_map_curs_y))/ROWNO - zoom_window.y*newt_Zoom_y/NEWT_ZOOMMULT;
         cursor.y+=render_window.y;
 
+        SDL_GetClipRect(newt_screen,(SDL_Rect *)&newt_screen_clipping);
+        srcrect.y=0;
+        srcrect.x=newt_margin_left;
+        srcrect.h=newt_screen->h;
+        srcrect.w=newt_screen->w-(newt_margin_left+newt_margin_right);
+        SDL_SetClipRect(newt_screen,(SDL_Rect *)&srcrect);
+        
 		dstrect.x=cursor.x;
 		dstrect.y=cursor.y;
 		dstrect.w=1;
@@ -446,6 +454,8 @@ newt_display_nhwindow (window, blocking)
 		dstrect.w=cursor.w;
 		dstrect.h=1;
 		SDL_FillRect(newt_screen,&dstrect,newt_Map_curs_colour);
+
+        SDL_SetClipRect(newt_screen,(SDL_Rect *)&newt_screen_clipping);
 
         /* Positionbar */
 		if (newt_positionbarmode!=NEWT_POSITIONBARMODE_NONE) {
