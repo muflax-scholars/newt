@@ -250,7 +250,7 @@ newt_nh_poskey (x, y, mod)
            } else
           switch (event.key.keysym.sym) {
             case SDLK_F1:
-              newt_internalMessage("F3-FitMode F4-VidMode F5-Tiles/ASCII F6-PositionBar F8-ZmMode F9-ZmOut F10-ZmIn");
+              newt_internalMessage("F3-FitMode F4-VidMode F5/TAB-Tiles/ASCII F6-PositionBar F8-ZmMode F9-ZmOut F10-ZmIn");
               break;
             case SDLK_F3:
               newt_screen=SDL_SetVideoMode(
@@ -283,6 +283,7 @@ newt_nh_poskey (x, y, mod)
               sprintf(tmpText,"Video Mode: %dx%d",(*(VideoModes+VideoMode))->w,(*(VideoModes+VideoMode))->h);
               newt_internalMessage(tmpText);
               break;
+            case SDLK_TAB:
             case SDLK_F5:
               newt_win_map = (newt_win_map==newt_win_map_tiles) ? newt_win_map_ascii : newt_win_map_tiles;
               newt_deltazoom=TRUE;
