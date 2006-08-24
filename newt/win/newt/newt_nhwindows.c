@@ -253,16 +253,14 @@ int newt_windowQueueRender()
     }
     rendered=0;
     if (newt_windowRenderQueueSize) {
-    printf("Rendered Queue %d:", newt_windowRenderQueueSize);
-    while (newt_windowRenderQueueSize) {
-        if (newt_windowRenderQueue[newt_windowRenderQueuePosition]!=WIN_ERR) {
-            newt_display_nhwindow(newt_windowRenderQueue_(newt_windowRenderQueuePosition), FALSE);
-            rendered++;
+        while (newt_windowRenderQueueSize) {
+            if (newt_windowRenderQueue[newt_windowRenderQueuePosition]!=WIN_ERR) {
+                newt_display_nhwindow(newt_windowRenderQueue_(newt_windowRenderQueuePosition), FALSE);
+                rendered++;
+            }
+            newt_windowRenderQueuePosition=(newt_windowRenderQueuePosition+1)&1023;
+            newt_windowRenderQueueSize--;
         }
-        newt_windowRenderQueuePosition=(newt_windowRenderQueuePosition+1)&1023;
-        newt_windowRenderQueueSize--;
-    }
-    printf("%d\n", rendered);
     }
 
     return rendered;
