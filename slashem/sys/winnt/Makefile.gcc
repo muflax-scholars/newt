@@ -361,7 +361,7 @@ endif	# USE_PROXY
 else  # USE_GTK
 ifeq ($(USE_NEWT),Y)
 WINSRC += $(WINNEWTSRC)
-WOBJ04 += tile.o
+WOBJ04 += tile.o newtres.o
 LFLAGS += $(SDLLFLAGS)
 endif	# USE_NEWT
 endif	# USE_GTK
@@ -1043,6 +1043,9 @@ winres.o:	tiles.bmp $(WIN32)\winhack.rc $(WIN32)\mnsel.bmp \
 		$(WIN32)\mnselcnt.bmp $(WIN32)\mnunsel.bmp $(WIN32)\rip.bmp \
 		$(WIN32)\petmark.bmp $(WIN32)\SlashEM.ico $(WIN32)\splash.bmp
 	$(RC) -o$@ --include-dir=$(WIN32) -DNODEBUG -i $(WIN32)\winhack.rc
+
+newtres.o: ..\sys\share\slashem.ico
+	$(RC) -o$@ --include-dir=$(WIN32) -i ../../dist/win32/SlashEM.rc
 
 #
 #  Makedefs Stuff
