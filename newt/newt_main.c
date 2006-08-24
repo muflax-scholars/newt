@@ -277,6 +277,7 @@ newt_init_nhwindows (argcp, argv)
         (char *)&nhversion);
 	SDL_WM_SetCaption(version,NULL);
     SDL_WM_GrabInput(SDL_GRAB_FULLSCREEN);
+    SDL_ShowCursor(0);
 
     SDL_EnableUNICODE (1);
 	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
