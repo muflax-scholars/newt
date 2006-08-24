@@ -260,8 +260,37 @@ newt_nh_poskey (x, y, mod)
           if (flags.perm_invent&&WIN_INVEN!=WIN_ERR) newt_display_nhwindow(WIN_INVEN,FALSE);
           newt_wait_synch();
           break;
+        case SDL_MOUSEMOTION:
+          newt_map_curs_x+=(event.motion.xrel!=0) ? (event.motion.xrel/abs(event.motion.xrel)) : 0;
+          newt_map_curs_y+=(event.motion.yrel!=0) ? (event.motion.yrel/abs(event.motion.yrel)) : 0;
+          if (newt_map_curs_x<0) newt_map_curs_x=0;
+          if (newt_map_curs_y<0) newt_map_curs_y=0;
+          if (newt_map_curs_x>=COLNO) newt_map_curs_x=COLNO-1;
+          if (newt_map_curs_y>=ROWNO) newt_map_curs_y=ROWNO-1;
+          break;
+        case SDL_JOYAXISMOTION:
+          if (event.jaxis.axis==0) {
+            newt_map_curs_x+=(event.jaxis.value!=0) ? (event.jaxis.value/abs(event.jaxis.value)) : 0;
+          }
+          if (event.jaxis.axis==1) {
+            newt_map_curs_y+=(event.jaxis.value!=0) ? (event.jaxis.value/abs(event.jaxis.value)) : 0;
+          }
+        case SDL_MOUSEBUTTONDOWN:
+          *x = newt_map_curs_x;
+          *y = newt_map_curs_y;
+          *mod = CLICK_1;
+          return 0;  
+          break;
+        case SDL_JOYBUTTONDOWN:
+          *x = newt_map_curs_x;
+          *y = newt_map_curs_y;
+          *mod = CLICK_1;
+          return 0;  
+          break;
       }
     }
+    newt_display_nhwindow(WIN_MAP, FALSE);
+    newt_wait_synch();
   }
 
   /*TODO*/
