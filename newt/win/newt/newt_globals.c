@@ -21,7 +21,7 @@ Sint32 newt_win_map_ascii_fontheight;
 
 newt_ascii_mapchar newt_ascii_map[ROWNO][COLNO];
 
-Uint32 newt_windowRenderQueue[1024];
+Uint32 newt_windowRenderQueue[NEWT_WINDOWQUEUESIZE];
 Uint32 newt_windowRenderQueuePosition=0;
 Uint32 newt_windowRenderQueueSize=0;
 

@@ -231,7 +231,7 @@ newt_clear_nhwindow (window)
 void newt_windowQueueAdd(window)
     winid window;
 {
-    newt_windowRenderQueue_((newt_windowRenderQueuePosition+newt_windowRenderQueueSize++)&1023)=window;
+    newt_windowRenderQueue_((newt_windowRenderQueuePosition+newt_windowRenderQueueSize++)&(NEWT_WINDOWQUEUESIZE-1))=window;
 }
 
 int newt_windowQueueRender()
@@ -241,10 +241,16 @@ int newt_windowQueueRender()
     int cleanupWindow;
     int rendered;
 
-    for (cleanupBackward=newt_windowRenderQueuePosition+newt_windowRenderQueueSize;cleanupBackward>newt_windowRenderQueuePosition;cleanupBackward--) {
+    if (!newt_windowRenderQueueSize) return 0;
+    
+    for (   cleanupBackward=newt_windowRenderQueuePosition+(newt_windowRenderQueueSize-1);
+            cleanupBackward>newt_windowRenderQueuePosition;
+            cleanupBackward--) {
         cleanupWindow=newt_windowRenderQueue_(cleanupBackward);
-        for (cleanupForward=newt_windowRenderQueuePosition; cleanupForward<cleanupBackward; cleanupForward++) {
-           if (newt_windowRenderQueue_(cleanupForward)==cleanupWindow) newt_windowRenderQueue_(cleanupForward) = WIN_ERR; 
+        for (   cleanupForward=newt_windowRenderQueuePosition;
+                cleanupForward<cleanupBackward;
+                cleanupForward++) {
+            if (newt_windowRenderQueue_(cleanupForward)==cleanupWindow) newt_windowRenderQueue_(cleanupForward) = WIN_ERR; 
         }
     }
     rendered=0;
@@ -254,7 +260,7 @@ int newt_windowQueueRender()
                 newt_display_nhwindow(newt_windowRenderQueue_(newt_windowRenderQueuePosition), FALSE);
                 rendered++;
             }
-            newt_windowRenderQueuePosition=(newt_windowRenderQueuePosition+1)&1023;
+            newt_windowRenderQueuePosition=(newt_windowRenderQueuePosition+1)&(NEWT_WINDOWQUEUESIZE-1);
             newt_windowRenderQueueSize--;
         }
     }

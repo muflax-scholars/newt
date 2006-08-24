@@ -53,7 +53,8 @@ typedef struct {
 
 extern newt_ascii_mapchar newt_ascii_map[ROWNO][COLNO];
 
-extern Uint32 newt_windowRenderQueue[1024];
+#define NEWT_WINDOWQUEUESIZE        64
+extern Uint32 newt_windowRenderQueue[NEWT_WINDOWQUEUESIZE];
 extern Uint32 newt_windowRenderQueuePosition;
 extern Uint32 newt_windowRenderQueueSize;
 
