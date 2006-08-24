@@ -386,12 +386,19 @@ askname()	-- Ask the user for a player name.
 void
 newt_askname (void)
 {
+    int custom_win_message = (WIN_MESSAGE == WIN_ERR);
 #ifdef DEBUG
     printf("- newt_askname();\n");
 #endif
-    /*TODO*/
-    /* a simple working example : */
+    if (custom_win_message) WIN_MESSAGE = newt_create_nhwindow( NHW_MESSAGE );
+
     newt_getlin("What is your name?",plname);
+
+    if (custom_win_message)
+    {
+      newt_destroy_nhwindow( WIN_MESSAGE );
+      WIN_MESSAGE = WIN_ERR;
+    }
 };
 
 /* ------------------------------------------------------------------------- */
