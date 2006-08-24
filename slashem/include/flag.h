@@ -303,9 +303,6 @@ struct instance_flags {
 #ifdef CHESSMOVES
 	int	 monster_runmode;	/* update screen display during run moves */
 #endif
-#ifdef LINEOFSIGHT_COLOUR
-    int  los_colour;    /* colour to use for shaded areas when lineofsight is on */
-#endif    
 #ifdef AUTOPICKUP_EXCEPTIONS
 	struct autopickup_exception *autopickup_exceptions[2];
 #define AP_LEAVE 0
