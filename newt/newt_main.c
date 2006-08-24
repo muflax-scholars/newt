@@ -239,7 +239,8 @@ newt_init_nhwindows (argcp, argv)
     }
 
     newt_screen=SDL_SetVideoMode(800,600,VideoBPP, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_ASYNCBLIT );
-    VideoModes=SDL_ListModes(newt_screen->format, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_FULLSCREEN | SDL_ASYNCBLIT);
+    VideoModes=SDL_ListModes( NULL, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_FULLSCREEN | SDL_ASYNCBLIT);
+    if (!VideoModes) printf("SDL_ListModes: getting video mode listing failed.\n");
 
     if (VideoModes) {
         VideoModeAmount=0;
