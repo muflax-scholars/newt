@@ -492,7 +492,6 @@ newt_select_menu (window, how, menu_list)
         }
 
         newt_margin_right=textwindow->textline_width+6+4+hasglyphs;
-        printf("%d ---> %d\n",WIN_MAP,newt_margin_right);
         newt_display_nhwindow(WIN_MAP,FALSE);
 
 				/* background */
