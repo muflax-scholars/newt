@@ -4,6 +4,7 @@
 #include "newt_globals.h"
 #include "newt_main.h"
 #include "newt_nhinput.h"
+#include "newt_nhoutput.h"
 #include "newt_nhmenus.h"
 
 #include <SDL.h>
@@ -140,25 +141,10 @@ newt_clear_nhwindow (window)
     if (window==WIN_ERR) return;
 
     if (window==WIN_MAP) {
+      int row, column;
 
-/*
-        if ( ((u.uz.dnum!=u.uz0.dnum) || (u.uz.dlevel != u.uz0.dlevel)) && (u.uz0.dlevel != 0))
-        {
-            sprintf(filename, "%s_%02d_%03d.bmp", plname, u.uz0.dnum, u.uz0.dlevel);
-            SDL_SaveBMP( newt_win_map, filename);
-        }
-*/
-        memset(newt_ascii_map, 0, sizeof(newt_ascii_map));
-
-        dstrect.x=dstrect.y=0;
-        dstrect.w=newt_win_map_tiles->w;
-        dstrect.h=newt_win_map_tiles->h;
-        SDL_FillRect(newt_win_map_tiles, &dstrect, 0x00000000);
-
-        dstrect.x=dstrect.y=0;
-        dstrect.w=newt_win_map_ascii->w;
-        dstrect.h=newt_win_map_ascii->h;
-        SDL_FillRect(newt_win_map_ascii, &dstrect, 0x00000000);
+      memset(newt_ascii_map, 0, sizeof(newt_ascii_map));
+      for (row=0;row<ROWNO;row++) for (column=0;column<COLNO;column++) newt_print_glyph (window, column, row, cmap_to_glyph(S_stone));
 
         } else
 	if (window==WIN_MESSAGE) {
