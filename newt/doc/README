@@ -13,7 +13,7 @@ non NetHack/SLASH'EM newt interface Keys:
 Alt-Enter : Toggle Fullscreen Mode
 F3        : Resize game window to match map size
 F4        : Change video mode  
-F5        : Toggle ASCII/Tileset view mode
+F5|Tab    : Toggle ASCII/Tileset view mode
 F6        : Toggle positionbar display method
 F8        : Toggle tilset zoom mode
 F9        : Zoom Out
