@@ -370,6 +370,9 @@ register int fd, mode;
 				sizeof(struct spell) * (MAXSPELL + 1));
 	bwrite(fd, (genericptr_t) tech_list,
 			sizeof(struct tech) * (MAXTECH + 1));
+#ifdef BRADS_PIT
+	bwrite(fd, (genericptr_t) &brads_pit, sizeof brads_pit);
+#endif
 	save_artifacts(fd);
 	save_oracles(fd, mode);
 	if(ustuck_id)

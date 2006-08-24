@@ -196,6 +196,9 @@ NEARDATA struct tech tech_list[MAXTECH + 1] = {DUMMY};
 NEARDATA long moves = 1L, monstermoves = 1L;
 	 /* These diverge when player is Fast or Very_fast */
 NEARDATA long wailmsg = 0L;
+#ifdef BRADS_PIT
+NEARDATA struct brds_pt brads_pit = { FALSE, FALSE };
+#endif
 
 /* objects that are moving to another dungeon level */
 NEARDATA struct obj *migrating_objs = (struct obj *)0;
