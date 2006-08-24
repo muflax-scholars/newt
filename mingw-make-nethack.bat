@@ -1,8 +1,8 @@
 PATH=\msys\1.0\mingw\bin;\MinGW\bin\;%PATH%
 REM ---------- NetHack ----------
-del /S /Q nethack\win\vultures
-mkdir nethack\win\vultures
-xcopy /E /-Y vultures\* nethack\win\vultures\
+del /S /Q nethack\win\newt
+mkdir nethack\win\newt
+xcopy /E /-Y newt\* nethack\win\newt\
 cd nethack\sys\winnt
 call nhsetup
 cd ..\..\src
