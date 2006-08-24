@@ -513,7 +513,6 @@ newt_display_nhwindow (window, blocking)
 				srcrect.h=textsurface->h;
 				dstrect.w=textsurface->w;
 				dstrect.h=textsurface->h;
-
 				SDL_BlitSurface(textsurface, &srcrect, newt_screen, &dstrect);
 
                 SDL_FreeSurface(textsurface);
