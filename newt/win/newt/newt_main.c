@@ -225,8 +225,8 @@ newt_init_nhwindows (argcp, argv)
     SDL_EnableUNICODE (1);
 	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
-    if (!(newt_mapbg=IMG_Load("mapbg.png"))) {
-        printf("WARNING: could not open map background file : '%s'\n","mapbg.png");
+    if (!(newt_mapbg=IMG_Load("mapbg.xpm"))) {
+        printf("WARNING: could not open map background file : '%s'\n","mapbg.xpm");
     }
 
 #ifdef LINEOFSIGHT
