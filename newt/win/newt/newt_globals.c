@@ -64,7 +64,7 @@ Uint32 newt_Status_bg = 0x00202020;
 SDL_Color newt_Menu_fg = {0xFF, 0xFF, 0xFF, 0};
 Uint32 newt_Menu_bg = 0x00000020;
 
-Uint32 newt_Map_bg = 0x00301000;
+Uint32 newt_Map_bg = 0x00602000;
 
 SDL_Color newt_Info_fg = {0xFF, 0xFF, 0x00, 0};
 SDL_Color newt_Info_bg = {0x00, 0x00, 0x00, 0};
