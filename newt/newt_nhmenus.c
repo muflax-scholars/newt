@@ -100,7 +100,7 @@ newt_add_menu ( window, glyph, identifier,
 
 #ifdef DEBUG
     printf("- newt_add_menu (%d,%d,%d,'%c','%c',%d,\"%s\",%d);\n",
-        window, glyph, identifier, ch, gch, attr, str, preselected);
+        window, glyph, identifier->a_int, ch, gch, attr, str, preselected);
 #endif
 
 	newstr=malloc(TEXTLINE_ACCEL_USE_CHAR+1+1+1+1+strlen(str)+1);
