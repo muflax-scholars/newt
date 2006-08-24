@@ -248,6 +248,36 @@ WINBEOBJ =
 #     ../win/BeOS/NHMenuWindow.cpp ../win/BeOS/NHMapWindow.cpp
 #WINBEOBJ = winbe.o NHWindow.o NHMenuWindow.o NHMapWindow.o nhwin.a
 #
+# Files for the newt interface.
+#
+WINNEWTDIR = ../win/newt/
+WINNEWTINCLUDE = -I$(WINNEWTDIR)
+#WINNEWTMODECFLAGS=-O2
+#WINNEWTMODECFLAGS=-g -DDEBUG
+WINNEWTMODECFLAGS=-g
+WINNEWTCFLAGS = $(CFLAGS) $(WINNEWTINCLUDE) $(WINNEWTMODECFLAGS) -Wall `sdl-config --cflags`
+#WINNEWTCFLAGS = $(CFLAGS) $(WINNEWTINCLUDE) -g `sdl-config --cflags` -DDEBUG
+WINNEWTSRC = $(WINNEWTDIR)newt_main.c \
+           $(WINNEWTDIR)newt_nhinput.c \
+           $(WINNEWTDIR)newt_nhmenus.c \
+           $(WINNEWTDIR)newt_nhoutput.c \
+           $(WINNEWTDIR)newt_nhwindows.c \
+           $(WINNEWTDIR)newt_nhunixtty.c \
+           $(WINNEWTDIR)newt_nhpaletted.c \
+           $(WINNEWTDIR)newt_globals.c \
+           $(WINNEWTDIR)newt_nhplayerselection.c
+WINNEWTOBJ = newt_main.o \
+           newt_nhinput.o \
+           newt_nhmenus.o \
+           newt_nhoutput.o \
+           newt_nhwindows.o \
+           newt_nhunixtty.o \
+           newt_nhpaletted.o \
+           newt_globals.o \
+           newt_nhplayerselection.o \
+           tile.o
+
+#
 # Files for a proxy interface
 WINPROXYSRC = ../win/proxy/winproxy.c ../win/proxy/callback.c
 WINPROXYOBJ = winproxy.o callback.o nhwin.a
@@ -291,8 +321,8 @@ WINGLOBJ = gl_conf.o gl_emul.o gl_font.o gl_hardw.o \
 SDLGL_CFLAGS = `sdl-config --cflags`
 
 # Use these declarations if you only want to support the TTY windowing system
-WINSRC = $(WINTTYSRC)
-WINOBJ = $(WINTTYOBJ)
+WINSRC = $(WINNEWTSRC)
+WINOBJ = $(WINNEWTOBJ)
 # Use these declarations if you want to support the X11 windowing system
 # WINSRC = $(WINTTYSRC) $(WINX11SRC)
 # WINOBJ = $(WINTTYOBJ) $(WINX11OBJ)
@@ -370,9 +400,12 @@ WINGLLIB = -lGL
 #
 # libraries for proxy
 WINPROXYLIB = -lpthread
+#
+# libraries for newt
+WINNEWTLIB = `sdl-config --libs` -lSDL_image -lSDL_ttf
 
 # Use this declaration if you only want to support the TTY windowing system
-WINLIB = $(WINTTYLIB)
+WINLIB = $(WINNEWTLIB)
 # Use this declaration if you want to support the X11 windowing system
 # WINLIB = $(WINTTYLIB) $(WINX11LIB)
 # Use this declaration if you want to support the Qt windowing system
@@ -419,7 +452,7 @@ WINLIB = $(WINTTYLIB)
 LIBS =
 
 # make NetHack
-GAME     = slashem
+GAME     = slashem-newt
 # GAME     = slashem.prg
 
 # if you defined RANDOM in unixconf.h/tosconf.h since your system did not come
@@ -999,6 +1032,24 @@ qt_clust.o: ../win/Qt/qt_clust.cpp ../include/qt_clust.h
 	$(CXX) $(CXXFLAGS) -c ../win/Qt/qt_clust.cpp
 qttableview.o: ../win/Qt/qttableview.cpp ../include/qttableview.h
 	$(CXX) $(CXXFLAGS) -c ../win/Qt/qttableview.cpp
+newt_main.o: $(WINNEWTDIR)newt_main.c
+	$(CC) $(WINNEWTCFLAGS) -c $(WINNEWTDIR)newt_main.c
+newt_nhinput.o: $(WINNEWTDIR)newt_nhinput.c
+	$(CC) $(WINNEWTCFLAGS) -c $(WINNEWTDIR)newt_nhinput.c
+newt_nhmenus.o: $(WINNEWTDIR)newt_nhmenus.c
+	$(CC) $(WINNEWTCFLAGS) -c $(WINNEWTDIR)newt_nhmenus.c
+newt_nhoutput.o: $(WINNEWTDIR)newt_nhoutput.c
+	$(CC) $(WINNEWTCFLAGS) -c $(WINNEWTDIR)newt_nhoutput.c
+newt_nhpaletted.o: $(WINNEWTDIR)newt_nhpaletted.c
+	$(CC) $(WINNEWTCFLAGS) -c $(WINNEWTDIR)newt_nhpaletted.c
+newt_nhunixtty.o: $(WINNEWTDIR)newt_nhunixtty.c
+	$(CC) $(WINNEWTCFLAGS) -c $(WINNEWTDIR)newt_nhunixtty.c
+newt_nhwindows.o: $(WINNEWTDIR)newt_nhwindows.c
+	$(CC) $(WINNEWTCFLAGS) -c $(WINNEWTDIR)newt_nhwindows.c
+newt_globals.o: $(WINNEWTDIR)newt_globals.c
+	$(CC) $(WINNEWTCFLAGS) -c $(WINNEWTDIR)newt_globals.c
+newt_nhplayerselection.o: $(WINNEWTDIR)newt_nhplayerselection.c
+	$(CC) $(WINNEWTCFLAGS) -c $(WINNEWTDIR)newt_nhplayerselection.c
 monstr.o: monstr.c $(CONFIG_H)
 vis_tab.o: vis_tab.c $(CONFIG_H) ../include/vis_tab.h
 allmain.o: allmain.c $(HACK_H) ../include/patchlevel.h

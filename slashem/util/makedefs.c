@@ -939,6 +939,9 @@ static const char *window_opts[] = {
 #ifdef PROXY_GRAPHICS
 		"Plug-in modules",
 #endif
+#ifdef NEWT_GRAPHICS
+		"NEthack With Tiles (newt)",
+#endif
 		0
 	};
 
