@@ -181,7 +181,7 @@ newt_init_nhwindows (argcp, argv)
     atexit(SDL_Quit);
 
     for (joyCount=0;joyCount<SDL_NumJoysticks();joyCount++) {
-        printf("SDL Initialising Joystick '%d:%s' : ",joyCount,SDL_JoystickName(joyCount));
+        printf("Initialising Joystick '%d:%s' : ",joyCount,SDL_JoystickName(joyCount));
         if (SDL_JoystickOpen(joyCount)) {
             printf("Ok");
         } else {
@@ -226,7 +226,7 @@ newt_init_nhwindows (argcp, argv)
 	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
     if (!(newt_mapbg=IMG_Load("mapbg.png"))) {
-        printf("[warning] Failed to load map background from : \"%s\"\n","mapbg.png");
+        printf("WARNING: could not open map background file : '%s'\n","mapbg.png");
     }
 
 #ifdef LINEOFSIGHT
