@@ -71,10 +71,10 @@ SDL_Color newt_Info_fg = {0xFF, 0xFF, 0x00, 0};
 SDL_Color newt_Info_bg = {0x00, 0x00, 0x00, 0};
 
 SDL_Color newt_Position_fg = {0xFF, 0xFF, 0xFF, 0};
-Uint32 newt_Position_bg = 0x00301000;
+Uint32 newt_Position_bg = 0x00200800;
 Uint32 newt_Position_highlite = 0x00804000;
 
-Uint32 newt_Menu_Border = 0x000000FF;
+Uint32 newt_Menu_Border = 0x008080A0;
 Uint32 newt_Status_Border = 0x00A0A0A0;
 Uint32 newt_Message_Border = 0x00A0A0A0;
 Uint32 newt_Position_Border = 0x00A0A0A0;
