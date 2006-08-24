@@ -1,7 +1,9 @@
 GAME = newt
 
 help:
-	echo "Help!"
+	@echo "to build NetHack in your home directory: make nethack-home"
+	@echo "to build Slashem in your home directory: make slashem-home"
+	@echo "to build * Both  in your home directory: make home"
 
 home: nethack-home slashem-home
 
