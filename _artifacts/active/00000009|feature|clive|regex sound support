@@ -1,6 +1,0 @@
-2005-04-04 02:05 UCT clive created
-2005-04-04 02:05 UCT clive category feature
-2005-04-04 02:05 UCT clive summary regex sound support
-2005-04-04 02:05 UCT clive note regex sound support, ie support regex within .nethackrc sound assignments, should be simple, except cross-platform issues.
-2005-04-04 02:05 UCT clive activated 9
-2005-04-04 02:05 UCT clive assign clive
