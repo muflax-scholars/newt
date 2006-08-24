@@ -1,31 +1,4 @@
-# This makefile is for unix and it's clones only.
-# This makefile is meant for developers and people wanting
-# to experiment with newt only. It is NOT meant for system
-# installation, nor is it meant for building the game for
-# final gameplay. If you want to play newt either check if
-# your distribution of unix has a port for it, or if you are
-# comfortable with system installation yourself then read and
-# follow the instructions of each variant's installation instructions
-
 GAME = newt
-GAMEDEF = NEWT
-NETHACK = nethack
-SLASHEM = slashem
-GAMENETHACK = $(GAME)-$(NETHACK)
-GAMESLASHEM = $(GAME)-$(SLASHEM)
-DATE := $(shell date +%Y%m%d%H%M%S)
-VERSION = snapshot-$(DATE)
-RELEASE = 1
-FULLNAME = $(GAME)-$(VERSION)
-DISTDIR = dist/$(FULLNAME)
-OS = ${shell case `uname -s` in *CYGWIN*|*MINGW*|*MSYS*|*Windows*) echo "win32" ;; *) echo "unix" ;; esac}
-CWD = $(shell pwd)
-TESTDIR = $(CWD)/testdir
-DMGDIR = $(CWD)/dmgdir
-INSTPREFIX = $$HOME/$(GAME)
-MD5 = /sbin/md5
-SHA256 = /usr/local/sbin/sha256
-
 
 help:
 	@echo "to build NetHack in your home directory: $(MAKE) nethack-home"
