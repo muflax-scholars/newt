@@ -505,6 +505,10 @@ typedef unsigned char	uchar;
 # define BRADS_TEXT "Brad's"
 #endif
 #define CHESSMOVES	/* Show monster movement in a chess-like manner */
+#define LINEOFSIGHT /* Show line of sight */
+#ifdef LINEOFSIGHT
+# define LINEOFSIGHT_COLOUR   /* Allow selection of the colour used for shading */
+#endif
 
 /* End of Section 5 */
 

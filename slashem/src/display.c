@@ -1463,7 +1463,7 @@ show_glyph(x,y,glyph)
      * to ignore redundant calls to print_glyph().
      */
 #ifdef LINEOFSIGHT
-    if (transp || (gbuf[y][x].glyph != glyph) || ((glyph!=cmap_to_glyph(S_stone)) && ((couldsee(x,y)!=couldsee_old(x,y)) || (cansee(x,y)!=cansee_old(x,y))))) {
+    if (transp || (gbuf[y][x].glyph != glyph) || ((glyph!=cmap_to_glyph(S_unexplored)) && ((couldsee(x,y)!=couldsee_old(x,y)) || (cansee(x,y)!=cansee_old(x,y))))) {
 #else
     if (transp || gbuf[y][x].glyph != glyph) {
 #endif

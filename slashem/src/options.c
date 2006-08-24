@@ -364,6 +364,10 @@ static struct Comp_Opt
 	{ "monster_runmode", "monster display frequency when `running' or `travelling'",
 						sizeof "teleport", SET_IN_GAME },
 #endif						
+#ifdef LINEOFSIGHT_COLOUR
+    { "los_colour", "colour of the shaded area when loneofsight is on",
+                        sizeof "bright magenta", SET_IN_GAME },
+#endif                        
 	{ "scores",   "the parts of the score list you wish to see",
 						32, SET_IN_GAME },
 	{ "scroll_amount", "amount to scroll map when scroll_margin is reached",
@@ -590,6 +594,9 @@ initoptions()
 	iflags.runmode = RUN_LEAP;
 #ifdef CHESSMOVES	
 	iflags.monster_runmode = RUN_LEAP;
+#endif
+#ifdef LINEOFSIGHT_COLOUR
+    iflags.los_colour = CLR_BLUE;
 #endif
 	iflags.msg_history = 20;
 #ifdef TTY_GRAPHICS
@@ -3264,6 +3271,28 @@ boolean setinitial,setfromfile;
 	destroy_nhwindow(tmpwin);
 	retval = TRUE;
 #endif
+#ifdef LINEOFSIGHT_COLOUR
+    } else if (!strcmp("los_colour", optname)) {
+    const char *mode_name;
+    menu_item *mode_pick = (menu_item *)0;
+    tmpwin = create_nhwindow(NHW_MENU);
+    start_menu(tmpwin);
+    for (i = 0; i < SIZE(lineofsight_colours); i++) {
+        mode_name = lineofsight_colours[i];
+        any.a_int = i + 1;
+        if (i != NO_COLOR)
+            add_menu(tmpwin, NO_GLYPH, &any, 0, 0,
+                ATR_NONE, mode_name, MENU_UNSELECTED);
+    }
+    end_menu(tmpwin, "Select colour for LOS shading:");
+    if (select_menu(tmpwin, PICK_ONE, &mode_pick) > 0) {
+        iflags.los_colour = mode_pick->item.a_int - 1;
+        free((genericptr_t)mode_pick);
+    }
+    destroy_nhwindow(tmpwin);
+    need_redraw = TRUE;
+    retval = TRUE;
+#endif
     } 
 #ifdef TTY_GRAPHICS
       else if (!strcmp("msg_window", optname)) {
@@ -3662,6 +3691,10 @@ char *buf;
 	else if (!strcmp(optname, "monster_runmode"))
 		Sprintf(buf, "%s", runmodes[iflags.monster_runmode]);
 #endif		
+#ifdef LINEOFSIGHT_COLOUR
+    else if (!strcmp(optname, "los_colour"))
+        Sprintf(buf, "%s", lineofsight_colours[iflags.los_colour]);
+#endif        
 	else if (!strcmp(optname, "scores")) {
 		Sprintf(buf, "%d top/%d around%s", flags.end_top,
 				flags.end_around, flags.end_own ? "/own" : "");
