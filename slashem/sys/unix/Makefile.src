@@ -250,13 +250,15 @@ WINBEOBJ =
 #
 # Files for the newt interface.
 #
+SDLCONFIG = sdl11-config
+#SDLCONFIG = sdl-config
 WINNEWTDIR = ../win/newt/
 WINNEWTINCLUDE = -I$(WINNEWTDIR)
 #WINNEWTMODECFLAGS=-O2
 #WINNEWTMODECFLAGS=-g -DDEBUG
 WINNEWTMODECFLAGS=-g
-WINNEWTCFLAGS = $(CFLAGS) $(WINNEWTINCLUDE) $(WINNEWTMODECFLAGS) -Wall -Werror `sdl-config --cflags`
-#WINNEWTCFLAGS = $(CFLAGS) $(WINNEWTINCLUDE) -g `sdl-config --cflags` -DDEBUG
+WINNEWTCFLAGS = $(CFLAGS) $(WINNEWTINCLUDE) $(WINNEWTMODECFLAGS) -Wall -Werror `$(SDLCONFIG) --cflags`
+#WINNEWTCFLAGS = $(CFLAGS) $(WINNEWTINCLUDE) -g `$(SDLCONFIG) --cflags` -DDEBUG
 WINNEWTSRC = $(WINNEWTDIR)newt_main.c \
            $(WINNEWTDIR)newt_nhinput.c \
            $(WINNEWTDIR)newt_nhmenus.c \
@@ -402,7 +404,7 @@ WINGLLIB = -lGL
 WINPROXYLIB = -lpthread
 #
 # libraries for newt
-WINNEWTLIB = `sdl-config --libs` -lSDL_image -lSDL_ttf
+WINNEWTLIB = `$(SDLCONFIG) --libs` -lSDL_image -lSDL_ttf
 
 # Use this declaration if you only want to support the TTY windowing system
 WINLIB = $(WINNEWTLIB)
