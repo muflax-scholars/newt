@@ -1,0 +1,34 @@
+current cvs changes :
+---------------------
+
+* clean newt's data install
+* added CHANGELOG
+* graphical blend implementation speedup
+* fixed line input bug, any word input wasn't being displayed
+* added support for LINEOFSIGHT patch
+* [ 1019568 ] exit message
+* added README-newt.txt installation
+* [ 1037117 ] multiple drop 'D' doesn't allow some items only
+* [ 1041792 ] Tile or ASCII - A matter of preservation
+* [ 1041802 ] Connection to X-Server fails
+* [ 1041800 ] Make prompts go away properly.
+* [ 1041786 ] newt is a CPU-Hog.
+* [ 1041805 ] Redraw issues and general sluggishness
+* [ 1042823 ] menu group-item select doesn't select all in group
+* [ 1041822 ] menu width sometimes miscalculated
+* [ 1042551 ] menu "headings" shouldn't indent
+* fixed misleading "error" message about missing dlb files
+* [ 1043012 ] message window clearing
+* [ 1042894 ] menu item glyphs not displayed
+* [ 1043930 ] seg fault, menu "." handling
+* [ 1043935 ] MENU_INVERT_ALL not supported
+* [ 1043013 ] RC-File Option to turn off positionbar?
+* [ 1044065 ] Inventory showing small images in ASCII-Mode.
+* [ 1044260 ] dissappearing messages
+* [ 1042893 ] 'perm_invent' not supported
+* new dungeon background image
+
+newt 0.0.9
+-------------
+
+* first public release *

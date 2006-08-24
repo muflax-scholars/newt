@@ -1,0 +1,22 @@
+newt 0.0.9
+-------------
+
+Author    : Clive Crous (clive@linuxgames.co.za)
+Home Page : http://www.darkarts.co.za/
+License   : Nethack General Public License (see "license" within docs in the
+	    primary directory or NetHack/SLASH'EM
+
+This interface aims to be as-compatible-as-possible visually and interactivly
+with the standard tty interface ... except with tiles ;)
+
+non NetHack/SLASH'EM newt interface Keys:
+--------------------------------------------
+(ie keyboard commands added by newt)
+
+Alt-Enter : Toggle Fullscreen Mode
+F3        : Resize game window to match map size
+F4        : Toggle tilset zoom mode
+F5        : Toggle ASCII/Tileset view mode
+F6        : Toggle positionbar display method
+F9        : Zoom Out
+F10       : Zoom In
