@@ -187,11 +187,13 @@ WINPORT = \
 	$(O)newt_nhplayerselection.o \
 	$(O)tile.o
 
-WINPFLAG   = -DTILES $(SDLCFLAGS) -DNETHACK
+WINPFLAG = -DTILES
 NHRES   = 
 WINPINC = -I$(NEWT)
 WINPHDR = 
 WINPLIBS = $(SDLLIBS) -lwinmm
+#NEWTCFLAGS = $(SDLCFLAGS) -DNETHACK -DDEBUG
+NEWTCFLAGS = $(SDLCFLAGS) -DNETHACK
 else
 WINPORT  = $(O)tile.o $(O)mhaskyn.o $(O)mhdlg.o \
 	$(O)mhfont.o $(O)mhinput.o $(O)mhmain.o $(O)mhmap.o \
@@ -1270,23 +1272,23 @@ $(O)wingem1.o: ../win/gem/wingem1.c $(INCL)/gem_rsc.h $(INCL)/load_img.h \
 	$(cc) $(CFLAGS) -o$@ ../win/gem/wingem1.c
 
 $(O)newt_main.o: $(NEWT)/newt_main.c $(NEWT)/newt_main.h $(NEWT)/newt_nhwindows.h $(NEWT)/newt_nhmenus.h $(NEWT)/newt_nhinput.h $(NEWT)/newt_nhoutput.h $(NEWT)/newt_nhunixtty.h $(NEWT)/newt_nhpaletted.h $(NEWT)/newt_globals.h
-	$(cc) $(CFLAGS) -o $(O)newt_main.o -c $(NEWT)/newt_main.c
+	$(cc) $(CFLAGS) $(NEWTCFLAGS) -o $(O)newt_main.o -c $(NEWT)/newt_main.c
 $(O)newt_nhinput.o: $(NEWT)/newt_nhinput.c $(NEWT)/newt_main.h $(NEWT)/newt_nhwindows.h $(NEWT)/newt_nhinput.h $(NEWT)/newt_nhoutput.h $(NEWT)/newt_globals.h
-	$(cc) $(CFLAGS) -o $(O)newt_nhinput.o -c $(NEWT)/newt_nhinput.c
+	$(cc) $(CFLAGS) $(NEWTCFLAGS) -o $(O)newt_nhinput.o -c $(NEWT)/newt_nhinput.c
 $(O)newt_nhmenus.o: $(NEWT)/newt_nhmenus.c $(NEWT)/newt_main.h $(NEWT)/newt_nhmenus.h $(NEWT)/newt_nhwindows.h $(NEWT)/newt_nhinput.h $(NEWT)/newt_nhoutput.h $(NEWT)/newt_globals.h
-	$(cc) $(CFLAGS) -o $(O)newt_nhmenus.o -c $(NEWT)/newt_nhmenus.c
+	$(cc) $(CFLAGS) $(NEWTCFLAGS) -o $(O)newt_nhmenus.o -c $(NEWT)/newt_nhmenus.c
 $(O)newt_nhoutput.o: $(NEWT)/newt_nhoutput.c $(NEWT)/newt_nhmenus.h $(NEWT)/newt_nhwindows.h $(NEWT)/newt_nhinput.h $(NEWT)/newt_nhoutput.h $(NEWT)/newt_globals.h
-	$(cc) $(CFLAGS) -o $(O)newt_nhoutput.o -c $(NEWT)/newt_nhoutput.c
+	$(cc) $(CFLAGS) $(NEWTCFLAGS) -o $(O)newt_nhoutput.o -c $(NEWT)/newt_nhoutput.c
 $(O)newt_nhpaletted.o: $(NEWT)/newt_nhpaletted.c $(NEWT)/newt_nhpaletted.h
-	$(cc) $(CFLAGS) -o $(O)newt_nhpaletted.o -c $(NEWT)/newt_nhpaletted.c
+	$(cc) $(CFLAGS) $(NEWTCFLAGS) -o $(O)newt_nhpaletted.o -c $(NEWT)/newt_nhpaletted.c
 $(O)newt_nhunixtty.o: $(NEWT)/newt_nhunixtty.c $(NEWT)/newt_nhunixtty.h
-	$(cc) $(CFLAGS) -o $(O)newt_nhunixtty.o -c $(NEWT)/newt_nhunixtty.c
+	$(cc) $(CFLAGS) $(NEWTCFLAGS) -o $(O)newt_nhunixtty.o -c $(NEWT)/newt_nhunixtty.c
 $(O)newt_nhwindows.o: $(NEWT)/newt_nhwindows.c $(NEWT)/newt_main.h $(NEWT)/newt_nhmenus.h $(NEWT)/newt_nhwindows.h $(NEWT)/newt_nhinput.h $(NEWT)/newt_globals.h
-	$(cc) $(CFLAGS) -o $(O)newt_nhwindows.o -c $(NEWT)/newt_nhwindows.c
+	$(cc) $(CFLAGS) $(NEWTCFLAGS) -o $(O)newt_nhwindows.o -c $(NEWT)/newt_nhwindows.c
 $(O)newt_globals.o: $(NEWT)/newt_globals.c $(NEWT)/newt_globals.h
-	$(cc) $(CFLAGS) -o $(O)newt_globals.o -c $(NEWT)/newt_globals.c
+	$(cc) $(CFLAGS) $(NEWTCFLAGS) -o $(O)newt_globals.o -c $(NEWT)/newt_globals.c
 $(O)newt_nhplayerselection.o: $(NEWT)/newt_nhplayerselection.c $(NEWT)/newt_main.h $(NEWT)/newt_nhwindows.h $(NEWT)/newt_nhmenus.h
-	$(cc) $(CFLAGS) -o $(O)newt_nhplayerselection.o -c $(NEWT)/newt_nhplayerselection.c
+	$(cc) $(CFLAGS) $(NEWTCFLAGS) -o $(O)newt_nhplayerselection.o -c $(NEWT)/newt_nhplayerselection.c
 
 $(O)load_img.o: ../win/gem/load_img.c $(INCL)/load_img.h
 	$(cc) $(CFLAGS) -o$@ ../win/gem/load_img.c
