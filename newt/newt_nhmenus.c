@@ -342,12 +342,20 @@ newt_select_menu (window, how, menu_list)
 
           if (hasglyphs && textwindow->glyph && textwindow->glyph[pagecounter*linesperpage+counter]!=NO_GLYPH)
           {
+              int background_glyph = cmap_to_glyph(S_room);
+
+              dstrect.w=srcrect.w=iflags.wc_tile_width;
+              dstrect.h=srcrect.h=iflags.wc_tile_height;
+              srcrect.x=(glyph2tile[background_glyph]%(newt_tiles->w/iflags.wc_tile_width))*iflags.wc_tile_width;
+              srcrect.y=(glyph2tile[background_glyph]/(newt_tiles->w/iflags.wc_tile_width))*iflags.wc_tile_height;
+              dstrect.x=dstrect.y=0;
+              SDL_BlitSurface(newt_tiles, (SDL_Rect *)&srcrect, glyph_surface_tmp, (SDL_Rect *)&dstrect);
+
               dstrect.w=srcrect.w=iflags.wc_tile_width;
               dstrect.h=srcrect.h=iflags.wc_tile_height;
               srcrect.x=(glyph2tile[textwindow->glyph[pagecounter*linesperpage+counter]]%(newt_tiles->w/iflags.wc_tile_width))*iflags.wc_tile_width;
               srcrect.y=(glyph2tile[textwindow->glyph[pagecounter*linesperpage+counter]]/(newt_tiles->w/iflags.wc_tile_width))*iflags.wc_tile_height;
               dstrect.x=dstrect.y=0;
-              SDL_FillRect(glyph_surface_tmp,(SDL_Rect *)&dstrect,newt_Menu_bg);
               SDL_BlitSurface(newt_tiles, (SDL_Rect *)&srcrect, glyph_surface_tmp, (SDL_Rect *)&dstrect);
 
               srcrect.w=iflags.wc_tile_width;
@@ -566,12 +574,20 @@ newt_select_menu (window, how, menu_list)
 
           if (hasglyphs && textwindow->glyph && textwindow->glyph[pagecounter*linesperpage+counter]!=NO_GLYPH)
           {
+              int background_glyph = cmap_to_glyph(S_room);
+
+              dstrect.w=srcrect.w=iflags.wc_tile_width;
+              dstrect.h=srcrect.h=iflags.wc_tile_height;
+              srcrect.x=(glyph2tile[background_glyph]%(newt_tiles->w/iflags.wc_tile_width))*iflags.wc_tile_width;
+              srcrect.y=(glyph2tile[background_glyph]/(newt_tiles->w/iflags.wc_tile_width))*iflags.wc_tile_height;
+              dstrect.x=dstrect.y=0;
+              SDL_BlitSurface(newt_tiles, (SDL_Rect *)&srcrect, glyph_surface_tmp, (SDL_Rect *)&dstrect);
+
               dstrect.w=srcrect.w=iflags.wc_tile_width;
               dstrect.h=srcrect.h=iflags.wc_tile_height;
               srcrect.x=(glyph2tile[textwindow->glyph[pagecounter*linesperpage+counter]]%(newt_tiles->w/iflags.wc_tile_width))*iflags.wc_tile_width;
               srcrect.y=(glyph2tile[textwindow->glyph[pagecounter*linesperpage+counter]]/(newt_tiles->w/iflags.wc_tile_width))*iflags.wc_tile_height;
               dstrect.x=dstrect.y=0;
-              SDL_FillRect(glyph_surface_tmp,(SDL_Rect *)&dstrect,newt_Menu_bg);
               SDL_BlitSurface(newt_tiles, (SDL_Rect *)&srcrect, glyph_surface_tmp, (SDL_Rect *)&dstrect);
 
               srcrect.w=iflags.wc_tile_width;
