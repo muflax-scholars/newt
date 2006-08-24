@@ -610,8 +610,8 @@ tileutil: $(U)gif2txt.exe $(U)gif2tx32.exe $(U)txt2ppm.exe
 
 ifeq  "$(GRAPHICAL)" "Y"
 ifeq "$(USE_NEWT)" "Y"
-$(NHRES): ../../dist/win32/NeWT.rc $(WIN32)/NetHack.ico
-	@$(rc) -o$@ --include-dir $(WIN32) -i ../../dist/win32/NeWT.rc
+$(NHRES): ../../dist/win32/NetHack.rc $(WIN32)/NetHack.ico
+	@$(rc) -o$@ --include-dir $(WIN32) -i ../../dist/win32/NetHack.rc
 else
 $(NHRES): $(TILEBMP16) $(WIN32)/winhack.rc $(WIN32)/mnsel.bmp \
 	 $(WIN32)/mnselcnt.bmp $(WIN32)/mnunsel.bmp \
