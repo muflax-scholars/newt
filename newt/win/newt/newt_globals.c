@@ -51,7 +51,7 @@ Sint32 newt_map_curs_y=0;
 
 char newt_positionbar[COLNO];
 
-Sint32 newt_fontsize=16;
+Sint32 newt_fontsize=14;
 
 Uint32 newt_margin_left=0;
 Uint32 newt_margin_right=0;
