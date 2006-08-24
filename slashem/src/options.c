@@ -57,7 +57,7 @@ static struct Bool_Opt
 	{"asksavedisk", (boolean *)0, FALSE, SET_IN_GAME},
 #endif
 	{"autodig", &flags.autodig, FALSE, SET_IN_GAME},
-	{"autopickup", &flags.pickup, TRUE, SET_IN_GAME},
+	{"autopickup", &flags.pickup, FALSE, SET_IN_GAME},
 	{"autoquiver", &flags.autoquiver, FALSE, SET_IN_GAME},
 #if defined(MICRO) && !defined(AMIGA)
 	{"BIOS", &iflags.BIOS, FALSE, SET_IN_FILE},
@@ -88,7 +88,7 @@ static struct Bool_Opt
 #endif
 	{"eight_bit_tty", &iflags.wc_eight_bit_input, FALSE, SET_IN_GAME},	/*WC*/
 #if defined(TTY_GRAPHICS) || defined(NEWT_GRAPHICS)
-	{"extmenu", &iflags.extmenu, FALSE, SET_IN_GAME},
+	{"extmenu", &iflags.extmenu, TRUE, SET_IN_GAME},
 #else
 	{"extmenu", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
@@ -106,7 +106,7 @@ static struct Bool_Opt
 #endif
 	{"fullscreen", &iflags.wc2_fullscreen, FALSE, SET_IN_FILE},
 	{"help", &flags.help, TRUE, SET_IN_GAME},
-	{"hilite_pet",    &iflags.wc_hilite_pet, FALSE, SET_IN_GAME},	/*WC*/
+	{"hilite_pet",    &iflags.wc_hilite_pet, TRUE, SET_IN_GAME},	/*WC*/
 #ifdef ASCIIGRAPH
 	{"IBMgraphics", &iflags.IBMgraphics, FALSE, SET_IN_GAME},
 #else
@@ -118,7 +118,7 @@ static struct Bool_Opt
 	{"ignintr", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
 #ifdef SHOW_WEIGHT
-	{"invweight", &flags.invweight, FALSE, SET_IN_GAME},
+	{"invweight", &flags.invweight, TRUE, SET_IN_GAME},
 #else
 	{"invweight", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
@@ -130,7 +130,7 @@ static struct Bool_Opt
 #endif
 	{"large_font", &iflags.obsolete, FALSE, SET_IN_FILE},	/* OBSOLETE */
 	{"legacy", &flags.legacy, TRUE, DISP_IN_GAME},
-	{"lit_corridor", &flags.lit_corridor, FALSE, SET_IN_GAME},
+	{"lit_corridor", &flags.lit_corridor, TRUE, SET_IN_GAME},
 	{"lootabc", &iflags.lootabc, FALSE, SET_IN_GAME},
 #ifdef MAC_GRAPHICS_ENV
 	{"Macgraphics", &iflags.MACgraphics, TRUE, SET_IN_GAME},
@@ -214,7 +214,7 @@ static struct Bool_Opt
 	{"showdmg", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
 #ifdef SHOW_WEIGHT
-	{"showweight", &flags.showweight, FALSE, SET_IN_GAME},
+	{"showweight", &flags.showweight, TRUE, SET_IN_GAME},
 #else
 	{"showweight", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
@@ -226,14 +226,14 @@ static struct Bool_Opt
 	{"standout", &flags.standout, FALSE, SET_IN_GAME},
 	{"splash_screen",     &iflags.wc_splash_screen, TRUE, DISP_IN_GAME},	/*WC*/
 	{"tiled_map",     &iflags.wc_tiled_map, PREFER_TILED, DISP_IN_GAME},	/*WC*/
-	{"time", &flags.time, FALSE, SET_IN_GAME},
+	{"time", &flags.time, TRUE, SET_IN_GAME},
 #ifdef TIMED_DELAY
 	{"timed_delay", &flags.nap, TRUE, SET_IN_GAME},
 #else
 	{"timed_delay", (boolean *)0, FALSE, SET_IN_GAME},
 #endif
 	{"tombstone",&flags.tombstone, TRUE, SET_IN_GAME},
-	{"toptenwin",&flags.toptenwin, FALSE, SET_IN_GAME},
+	{"toptenwin",&flags.toptenwin, TRUE, SET_IN_GAME},
 	{"travel", &iflags.travelcmd, TRUE, SET_IN_GAME},
 #ifdef WIN32CON
 	{"use_inverse",   &iflags.wc_inverse, TRUE, SET_IN_GAME},		/*WC*/
@@ -585,7 +585,7 @@ initoptions()
 	flags.end_around = 2;
 	iflags.runmode = RUN_LEAP;
 #ifdef CHESSMOVES	
-	iflags.monster_runmode = RUN_TPORT;
+	iflags.monster_runmode = RUN_LEAP;
 #endif
 	iflags.msg_history = 20;
 #ifdef TTY_GRAPHICS
