@@ -35,7 +35,7 @@ newt_start_menu (window)
 {
 	newt_window_rec *textwindow;
 
-	#ifdef DEBUG
+#ifdef DEBUG
     printf("- newt_start_menu(%d);\n", window);
 #endif
 
