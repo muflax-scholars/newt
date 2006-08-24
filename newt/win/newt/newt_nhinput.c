@@ -356,14 +356,16 @@ newt_nh_poskey (x, y, mod)
           }
           break;
         case SDL_VIDEORESIZE:
-          newt_screen=SDL_SetVideoMode(event.resize.w,event.resize.h,VideoBPP,SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
-          newt_deltazoom=TRUE;
-          newt_clear_nhwindow(WIN_MESSAGE);
-          newt_windowQueueAdd(WIN_STATUS);
-          newt_windowQueueAdd(WIN_MAP);
-          if (flags.perm_invent&&WIN_INVEN!=WIN_ERR) newt_windowQueueAdd(WIN_INVEN);
-          sprintf(tmpText,"Window manager resize: %dx%d",event.resize.w,event.resize.h);
-          newt_internalMessage(tmpText);
+          if (!iflags.wc2_fullscreen) { // Yes, apparently some window managers are naughty
+              newt_screen=SDL_SetVideoMode(event.resize.w,event.resize.h,VideoBPP,SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
+              newt_deltazoom=TRUE;
+              newt_clear_nhwindow(WIN_MESSAGE);
+              newt_windowQueueAdd(WIN_STATUS);
+              newt_windowQueueAdd(WIN_MAP);
+              if (flags.perm_invent&&WIN_INVEN!=WIN_ERR) newt_windowQueueAdd(WIN_INVEN);
+              sprintf(tmpText,"Window manager resize: %dx%d",event.resize.w,event.resize.h);
+              newt_internalMessage(tmpText);
+          }
           break;
         case SDL_MOUSEMOTION:
             if ( newt_zoomed_map &&
