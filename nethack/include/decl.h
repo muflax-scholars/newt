@@ -212,12 +212,6 @@ E NEARDATA struct dig_info {		/* apply.c, hack.c */
 
 E NEARDATA long moves, monstermoves;
 E NEARDATA long wailmsg;
-#ifdef BRADS_PIT
-E NEARDATA struct brds_pt {
-    int created;
-    int found;
-} brads_pit;
-#endif
 
 E NEARDATA boolean in_mklev;
 E NEARDATA boolean stoned;
@@ -332,9 +326,6 @@ E const char *materialnm[];
 /* Vision */
 E NEARDATA boolean vision_full_recalc;	/* TRUE if need vision recalc */
 E NEARDATA char **viz_array;		/* could see/in sight row pointers */
-#ifdef LINEOFSIGHT
-E NEARDATA char **viz_array_old;	/* could see/in sight row pointers previous */
-#endif
 
 /* Window system stuff */
 E NEARDATA winid WIN_MESSAGE, WIN_STATUS;

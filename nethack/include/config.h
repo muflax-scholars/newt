@@ -365,15 +365,6 @@ typedef unsigned char	uchar;
 
 /*#define GOLDOBJ */	/* Gold is kept on obj chains - Helge Hafting */
 /*#define AUTOPICKUP_EXCEPTIONS */ /* exceptions to autopickup */
-#define BRADS_PIT	/* oh that lucky pit that is Brad's */
-#ifdef BRADS_PIT
-# define BRADS_TEXT "Brad's"
-#endif
-#define CHESSMOVES	/* Show monster movement in a chess-like manner */
-#define LINEOFSIGHT	/* Show line of sight */
-#ifdef LINEOFSIGHT
-# define LINEOFSIGHT_COLOUR	/* Allow selection of the colour used for shading */
-#endif
 
 /* End of Section 5 */
 

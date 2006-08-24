@@ -15,7 +15,7 @@
 
 # make NetHack
 PREFIX   = /usr
-GAME     = slashem-lizard
+GAME     = slashem-newt
 # GAME     = slashem.prg
 GAMEUID  = root
 GAMEGRP  = games

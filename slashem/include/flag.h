@@ -71,7 +71,6 @@ struct flag {
 #ifdef MAC
 	boolean  page_wait;	/* put up a --More-- after a page of messages */
 #endif
-	boolean  passages;	/* part of visenhance, show passages */
 	boolean  perm_invent;	/* keep full inventories up until dismissed */
 	boolean  pickup;	/* whether you pickup or move and look */
 	boolean  pickup_thrown;		/* auto-pickup items you threw */
@@ -246,9 +245,6 @@ struct instance_flags {
  * Window capability support.
  */
 	boolean wc_color;		/* use color graphics                  */
-#ifdef LINEOFSIGHT
-	boolean wc_lineofsight;		/* show line of sight                  */
-#endif	
 	boolean wc_hilite_pet;		/* hilight pets                        */
 	boolean wc_ascii_map;		/* show map using traditional ascii    */
 	boolean wc_tiled_map;		/* show map using tiles                */
@@ -300,9 +296,6 @@ struct instance_flags {
 	boolean  showrace;	/* show hero glyph by race rather than by role */
 	boolean  travelcmd;	/* allow travel command */
 	int	 runmode;	/* update screen display during run moves */
-#ifdef CHESSMOVES
-	int	 monster_runmode;	/* update screen display during run moves */
-#endif
 #ifdef AUTOPICKUP_EXCEPTIONS
 	struct autopickup_exception *autopickup_exceptions[2];
 #define AP_LEAVE 0

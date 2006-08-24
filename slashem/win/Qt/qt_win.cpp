@@ -1569,7 +1569,7 @@ void NetHackQtMapWindow::Scroll(int dx, int dy)
 
 void NetHackQtMapWindow::Clear()
 {
-    unsigned short stone=cmap_to_glyph(S_unexplored);
+    unsigned short stone=cmap_to_glyph(S_stone);
 
     /*
      * Tile set may have changed if tileset option changed via doset().  --ALI
@@ -3500,7 +3500,7 @@ void NetHackQtInvUsageWindow::drawWorn(QPainter& painter, obj* nhobj, int x, int
     else if (canbe)
 	glyph=cmap_to_glyph(S_room);
     else
-	glyph=cmap_to_glyph(S_unexplored);
+	glyph=cmap_to_glyph(S_stone);
 
     qt_settings->glyphs().drawCell(painter,glyph,x,y);
 }

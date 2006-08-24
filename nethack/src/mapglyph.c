@@ -116,7 +116,7 @@ unsigned *ospecial;
 		color = CLR_MAGENTA;
 	    else if (offset == S_corr || offset == S_litcorr)
 		color = CLR_GRAY;
-	    else if (offset >= S_room && offset <= S_water && offset != S_darkroom)
+	    else if (offset >= S_room && offset <= S_water)
 		color = CLR_GREEN;
 	    else
 		color = NO_COLOR;
@@ -125,24 +125,9 @@ unsigned *ospecial;
 #ifdef TEXTCOLOR
 	    /* provide a visible difference if normal and lit corridor
 	     * use the same symbol */
-# ifdef LINEOFSIGHT
-	    if (iflags.use_color) {
-		if (iflags.wc_lineofsight) {
-		    if (!couldsee(x,y) || !cansee(x,y) || (offset == S_corr))
-#  ifdef LINEOFSIGHT_COLOUR
-			color = iflags.los_colour;
-#  else		    
-			color = CLR_BLUE;
-#  endif			
-		}
-		else if (offset == S_litcorr && ch == showsyms[S_corr])
-		    color = CLR_WHITE;
-	    }
-# else
 	    if (iflags.use_color &&
 		offset == S_litcorr && ch == showsyms[S_corr])
 		color = CLR_WHITE;
-# endif
 	    else
 #endif
 	    cmap_color(offset);

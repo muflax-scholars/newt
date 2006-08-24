@@ -57,7 +57,7 @@ static struct Bool_Opt
 	{"asksavedisk", (boolean *)0, FALSE, SET_IN_GAME},
 #endif
 	{"autodig", &flags.autodig, FALSE, SET_IN_GAME},
-	{"autopickup", &flags.pickup, FALSE, SET_IN_GAME},
+	{"autopickup", &flags.pickup, TRUE, SET_IN_GAME},
 	{"autoquiver", &flags.autoquiver, FALSE, SET_IN_GAME},
 #if defined(MICRO) && !defined(AMIGA)
 	{"BIOS", &iflags.BIOS, FALSE, SET_IN_FILE},
@@ -80,9 +80,6 @@ static struct Bool_Opt
 # else	/* systems that support multiple terminals, many monochrome */
 	{"color",         &iflags.wc_color, FALSE, SET_IN_GAME},	/*WC*/
 # endif
-#ifdef LINEOFSIGHT
-	{"lineofsight", &iflags.wc_lineofsight, TRUE, SET_IN_GAME},
-#endif
 	{"confirm",&flags.confirm, TRUE, SET_IN_GAME},
 #if defined(TERMLIB) && !defined(MAC_GRAPHICS_ENV)
 	{"DECgraphics", &iflags.DECgraphics, FALSE, SET_IN_GAME},
@@ -91,7 +88,7 @@ static struct Bool_Opt
 #endif
 	{"eight_bit_tty", &iflags.wc_eight_bit_input, FALSE, SET_IN_GAME},	/*WC*/
 #if defined(TTY_GRAPHICS) || defined(NEWT_GRAPHICS)
-	{"extmenu", &iflags.extmenu, TRUE, SET_IN_GAME},
+	{"extmenu", &iflags.extmenu, FALSE, SET_IN_GAME},
 #else
 	{"extmenu", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
@@ -109,7 +106,7 @@ static struct Bool_Opt
 #endif
 	{"fullscreen", &iflags.wc2_fullscreen, FALSE, SET_IN_FILE},
 	{"help", &flags.help, TRUE, SET_IN_GAME},
-	{"hilite_pet",    &iflags.wc_hilite_pet, TRUE, SET_IN_GAME},	/*WC*/
+	{"hilite_pet",    &iflags.wc_hilite_pet, FALSE, SET_IN_GAME},	/*WC*/
 #ifdef ASCIIGRAPH
 	{"IBMgraphics", &iflags.IBMgraphics, FALSE, SET_IN_GAME},
 #else
@@ -121,7 +118,7 @@ static struct Bool_Opt
 	{"ignintr", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
 #ifdef SHOW_WEIGHT
-	{"invweight", &flags.invweight, TRUE, SET_IN_GAME},
+	{"invweight", &flags.invweight, FALSE, SET_IN_GAME},
 #else
 	{"invweight", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
@@ -133,7 +130,7 @@ static struct Bool_Opt
 #endif
 	{"large_font", &iflags.obsolete, FALSE, SET_IN_FILE},	/* OBSOLETE */
 	{"legacy", &flags.legacy, TRUE, DISP_IN_GAME},
-	{"lit_corridor", &flags.lit_corridor, TRUE, SET_IN_GAME},
+	{"lit_corridor", &flags.lit_corridor, FALSE, SET_IN_GAME},
 	{"lootabc", &iflags.lootabc, FALSE, SET_IN_GAME},
 #ifdef MAC_GRAPHICS_ENV
 	{"Macgraphics", &iflags.MACgraphics, TRUE, SET_IN_GAME},
@@ -178,7 +175,6 @@ static struct Bool_Opt
 #else
 	{"page_wait", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
-	{"passages", &flags.passages, TRUE, SET_IN_FILE},
 	{"perm_invent", &flags.perm_invent, FALSE, SET_IN_GAME},
 	{"pickup_thrown", &flags.pickup_thrown, TRUE, SET_IN_GAME},
 	{"popup_dialog",  &iflags.wc_popup_dialog, FALSE, SET_IN_GAME},	/*WC*/
@@ -218,7 +214,7 @@ static struct Bool_Opt
 	{"showdmg", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
 #ifdef SHOW_WEIGHT
-	{"showweight", &flags.showweight, TRUE, SET_IN_GAME},
+	{"showweight", &flags.showweight, FALSE, SET_IN_GAME},
 #else
 	{"showweight", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
@@ -230,14 +226,14 @@ static struct Bool_Opt
 	{"standout", &flags.standout, FALSE, SET_IN_GAME},
 	{"splash_screen",     &iflags.wc_splash_screen, TRUE, DISP_IN_GAME},	/*WC*/
 	{"tiled_map",     &iflags.wc_tiled_map, PREFER_TILED, DISP_IN_GAME},	/*WC*/
-	{"time", &flags.time, TRUE, SET_IN_GAME},
+	{"time", &flags.time, FALSE, SET_IN_GAME},
 #ifdef TIMED_DELAY
 	{"timed_delay", &flags.nap, TRUE, SET_IN_GAME},
 #else
 	{"timed_delay", (boolean *)0, FALSE, SET_IN_GAME},
 #endif
 	{"tombstone",&flags.tombstone, TRUE, SET_IN_GAME},
-	{"toptenwin",&flags.toptenwin, TRUE, SET_IN_GAME},
+	{"toptenwin",&flags.toptenwin, FALSE, SET_IN_GAME},
 	{"travel", &iflags.travelcmd, TRUE, SET_IN_GAME},
 #ifdef WIN32CON
 	{"use_inverse",   &iflags.wc_inverse, TRUE, SET_IN_GAME},		/*WC*/
@@ -360,10 +356,6 @@ static struct Comp_Opt
 						PL_CSIZ, DISP_IN_GAME },
 	{ "runmode", "display frequency when `running' or `travelling'",
 						sizeof "teleport", SET_IN_GAME },
-#ifdef CHESSMOVES
-	{ "monster_runmode", "monster display frequency when `running' or `travelling'",
-						sizeof "teleport", SET_IN_GAME },
-#endif						
 	{ "scores",   "the parts of the score list you wish to see",
 						32, SET_IN_GAME },
 	{ "scroll_amount", "amount to scroll map when scroll_margin is reached",
@@ -588,9 +580,6 @@ initoptions()
 	flags.end_top = 3;
 	flags.end_around = 2;
 	iflags.runmode = RUN_LEAP;
-#ifdef CHESSMOVES	
-	iflags.monster_runmode = RUN_LEAP;
-#endif
 	iflags.msg_history = 20;
 #ifdef TTY_GRAPHICS
 	iflags.prevmsg_window = 's';
@@ -697,11 +686,6 @@ initoptions()
 		Sdlgl_parse_options(opts, TRUE, FALSE);
 #endif
 
-        if (flags.lit_corridor && iflags.use_color) {
-            showsyms[S_darkroom]=showsyms[S_room];
-        } else {
-            showsyms[S_darkroom]=showsyms[S_unexplored];
-        }
 	return;
 }
 
@@ -1026,13 +1010,6 @@ const char *optn;
 	return 1;
 }
 
-#ifdef LINEOFSIGHT_COLOUR
-static NEARDATA const char *lineofsight_colours[] = {
-	"black", "red", "green", "brown", "blue", "magenta", "cyan", "grey",
-	"no,colour", "orange", "bright green", "yellow", "bright blue", 
-	"bright magenta", "bright cyan", "white"
-};
-#endif
 void
 set_duplicate_opt_detection(on_or_off)
 int on_or_off;
@@ -1244,9 +1221,6 @@ boolean tinitial, tfrom_file;
 	boolean negated;
 	int i;
 	const char *fullname;
-#ifdef LINEOFSIGHT_COLOUR
-	int los_colour;
-#endif
 
 	initial = tinitial;
 	from_file = tfrom_file;
@@ -1435,47 +1409,7 @@ boolean tinitial, tfrom_file;
 		}
 		return;
 	}
-#ifdef CHESSMOVES
-	fullname = "monster_runmode";
-	if (match_optname(opts, fullname, 4, TRUE)) {
-		if (negated) {
-			iflags.monster_runmode = RUN_TPORT;
-		} else if ((op = string_for_opt(opts, FALSE)) != 0) {
-		    if (!strncmpi(op, "teleport", strlen(op)))
-			iflags.monster_runmode = RUN_TPORT;
-		    else if (!strncmpi(op, "run", strlen(op)))
-			iflags.monster_runmode = RUN_LEAP;
-		    else if (!strncmpi(op, "walk", strlen(op)))
-			iflags.monster_runmode = RUN_STEP;
-		    else if (!strncmpi(op, "crawl", strlen(op)))
-			iflags.monster_runmode = RUN_CRAWL;
-		    else
-			badoption(opts);
-		}
-		return;
-	}
-#endif
 
-#ifdef LINEOFSIGHT_COLOUR
-	fullname = "los_colour";
-	if (match_optname(opts, fullname, 4, TRUE)) {
-	    if (negated) {
-		iflags.los_colour = CLR_BLUE;
-	    } else if ((op = string_for_opt(opts, FALSE)) != 0) {
-		if (!strncmpi(op, "gray", strlen(op)))
-		    iflags.los_colour = CLR_GRAY;
-		else
-		    for (los_colour=0; los_colour < CLR_MAX; los_colour++) {
-			if (!strncmpi(op, lineofsight_colours[los_colour], strlen(op))) {
-			    iflags.los_colour = los_colour;
-			    break;
-			}
-			if (los_colour == CLR_MAX-1) badoption(opts);
-		    }
-		}
-	    return;
-	}
-#endif
 	fullname = "msghistory";
 	if (match_optname(opts, fullname, 3, TRUE)) {
 		op = string_for_env_opt(fullname, opts, negated);
@@ -2599,9 +2533,6 @@ goodfruit:
 			    else lan_mail_finish();
 			}
 #endif
-			else if ((boolopt[i].addr) == &flags.passages) {
-			    need_redraw = TRUE;
-			}
 			else if ((boolopt[i].addr) == &flags.lit_corridor) {
 			    /*
 			     * All corridor squares seen via night vision or
@@ -2614,7 +2545,6 @@ goodfruit:
 			    {
 			    vision_recalc(2);		/* shut down vision */
 			    vision_full_recalc = 1;	/* delayed recalc */
-			    if (iflags.use_color) need_redraw = TRUE;  /* darkroom refresh */
 			}
 			}
 			else if ((boolopt[i].addr) == &iflags.use_inverse ||
@@ -2634,11 +2564,6 @@ goodfruit:
 				    set_colors();
 			    }
 # endif
-			}
-#endif
-#ifdef LINEOFSIGHT
-			else if ((boolopt[i].addr) == &iflags.wc_lineofsight) {
-			    need_redraw = TRUE;
 			}
 #endif
                         else if ((boolopt[i].addr) == &flags.perm_invent)
@@ -3092,14 +3017,8 @@ doset()
 	}
 
 	destroy_nhwindow(tmpwin);
-	if (need_redraw) {
-	    if (flags.lit_corridor && iflags.use_color) {
-		showsyms[S_darkroom]=showsyms[S_room];
-	    } else {
-		showsyms[S_darkroom]=showsyms[S_unexplored];
-	    }
+	if (need_redraw)
 	    (void) doredraw();
-	}
 	return 0;
 }
 
@@ -3244,26 +3163,6 @@ boolean setinitial,setfromfile;
 	}
 	destroy_nhwindow(tmpwin);
 	retval = TRUE;
-#ifdef CHESSMOVES
-    } else if (!strcmp("monster_runmode", optname)) {
-	const char *mode_name;
-	menu_item *mode_pick = (menu_item *)0;
-	tmpwin = create_nhwindow(NHW_MENU);
-	start_menu(tmpwin);
-	for (i = 0; i < SIZE(runmodes); i++) {
-		mode_name = runmodes[i];
-		any.a_int = i + 1;
-		add_menu(tmpwin, NO_GLYPH, &any, *mode_name, 0,
-			 ATR_NONE, mode_name, MENU_UNSELECTED);
-	}
-	end_menu(tmpwin, "Select monster run/travel display mode:");
-	if (select_menu(tmpwin, PICK_ONE, &mode_pick) > 0) {
-		iflags.monster_runmode = mode_pick->item.a_int - 1;
-		free((genericptr_t)mode_pick);
-	}
-	destroy_nhwindow(tmpwin);
-	retval = TRUE;
-#endif
     } 
 #ifdef TTY_GRAPHICS
       else if (!strcmp("msg_window", optname)) {
@@ -3658,10 +3557,6 @@ char *buf;
 		Sprintf(buf, "%s", rolestring(flags.initrole, roles, name.m));
 	else if (!strcmp(optname, "runmode"))
 		Sprintf(buf, "%s", runmodes[iflags.runmode]);
-#ifdef CHESSMOVES
-	else if (!strcmp(optname, "monster_runmode"))
-		Sprintf(buf, "%s", runmodes[iflags.monster_runmode]);
-#endif		
 	else if (!strcmp(optname, "scores")) {
 		Sprintf(buf, "%d top/%d around%s", flags.end_top,
 				flags.end_around, flags.end_own ? "/own" : "");

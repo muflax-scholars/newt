@@ -130,11 +130,7 @@ vision_init()
     }
 
     /* Start out with cs0 as our current array */
-#ifdef LINEOFSIGHT
-    viz_array_old = viz_array = cs_rows0;
-#else
     viz_array = cs_rows0;
-#endif
     viz_rmin  = cs_rmin0;
     viz_rmax  = cs_rmax0;
 
@@ -204,11 +200,7 @@ vision_reset()
     register struct rm    *lev;
 
     /* Start out with cs0 as our current array */
-#ifdef LINEOFSIGHT
-    viz_array_old = viz_array = cs_rows0;
-#else
     viz_array = cs_rows0;
-#endif
     viz_rmin  = cs_rmin0;
     viz_rmax  = cs_rmax0;
 
@@ -503,9 +495,7 @@ void
 vision_recalc(control)
     int control;
 {
-#ifndef LINEOFSIGHT
     char **temp_array;	/* points to the old vision array */
-#endif
     char **next_array;	/* points to the new vision array */
     char *next_row;	/* row pointer for the new array */
     char *old_row;	/* row pointer for the old array */
@@ -561,19 +551,11 @@ vision_recalc(control)
 	 * anything, so we only need update positions we used to be able
 	 * to see.
 	 */
-#ifdef LINEOFSIGHT
-	viz_array_old = viz_array;	/* set viz_array so newsym() will work */
-#else
 	temp_array = viz_array;	/* set viz_array so newsym() will work */
-#endif
 	viz_array = next_array;
 
 	for (row = 0; row < ROWNO; row++) {
-#ifdef LINEOFSIGHT
-	    old_row = viz_array_old[row];
-#else
 	    old_row = temp_array[row];
-#endif
 
 	    /* Find the min and max positions on the row. */
 	    start = min(viz_rmin[row], next_rmin[row]);
@@ -697,11 +679,7 @@ vision_recalc(control)
     /*
      * Make the viz_array the new array so that cansee() will work correctly.
      */
-#ifdef LINEOFSIGHT
-    viz_array_old = viz_array;
-#else
     temp_array = viz_array;
-#endif
     viz_array = next_array;
 
     /*
@@ -723,11 +701,7 @@ vision_recalc(control)
     colbump[u.ux] = colbump[u.ux+1] = 1;
     for (row = 0; row < ROWNO; row++) {
 	dy = u.uy - row;                dy = sign(dy);
-#ifdef LINEOFSIGHT
-	next_row = next_array[row];     old_row = viz_array_old[row];
-#else
 	next_row = next_array[row];     old_row = temp_array[row];
-#endif
 
 	/* Find the min and max positions on the row. */
 	start = min(viz_rmin[row], next_rmin[row]);

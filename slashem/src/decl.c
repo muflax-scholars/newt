@@ -196,9 +196,6 @@ NEARDATA struct tech tech_list[MAXTECH + 1] = {DUMMY};
 NEARDATA long moves = 1L, monstermoves = 1L;
 	 /* These diverge when player is Fast or Very_fast */
 NEARDATA long wailmsg = 0L;
-#ifdef BRADS_PIT
-NEARDATA struct brds_pt brads_pit = { FALSE, FALSE };
-#endif
 
 /* objects that are moving to another dungeon level */
 NEARDATA struct obj *migrating_objs = (struct obj *)0;
@@ -282,9 +279,6 @@ const char *materialnm[] = {
 /* Vision */
 NEARDATA boolean vision_full_recalc = 0;
 NEARDATA char	 **viz_array = 0;/* used in cansee() and couldsee() macros */
-#ifdef LINEOFSIGHT
-NEARDATA char	 **viz_array_old = 0;/* used in cansee() and couldsee() macros */
-#endif
 
 /* Global windowing data, defined here for multi-window-system support */
 NEARDATA winid WIN_MESSAGE = WIN_ERR, WIN_STATUS = WIN_ERR;
