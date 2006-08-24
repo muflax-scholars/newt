@@ -26,9 +26,9 @@ slashem/win/newt:
 	cd slashem/win && ln -s ../../newt/win/newt
 
 clean:
-	make -C nethack clean
-	make -C slashem clean
+	-make -C nethack clean
+	-make -C slashem clean
 
 spotless:
-	make -C nethack spotless
-	make -C slashem spotless
+	-make -C nethack spotless
+	-make -C slashem spotless
