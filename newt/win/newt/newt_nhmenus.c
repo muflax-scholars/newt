@@ -5,6 +5,7 @@
 
 #include "newt_nhmenus.h"
 
+#include "newt_main.h"
 #include "newt_nhinput.h"
 #include "newt_nhoutput.h"
 #include "newt_nhwindows.h"
