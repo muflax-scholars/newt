@@ -727,19 +727,19 @@ qt_clust.o: ../win/Qt/qt_clust.cpp ../include/qt_clust.h
 	$(CXX) $(CXXFLAGS) -c ../win/Qt/qt_clust.cpp
 qttableview.o: ../win/Qt/qttableview.cpp ../include/qttableview.h
 	$(CXX) $(CXXFLAGS) -c ../win/Qt/qttableview.cpp
-newt_main.o: $(WINNEWTDIR)newt_main.c $(WINNEWTDIR)newt_main.h $(WINNEWTDIR)newt_nhwindows.h $(WINNEWTDIR)newt_nhmenus.h $(WINNEWTDIR)newt_nhinput.h $(WINNEWTDIR)newt_nhoutput.h $(WINNEWTDIR)newt_nhunixtty.h $(WINNEWTDIR)newt_nhpaletted.h $(WINNEWTDIR)newt_globals.c
+newt_main.o: $(WINNEWTDIR)newt_main.c $(WINNEWTDIR)newt_main.h $(WINNEWTDIR)newt_nhwindows.h $(WINNEWTDIR)newt_nhmenus.h $(WINNEWTDIR)newt_nhinput.h $(WINNEWTDIR)newt_nhoutput.h $(WINNEWTDIR)newt_nhunixtty.h $(WINNEWTDIR)newt_nhpaletted.h $(WINNEWTDIR)newt_globals.h
 	$(CC) $(WINNEWTCFLAGS) -c $(WINNEWTDIR)newt_main.c
-newt_nhinput.o: $(WINNEWTDIR)newt_nhinput.c $(WINNEWTDIR)newt_main.h $(WINNEWTDIR)newt_nhwindows.h $(WINNEWTDIR)newt_nhinput.h $(WINNEWTDIR)newt_nhoutput.h $(WINNEWTDIR)newt_globals.c
+newt_nhinput.o: $(WINNEWTDIR)newt_nhinput.c $(WINNEWTDIR)newt_main.h $(WINNEWTDIR)newt_nhwindows.h $(WINNEWTDIR)newt_nhinput.h $(WINNEWTDIR)newt_nhoutput.h $(WINNEWTDIR)newt_globals.h
 	$(CC) $(WINNEWTCFLAGS) -c $(WINNEWTDIR)newt_nhinput.c
-newt_nhmenus.o: $(WINNEWTDIR)newt_nhmenus.c $(WINNEWTDIR)newt_main.h $(WINNEWTDIR)newt_nhmenus.h $(WINNEWTDIR)newt_nhwindows.h $(WINNEWTDIR)newt_nhinput.h $(WINNEWTDIR)newt_nhoutput.h $(WINNEWTDIR)newt_globals.c
+newt_nhmenus.o: $(WINNEWTDIR)newt_nhmenus.c $(WINNEWTDIR)newt_main.h $(WINNEWTDIR)newt_nhmenus.h $(WINNEWTDIR)newt_nhwindows.h $(WINNEWTDIR)newt_nhinput.h $(WINNEWTDIR)newt_nhoutput.h $(WINNEWTDIR)newt_globals.h
 	$(CC) $(WINNEWTCFLAGS) -c $(WINNEWTDIR)newt_nhmenus.c
-newt_nhoutput.o: $(WINNEWTDIR)newt_nhoutput.c $(WINNEWTDIR)newt_nhmenus.h $(WINNEWTDIR)newt_nhwindows.h $(WINNEWTDIR)newt_nhinput.h $(WINNEWTDIR)newt_nhoutput.h $(WINNEWTDIR)newt_globals.c
+newt_nhoutput.o: $(WINNEWTDIR)newt_nhoutput.c $(WINNEWTDIR)newt_nhmenus.h $(WINNEWTDIR)newt_nhwindows.h $(WINNEWTDIR)newt_nhinput.h $(WINNEWTDIR)newt_nhoutput.h $(WINNEWTDIR)newt_globals.h
 	$(CC) $(WINNEWTCFLAGS) -c $(WINNEWTDIR)newt_nhoutput.c
 newt_nhpaletted.o: $(WINNEWTDIR)newt_nhpaletted.c $(WINNEWTDIR)newt_nhpaletted.h
 	$(CC) $(WINNEWTCFLAGS) -c $(WINNEWTDIR)newt_nhpaletted.c
 newt_nhunixtty.o: $(WINNEWTDIR)newt_nhunixtty.c $(WINNEWTDIR)newt_nhunixtty.h
 	$(CC) $(WINNEWTCFLAGS) -c $(WINNEWTDIR)newt_nhunixtty.c
-newt_nhwindows.o: $(WINNEWTDIR)newt_nhwindows.c $(WINNEWTDIR)newt_main.h $(WINNEWTDIR)newt_nhmenus.h $(WINNEWTDIR)newt_nhwindows.h $(WINNEWTDIR)newt_nhinput.h $(WINNEWTDIR)newt_globals.c
+newt_nhwindows.o: $(WINNEWTDIR)newt_nhwindows.c $(WINNEWTDIR)newt_main.h $(WINNEWTDIR)newt_nhmenus.h $(WINNEWTDIR)newt_nhwindows.h $(WINNEWTDIR)newt_nhinput.h $(WINNEWTDIR)newt_globals.h
 	$(CC) $(WINNEWTCFLAGS) -c $(WINNEWTDIR)newt_nhwindows.c
 newt_globals.o: $(WINNEWTDIR)newt_globals.c $(WINNEWTDIR)newt_globals.h
 	$(CC) $(WINNEWTCFLAGS) -c $(WINNEWTDIR)newt_globals.c
