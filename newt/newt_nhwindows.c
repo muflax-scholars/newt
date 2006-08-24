@@ -608,22 +608,22 @@ newt_display_nhwindow (window, blocking)
             SDL_HWSURFACE | SDL_SRCALPHA,
             iflags.wc_tile_width,
             iflags.wc_tile_height,
-            VideoBPP,
-            newt_tiles->format->Rmask,
-            newt_tiles->format->Gmask,
-            newt_tiles->format->Bmask,
-            newt_tiles->format->Amask);
+            newt_screen->format->BitsPerPixel,
+            newt_screen->format->Rmask,
+            newt_screen->format->Gmask,
+            newt_screen->format->Bmask,
+            newt_screen->format->Amask);
 
           dstrect.w=dstrect.h=newt_fontsize;
           glyph_surface=SDL_CreateRGBSurface(
             SDL_HWSURFACE | SDL_SRCALPHA,
             dstrect.w,
             dstrect.h,
-            VideoBPP,
-            newt_tiles->format->Rmask,
-            newt_tiles->format->Gmask,
-            newt_tiles->format->Bmask,
-            newt_tiles->format->Amask);
+            newt_screen->format->BitsPerPixel,
+            newt_screen->format->Rmask,
+            newt_screen->format->Gmask,
+            newt_screen->format->Bmask,
+            newt_screen->format->Amask);
 
 			for (counter=0; counter<linesperpage; counter++) {
 				if (pagecounter*linesperpage+counter>=textwindow->textline_amount) break;
@@ -635,25 +635,28 @@ newt_display_nhwindow (window, blocking)
 				}
 				if (!strlen(textline)) continue;
 
-          if (hasglyphs && textwindow->glyph && textwindow->glyph[pagecounter*linesperpage+counter]!=NO_GLYPH) {
-            dstrect.w=srcrect.w=iflags.wc_tile_width;
-            dstrect.h=srcrect.h=iflags.wc_tile_height;
-            srcrect.x=(glyph2tile[textwindow->glyph[pagecounter*linesperpage+counter]]%(newt_tiles->w/iflags.wc_tile_width))*iflags.wc_tile_width;
-            srcrect.y=(glyph2tile[textwindow->glyph[pagecounter*linesperpage+counter]]/(newt_tiles->w/iflags.wc_tile_width))*iflags.wc_tile_height;
-            dstrect.x=dstrect.y=0;
-            SDL_FillRect(glyph_surface_tmp,(SDL_Rect *)&dstrect,newt_Menu_bg);
-            SDL_BlitSurface(newt_tiles, (SDL_Rect *)&srcrect, glyph_surface_tmp, (SDL_Rect *)&dstrect);
-            srcrect.w=iflags.wc_tile_width;
-            srcrect.h=iflags.wc_tile_height;
-            srcrect.x=0;
-            srcrect.y=0;
-            newt_stretch_fast(glyph_surface_tmp, (SDL_Rect *)&srcrect, glyph_surface);
-            srcrect.x=srcrect.y=0;
-            srcrect.w=dstrect.w=glyph_surface->w;
-            srcrect.h=dstrect.h=glyph_surface->h;
-            dstrect.x=(flags.perm_invent && window==WIN_INVEN) ? 1 : newt_screen->w-(textwindow->textline_width+4+hasglyphs);
-            dstrect.y=(counter+1+(textwindow->title ? 1 : 0))*newt_fontsize;
-            SDL_BlitSurface(glyph_surface, &srcrect, newt_screen, &dstrect);
+          if (hasglyphs && textwindow->glyph && textwindow->glyph[pagecounter*linesperpage+counter]!=NO_GLYPH)
+          {
+              dstrect.w=srcrect.w=iflags.wc_tile_width;
+              dstrect.h=srcrect.h=iflags.wc_tile_height;
+              srcrect.x=(glyph2tile[textwindow->glyph[pagecounter*linesperpage+counter]]%(newt_tiles->w/iflags.wc_tile_width))*iflags.wc_tile_width;
+              srcrect.y=(glyph2tile[textwindow->glyph[pagecounter*linesperpage+counter]]/(newt_tiles->w/iflags.wc_tile_width))*iflags.wc_tile_height;
+              dstrect.x=dstrect.y=0;
+              SDL_FillRect(glyph_surface_tmp,(SDL_Rect *)&dstrect,newt_Menu_bg);
+              SDL_BlitSurface(newt_tiles, (SDL_Rect *)&srcrect, glyph_surface_tmp, (SDL_Rect *)&dstrect);
+
+              srcrect.w=iflags.wc_tile_width;
+              srcrect.h=iflags.wc_tile_height;
+              srcrect.x=0;
+              srcrect.y=0;
+              newt_stretch_fast(glyph_surface_tmp, (SDL_Rect *)&srcrect, glyph_surface);
+
+              srcrect.x=srcrect.y=0;
+              srcrect.w=dstrect.w=glyph_surface->w;
+              srcrect.h=dstrect.h=glyph_surface->h;
+              dstrect.x=(flags.perm_invent && window==WIN_INVEN) ? 1 : newt_screen->w-(textwindow->textline_width+4+hasglyphs);
+              dstrect.y=(counter+1+(textwindow->title ? 1 : 0))*newt_fontsize;
+              SDL_BlitSurface(glyph_surface, &srcrect, newt_screen, &dstrect);
           }
 
 				textsurface = TTF_RenderText_Blended(
