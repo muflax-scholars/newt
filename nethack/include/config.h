@@ -198,7 +198,9 @@
  *	a tar-like file, thus making a neater installation.  See *conf.h
  *	for detailed configuration.
  */
-#define DLB	/* not supported on all platforms */
+#ifndef DLB
+# define DLB	/* not supported on all platforms */
+#endif
 
 /*
  *	Defining INSURANCE slows down level changes, but allows games that
