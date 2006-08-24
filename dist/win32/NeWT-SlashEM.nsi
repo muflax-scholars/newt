@@ -1,5 +1,5 @@
 Name "Ne.W.T. for Slash'EM"
-OutFile "newt-a.b.c-slashem_win32-d.exe"
+OutFile "newt-1.3.0-slashem_win32-1.exe"
 InstallDir "$PROGRAMFILES\NeWT\SlashEM"
 
 ;--------------------------------
