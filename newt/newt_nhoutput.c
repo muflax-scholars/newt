@@ -77,7 +77,7 @@ newt_putstr (window, attr, str)
 		if (newt_current_msghistory) {
 			newstr=malloc(strlen(newt_msghistory[(iflags.msg_history-1)*2+0])+1+strlen(str)+1+strlen(NEWT_MORE)+1);
 			sprintf(newstr,"%s %s %s",newt_msghistory[(iflags.msg_history-1)*2+0],str,NEWT_MORE);
-			TTF_SizeText(newt_font, newstr, &width, &height);
+			TTF_SizeText(newt_font_message, newstr, &width, &height);
 			free(newstr);
 			if (width<=newt_screen->w) {
 				newstr=malloc(strlen(newt_msghistory[(iflags.msg_history-1)*2+0])+1+strlen(str)+1);
@@ -89,6 +89,7 @@ newt_putstr (window, attr, str)
 				newt_display_nhwindow(WIN_MESSAGE, FALSE);
 				return;
 			} else {
+                /* TODO The string needs to be split to ensure that all is seen. */
 				newstr=malloc(strlen(newt_msghistory[(iflags.msg_history-1)*2+0])+1+strlen(NEWT_MORE)+1);
 				sprintf(newstr,"%s %s",newt_msghistory[(iflags.msg_history-1)*2+0],NEWT_MORE);
 				free(newt_msghistory[(iflags.msg_history-1)*2+0]);
@@ -146,11 +147,11 @@ newt_putstr (window, attr, str)
       textlinewidth=TEXTLINE_ACCEL_USE_CHAR+strlen(&str[TEXTLINE_ACCEL_USE_CHAR])+1;
       textwindow->textlines[textwindow->textline_amount-1]=malloc(textlinewidth);
       memcpy(textwindow->textlines[textwindow->textline_amount-1],str,textlinewidth);
-      TTF_SizeText(newt_font, &str[TEXTLINE_ACCEL_USE_CHAR], &width, &height);
+      TTF_SizeText(newt_font_menu, &str[TEXTLINE_ACCEL_USE_CHAR], &width, &height);
     } else {
       textwindow->textlines[textwindow->textline_amount-1]=malloc(strlen(str)+1);
       strcpy(textwindow->textlines[textwindow->textline_amount-1],str);
-      TTF_SizeText(newt_font, str, &width, &height);
+      TTF_SizeText(newt_font_text, str, &width, &height);
     }
 		if (width>textwindow->textline_width) textwindow->textline_width=width;
 	};
@@ -258,7 +259,7 @@ newt_print_glyph (window, x, y, glyph)
                 newt_Nethack_Colours[newt_ascii_map[y][x].colour].g,
                 newt_Nethack_Colours[newt_ascii_map[y][x].colour].b));
         textsurface = TTF_RenderText_Blended(
-            newt_font, shortstring, newt_Nethack_Colours[NO_COLOR]);
+            newt_font_map, shortstring, newt_Nethack_Colours[NO_COLOR]);
     } else
     {
         SDL_FillRect(
@@ -270,7 +271,7 @@ newt_print_glyph (window, x, y, glyph)
                 newt_Nethack_Colours[NO_COLOR].g,
                 newt_Nethack_Colours[NO_COLOR].b));
         textsurface = TTF_RenderText_Blended(
-            newt_font, shortstring, newt_Nethack_Colours[newt_ascii_map[y][x].colour]);
+            newt_font_map, shortstring, newt_Nethack_Colours[newt_ascii_map[y][x].colour]);
     }
     SDL_BlitSurface(textsurface, &srcrect, newt_win_map_ascii, &dstrect);
     SDL_FreeSurface(textsurface);

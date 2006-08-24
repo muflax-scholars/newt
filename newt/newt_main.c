@@ -35,6 +35,10 @@ struct window_procs newt_procs = {
     WC_MAP_MODE |
     WC_TILED_MAP |
     WC_MOUSE_SUPPORT |
+    WC_FONTSIZ_MAP |
+    WC_FONTSIZ_MENU |
+    WC_FONTSIZ_MESSAGE |
+    WC_FONTSIZ_STATUS |
     WC_FONTSIZ_TEXT |
     WC_PLAYER_SELECTION,
 #ifdef POSITIONBAR_RCOPTION
@@ -236,7 +240,7 @@ newt_init_nhwindows (argcp, argv)
         printf("Available %dbpp video modes:\n", VideoBPP);
         while (*(VideoModes+VideoModeAmount)) {
             printf("    %3d: %dx%d\n",VideoModeAmount,(*(VideoModes+VideoModeAmount))->w,(*(VideoModes+VideoModeAmount))->h);
-            if ((iflags.wc_tile_height*ROWNO+newt_fontsize*4)<(*(VideoModes+VideoModeAmount))->h&&(*(VideoModes+VideoModeAmount))->h<(*(VideoModes+VideoMode))->h) VideoMode=VideoModeAmount;
+            if ((iflags.wc_tile_height*ROWNO+newt_fontsize_message*4)<(*(VideoModes+VideoModeAmount))->h&&(*(VideoModes+VideoModeAmount))->h<(*(VideoModes+VideoMode))->h) VideoMode=VideoModeAmount;
             VideoModeAmount++;
         }
 
@@ -262,14 +266,46 @@ newt_init_nhwindows (argcp, argv)
     printf("Loaded tileset : \"%s\"\n",iflags.wc_tile_file );
 
     TTF_Init();
-    if (iflags.wc_fontsiz_text) newt_fontsize = iflags.wc_fontsiz_text;
-    newt_font = TTF_OpenFont("ASCII.ttf",newt_fontsize);
-    if (!newt_font) {
+
+    if (iflags.wc_fontsiz_map) newt_fontsize_map = iflags.wc_fontsiz_map;
+    newt_font_map = TTF_OpenFont("ASCII.ttf",newt_fontsize_map);
+    if (!newt_font_map) {
         printf("Failed to load default font from : \"%s\"\n", "ASCII.ttf");
         exit(-1);
     }
-    
-    newt_fontsize=TTF_FontHeight(newt_font);
+    newt_fontsize_map=TTF_FontHeight(newt_font_map);
+
+    if (iflags.wc_fontsiz_menu) newt_fontsize_menu = iflags.wc_fontsiz_menu;
+    newt_font_menu = TTF_OpenFont("ASCII.ttf",newt_fontsize_menu);
+    if (!newt_font_menu) {
+        printf("Failed to load default font from : \"%s\"\n", "ASCII.ttf");
+        exit(-1);
+    }
+    newt_fontsize_menu=TTF_FontHeight(newt_font_menu);
+
+    if (iflags.wc_fontsiz_message) newt_fontsize_message = iflags.wc_fontsiz_message;
+    newt_font_message = TTF_OpenFont("ASCII.ttf",newt_fontsize_message);
+    if (!newt_font_message) {
+        printf("Failed to load default font from : \"%s\"\n", "ASCII.ttf");
+        exit(-1);
+    }
+    newt_fontsize_message=TTF_FontHeight(newt_font_message);
+
+    if (iflags.wc_fontsiz_status) newt_fontsize_status = iflags.wc_fontsiz_status;
+    newt_font_status = TTF_OpenFont("ASCII.ttf",newt_fontsize_status);
+    if (!newt_font_status) {
+        printf("Failed to load default font from : \"%s\"\n", "ASCII.ttf");
+        exit(-1);
+    }
+    newt_fontsize_status=TTF_FontHeight(newt_font_status);
+
+    if (iflags.wc_fontsiz_text) newt_fontsize_text = iflags.wc_fontsiz_text;
+    newt_font_text = TTF_OpenFont("ASCII.ttf",newt_fontsize_text);
+    if (!newt_font_text) {
+        printf("Failed to load default font from : \"%s\"\n", "ASCII.ttf");
+        exit(-1);
+    }
+    newt_fontsize_text=TTF_FontHeight(newt_font_text);
 
 	getversionstring((char *)&nhversion);
 	sprintf((char *)&version,

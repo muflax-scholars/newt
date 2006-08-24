@@ -216,9 +216,9 @@ newt_nh_poskey (x, y, mod)
         newt_windowQueueAdd(WIN_MAP);
         // XXX newt_windowQueueAdd(WIN_INVEN);
         while (newt_windowQueueRender()) {};
-        textsurface = TTF_RenderText_Shaded(newt_font, newt_internalMessageText, newt_Info_fg, newt_Info_bg);
+        textsurface = TTF_RenderText_Shaded(newt_font_message, newt_internalMessageText, newt_Info_fg, newt_Info_bg);
         dstrect.x=newt_screen->w-(textsurface->w+10);
-        dstrect.y=newt_fontsize+10;
+        dstrect.y=newt_fontsize_message+10;
         srcrect.x=srcrect.y=0;
         srcrect.w=textsurface->w;
         srcrect.h=textsurface->h;
@@ -256,7 +256,7 @@ newt_nh_poskey (x, y, mod)
               newt_screen=SDL_SetVideoMode(
                 newt_win_map->w+newt_margin_left,
                 newt_win_map->h +
-                ((newt_positionbarmode==NEWT_POSITIONBARMODE_NONE ? 3 : 4)*newt_fontsize),
+                ((newt_positionbarmode==NEWT_POSITIONBARMODE_NONE ? 2 : 3)*newt_fontsize_status+newt_fontsize_message),
                 VideoBPP,
                 SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE | SDL_ASYNCBLIT | (iflags.wc2_fullscreen ? SDL_FULLSCREEN : 0));
               newt_deltazoom=TRUE;

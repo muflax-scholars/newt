@@ -85,7 +85,7 @@ newt_create_nhwindow (type)
             }
 
             if (!newt_win_map_ascii) {
-                TTF_SizeText( newt_font, "M", &newt_win_map_ascii_fontwidth, &newt_win_map_ascii_fontheight);
+                TTF_SizeText( newt_font_map, "M", &newt_win_map_ascii_fontwidth, &newt_win_map_ascii_fontheight);
                 newt_win_map_ascii=SDL_CreateRGBSurface(
                     SDL_SWSURFACE,
                     newt_win_map_ascii_fontwidth*COLNO,
@@ -165,11 +165,11 @@ newt_clear_nhwindow (window)
         dstrect.x=0;
         dstrect.y=0;
         dstrect.w=newt_screen->w;
-        dstrect.h=newt_fontsize;
+        dstrect.h=newt_fontsize_message;
         SDL_FillRect(newt_screen, &dstrect, newt_Message_bg);
 
 		dstrect.x=0;
-		dstrect.y=newt_fontsize-1;
+		dstrect.y=newt_fontsize_message-1;
 		dstrect.w=newt_screen->w;
 		dstrect.h=1;
 		SDL_FillRect(newt_screen,&dstrect,newt_Message_Border);
@@ -178,13 +178,13 @@ newt_clear_nhwindow (window)
     } else
 	if (window==WIN_STATUS) {
         dstrect.x=0;
-        dstrect.y=newt_screen->h-(newt_fontsize*2)+1;
+        dstrect.y=newt_screen->h-(newt_fontsize_status*2)+1;
         dstrect.w=newt_screen->w;
-        dstrect.h=newt_fontsize*2-1;
+        dstrect.h=newt_fontsize_status*2-1;
         SDL_FillRect(newt_screen, &dstrect, newt_Status_bg);
 
 		dstrect.x=0;
-		dstrect.y=newt_screen->h-(newt_fontsize*2);
+		dstrect.y=newt_screen->h-(newt_fontsize_status*2);
 		dstrect.w=newt_screen->w;
 		dstrect.h=1;
 		SDL_FillRect(newt_screen,&dstrect,newt_Status_Border);
@@ -301,7 +301,7 @@ newt_display_nhwindow (window, blocking)
     if (window==WIN_MAP) {
 
       if (!flags.perm_invent) newt_margin_left=0;
-      maparea_y=(int)newt_screen->h-(newt_positionbarmode==NEWT_POSITIONBARMODE_NONE ? 3 : 4)*newt_fontsize;
+      maparea_y=(int)newt_screen->h-((newt_positionbarmode==NEWT_POSITIONBARMODE_NONE ? 2 : 3)*newt_fontsize_status+newt_fontsize_message);
       maparea_x=newt_screen->w-(newt_margin_left+newt_margin_right);
 
       if (maparea_x < 1 || maparea_y < 1) return;
@@ -309,7 +309,7 @@ newt_display_nhwindow (window, blocking)
         if (newt_ZoomMode!=NEWT_ZOOMMODE_FULLSCREEN) {
             /* clear background */
 		dstrect.x=newt_margin_left;
-		dstrect.y=newt_fontsize;
+		dstrect.y=newt_fontsize_message;
 		dstrect.w=maparea_x;
 		dstrect.h=maparea_y;
             SDL_FillRect(newt_screen, &dstrect, newt_Map_bg);
@@ -405,7 +405,7 @@ newt_display_nhwindow (window, blocking)
         if (dstrect.y+dstrect.h>maparea_y) dstrect.y=maparea_y-dstrect.h;
 
         dstrect.x+=newt_margin_left;
-        dstrect.y+=newt_fontsize;
+        dstrect.y+=newt_fontsize_message;
 
         /* blit zoomed surface */
         newt_screen_mapRect=render_window=dstrect;
@@ -423,7 +423,7 @@ newt_display_nhwindow (window, blocking)
         cursor.y+=render_window.y;
 
         SDL_GetClipRect(newt_screen,(SDL_Rect *)&newt_screen_clipping);
-        srcrect.y=newt_fontsize;
+        srcrect.y=newt_fontsize_message;
         srcrect.x=newt_margin_left;
         srcrect.h=maparea_y;
         srcrect.w=newt_screen->w-(newt_margin_left+newt_margin_right);
@@ -456,9 +456,9 @@ newt_display_nhwindow (window, blocking)
 		if (newt_positionbarmode!=NEWT_POSITIONBARMODE_NONE) {
             /* background */
 			dstrect.x=0;
-			dstrect.y=newt_screen->h-(newt_fontsize*3);
+			dstrect.y=newt_screen->h-(newt_fontsize_status*3);
 			dstrect.w=newt_screen->w;
-			dstrect.h=newt_fontsize;
+			dstrect.h=newt_fontsize_status;
 			SDL_FillRect(newt_screen, &dstrect, newt_Position_bg);
 
             /* highlight */
@@ -470,12 +470,12 @@ newt_display_nhwindow (window, blocking)
                 dstrect.x=render_window.x;
                 dstrect.w=render_window.w;
             }
-				dstrect.y=newt_screen->h-(newt_fontsize*3);
-				dstrect.h=newt_fontsize;
+				dstrect.y=newt_screen->h-(newt_fontsize_status*3);
+				dstrect.h=newt_fontsize_status;
 				SDL_FillRect(newt_screen, &dstrect, newt_Position_highlite);
 
 			dstrect.x=0;
-			dstrect.y=newt_screen->h-(newt_fontsize*3);
+			dstrect.y=newt_screen->h-(newt_fontsize_status*3);
 			dstrect.w=newt_screen->w;
 			dstrect.h=1;
 			SDL_FillRect(newt_screen,&dstrect,newt_Position_Border);
@@ -483,7 +483,7 @@ newt_display_nhwindow (window, blocking)
 			feature_loop=newt_positionbar;
 			while (*feature_loop) {
 				textsurface = TTF_RenderGlyph_Blended(
-					newt_font, *feature_loop++, newt_Position_fg);
+					newt_font_status, *feature_loop++, newt_Position_fg);
 
 				if (newt_positionbarmode==NEWT_POSITIONBARMODE_FULL) {
 					dstrect.x=(newt_screen->w*(int)(*feature_loop++))/COLNO;
@@ -494,7 +494,7 @@ newt_display_nhwindow (window, blocking)
                     dstrect.x+=render_window.x;
 				}
 
-				dstrect.y=newt_screen->h-(newt_fontsize*3)+((newt_fontsize-textsurface->h)/2);
+				dstrect.y=newt_screen->h-(newt_fontsize_status*3)+((newt_fontsize_status-textsurface->h)/2);
 				srcrect.x=srcrect.y=0;
 				srcrect.w=textsurface->w;
 				srcrect.h=textsurface->h;
@@ -515,14 +515,14 @@ newt_display_nhwindow (window, blocking)
 
 		if (newt_msghistory[(newt_display_msghistory)*2+0]&&strlen(newt_msghistory[(newt_display_msghistory)*2+0])) {
 			textsurface = TTF_RenderText_Blended(
-				newt_font, newt_msghistory[(newt_display_msghistory)*2+0], newt_Message_fg);
+				newt_font_message, newt_msghistory[(newt_display_msghistory)*2+0], newt_Message_fg);
 			srcrect.x=srcrect.y=0;
 			srcrect.w=textsurface->w;
 			srcrect.h=textsurface->h;
 			dstrect.x=0;
 			dstrect.y=0;
 			dstrect.w=newt_screen->w;
-			dstrect.h=newt_fontsize;
+			dstrect.h=newt_fontsize_message;
 
 			SDL_BlitSurface(textsurface, &srcrect, newt_screen, &dstrect);
             SDL_FreeSurface(textsurface);
@@ -535,14 +535,14 @@ newt_display_nhwindow (window, blocking)
 
 		for (counter=0; counter<2; counter++) {
 			textsurface = TTF_RenderText_Blended(
-				newt_font, newt_status[counter][0], newt_Status_fg);
+				newt_font_status, newt_status[counter][0], newt_Status_fg);
 			srcrect.x=srcrect.y=0;
 			srcrect.w=textsurface->w;
 			srcrect.h=textsurface->h;
 			dstrect.x=0;
-			dstrect.y=newt_screen->h-((2-counter)*newt_fontsize);
+			dstrect.y=newt_screen->h-((2-counter)*newt_fontsize_status);
 			dstrect.w=newt_screen->w;
-			dstrect.h=newt_fontsize;
+			dstrect.h=newt_fontsize_status;
 
 			SDL_BlitSurface(textsurface, &srcrect, newt_screen, &dstrect);
             SDL_FreeSurface(textsurface);
@@ -551,11 +551,14 @@ newt_display_nhwindow (window, blocking)
     int start_page;
     int end_page;
 
+        Sint32 newt_fontsize = newt_fontsize_text; /* FIXME should be _menu for menus */
+        TTF_Font *newt_font = newt_font_text; /* FIXME should be _menu for menus */
+
 		blocking=FALSE;
 
 		textwindow=(newt_window_rec *)window;
 
-		linesperpage=(newt_screen->h-((newt_positionbarmode==NEWT_POSITIONBARMODE_NONE ? 3 : 4)*newt_fontsize))/newt_fontsize;
+		linesperpage=(newt_screen->h-((newt_positionbarmode==NEWT_POSITIONBARMODE_NONE ? 2 : 3)*newt_fontsize_status+newt_fontsize_message))/newt_fontsize;
 		linesperpage--;
 		if (linesperpage<1) linesperpage=1;
 
@@ -592,16 +595,16 @@ newt_display_nhwindow (window, blocking)
 
 			/* background */
 			dstrect.x=(flags.perm_invent && window==WIN_INVEN) ? 0 : newt_screen->w-(textwindow->textline_width+6+4+hasglyphs);
-			dstrect.y=newt_fontsize;
+			dstrect.y=newt_fontsize_message;
 			dstrect.w=textwindow->textline_width+6+4+hasglyphs;
-			dstrect.h=newt_screen->h-((newt_positionbarmode==NEWT_POSITIONBARMODE_NONE ? 3 : 4)*newt_fontsize);
+			dstrect.h=newt_screen->h-((newt_positionbarmode==NEWT_POSITIONBARMODE_NONE ? 2 : 3)*newt_fontsize_status+newt_fontsize_message);
 			SDL_FillRect(newt_screen, &dstrect, newt_Menu_bg);
 
 			/* seperator */
 			dstrect.x= (flags.perm_invent && window==WIN_INVEN) ? (textwindow->textline_width+5+4+hasglyphs) : newt_screen->w-(textwindow->textline_width+5+4+hasglyphs);
-			dstrect.y=newt_fontsize;
+			dstrect.y=newt_fontsize_message;
 			dstrect.w=1;
-			dstrect.h=newt_screen->h-((newt_positionbarmode==NEWT_POSITIONBARMODE_NONE ? 3 : 4)*newt_fontsize);
+			dstrect.h=newt_screen->h-((newt_positionbarmode==NEWT_POSITIONBARMODE_NONE ? 2 : 3)*newt_fontsize_status+newt_fontsize_message);
 			SDL_FillRect(newt_screen,&dstrect,newt_Menu_Border);
 
           glyph_surface_tmp=SDL_CreateRGBSurface(
@@ -673,7 +676,7 @@ newt_display_nhwindow (window, blocking)
 				srcrect.w=textsurface->w;
 				srcrect.h=textsurface->h;
 				dstrect.x=(flags.perm_invent && window==WIN_INVEN) ? 1 + hasglyphs : newt_screen->w-(textwindow->textline_width+4);
-				dstrect.y=(counter+1)*newt_fontsize;
+				dstrect.y=(counter)*newt_fontsize+newt_fontsize_message;
 				dstrect.w=textwindow->textline_width;
 				dstrect.h=newt_fontsize;
 
@@ -694,7 +697,7 @@ newt_display_nhwindow (window, blocking)
 				srcrect.w=textsurface->w;
 				srcrect.h=textsurface->h;
 				dstrect.x=newt_screen->w-(textsurface->w+4);
-				dstrect.y=newt_screen->h-((newt_positionbarmode==NEWT_POSITIONBARMODE_NONE ? 3 : 4)*newt_fontsize);
+				dstrect.y=newt_screen->h-((newt_positionbarmode==NEWT_POSITIONBARMODE_NONE ? 2 : 3)*newt_fontsize_status+newt_fontsize_message);
 				dstrect.w=textsurface->w;
 				dstrect.h=newt_fontsize;
 

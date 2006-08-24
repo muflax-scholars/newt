@@ -41,7 +41,17 @@ SDL_Surface *newt_lineofsight;
 SDL_Surface *newt_infrared;
 SDL_Surface *newt_telepathy;
 
-TTF_Font *newt_font;
+TTF_Font *newt_font_map;
+Sint32 newt_fontsize_map=16;
+TTF_Font *newt_font_menu;
+Sint32 newt_fontsize_menu=16;
+TTF_Font *newt_font_message;
+Sint32 newt_fontsize_message=12;
+TTF_Font *newt_font_status;
+Sint32 newt_fontsize_status=14;
+TTF_Font *newt_font_text;
+Sint32 newt_fontsize_text=16;
+
 SDL_Surface *newt_tiles;
 
 Sint32 newt_centre_x=0;
@@ -51,8 +61,6 @@ Sint32 newt_map_curs_x=0;
 Sint32 newt_map_curs_y=0;
 
 char newt_positionbar[COLNO];
-
-Sint32 newt_fontsize=14;
 
 Uint32 newt_margin_left=0;
 Uint32 newt_margin_right=0;
