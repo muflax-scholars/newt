@@ -796,56 +796,13 @@ void newt_stretch_fast(source_surface, source_rect, destination_surface)
     SDL_Rect *source_rect;
     SDL_Surface *destination_surface;
 {
-    int sx, sy, dx, dy;
-    Uint32 *pixel_s;
-    Uint32 *pixel_d;
     SDL_Rect dest_rect;
 
-    if ( (source_rect->w==destination_surface->w) &&
-         (source_rect->h==destination_surface->h) )
-    {
-        dest_rect.x=dest_rect.y=0;
-        dest_rect.w=source_rect->w;
-        dest_rect.h=source_rect->h;
-        SDL_BlitSurface(
-            source_surface, source_rect,
-            destination_surface, &dest_rect );
-        return;
-    }
+    dest_rect.x = dest_rect.y = 0;
+    dest_rect.w = destination_surface->w;
+    dest_rect.h = destination_surface->h;
 
-    SDL_LockSurface(source_surface);
-    SDL_LockSurface(destination_surface);
-
-    for (dy=0;dy<destination_surface->h; dy++)
-    {
-        sy=((dy)*source_rect->h)/destination_surface->h;
-        sy+=source_rect->y;
-        for (dx=0;dx<destination_surface->w; dx++)
-        {
-            sx=((dx)*source_rect->w)/destination_surface->w;
-            sx+=source_rect->x;
-            pixel_s=source_surface->pixels +
-                (sy*(Uint32)source_surface->pitch) +
-                sx*source_surface->format->BytesPerPixel;
-            pixel_d=destination_surface->pixels +
-                (dy*(Uint32)destination_surface->pitch) +
-                dx*destination_surface->format->BytesPerPixel;
-            *pixel_d =
-                (*pixel_d & !(
-                    destination_surface->format->Rmask |
-                    destination_surface->format->Gmask |
-                    destination_surface->format->Bmask |
-                    destination_surface->format->Amask)) |
-                (*pixel_s & (
-                    source_surface->format->Rmask |
-                    source_surface->format->Gmask |
-                    source_surface->format->Bmask |
-                    source_surface->format->Amask));
-        }
-    }
-
-    SDL_UnlockSurface(source_surface);
-    SDL_UnlockSurface(destination_surface);
+    SDL_SoftStretch( source_surface, source_rect, destination_surface, &dest_rect );
 }
 
 /* ------------------------------------------------------------------------- */
