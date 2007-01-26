@@ -182,10 +182,6 @@
 # define POSITIONBAR
 #endif
 
-#ifndef DEFAULT_WINDOW_SYS
-# define DEFAULT_WINDOW_SYS "tty"
-#endif
-
 #ifdef X11_GRAPHICS
 /*
  * There are two ways that X11 tiles may be defined.  (1) using a custom
@@ -200,6 +196,13 @@
 # ifdef USE_XPM
 #  define GRAPHIC_TOMBSTONE	/* Use graphical tombstone (rip.xpm) */
 # endif
+# ifndef DEFAULT_WINDOW_SYS
+#  define DEFAULT_WINDOW_SYS "X11"
+# endif
+#endif
+
+#ifndef DEFAULT_WINDOW_SYS
+# define DEFAULT_WINDOW_SYS "tty"
 #endif
 
 /*
