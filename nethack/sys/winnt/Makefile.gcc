@@ -39,9 +39,10 @@ ifeq  "$(GRAPHICAL)" "Y"
 USE_NEWT = Y
 ifeq  "$(USE_NEWT)" "Y"
 MINGW = c:/mingw
+GNUWIN32 = $(MINGW)/GnuWin32/gnuwin32/
 MSYS = c:/msys/1.0/local
-SDLCFLAGS = -I$(MINGW)/include -I$(MSYS)/include -I$(MINGW)/include/SDL -I$(MSYS)/include/SDL
-SDLLIBS = -L$(MINGW)/lib -L$(MSYS)/lib -lmingw32 -lSDLmain -lSDL -lSDL_mixer -lSDL_image -lSDL_ttf -mwindows
+SDLCFLAGS = -I$(GNUWIN32)/include -I$(MINGW)/include -I$(MSYS)/include -I$(GNUWIN32)/include/SDL -I$(MINGW)/include/SDL -I$(MSYS)/include/SDL
+SDLLIBS = -L$(GNUWIN32)/lib -L$(MINGW)/lib -L$(MSYS)/lib -lmingw32 -lSDLmain -lSDL_ttf -lfreetype -lSDL -lSDL_mixer -lSDL_image -mwindows
 endif
 endif
 
