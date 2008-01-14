@@ -449,7 +449,11 @@ newt_select_menu (window, how, menu_list)
 
 							if (input==textline[TEXTLINE_ACCEL_GROUP]||input==textline[TEXTLINE_ACCEL_USE_CHAR]) {
 								textline[TEXTLINE_HYPHEN]=(textline[TEXTLINE_HYPHEN]=='-')?(howmany?'#':'+'):'-';
-                textline[TEXTLINE_AMOUNT]=howmany?howmany:-1;
+
+                Uint32 textline_amount;
+                textline_amount  = howmany ? howmany : -1;
+                memcpy( &textline[TEXTLINE_AMOUNT], &textline_amount, sizeof( textline_amount ) );
+
 								pagecounter=pages;
 								break;
 							}
@@ -666,7 +670,9 @@ newt_select_menu (window, how, menu_list)
 							if (!strlen(textline)) continue;
 							if (textline[TEXTLINE_HYPHEN]=='-') {
                 textline[TEXTLINE_HYPHEN]='+';
-                textline[TEXTLINE_AMOUNT]=howmany?howmany:-1;
+                Uint32 textline_amount;
+                textline_amount  = howmany ? howmany : -1;
+                memcpy( &textline[TEXTLINE_AMOUNT], &textline_amount, sizeof( textline_amount ) );
               }
 						}
 						pagecounter--;
@@ -688,7 +694,9 @@ newt_select_menu (window, how, menu_list)
 							if (!strlen(textline)) continue;
 							if (textline[TEXTLINE_HYPHEN]=='-'||textline[TEXTLINE_HYPHEN]=='+') {
                 textline[TEXTLINE_HYPHEN]=textline[TEXTLINE_HYPHEN]=='+'?'-':'+';
-                textline[TEXTLINE_AMOUNT]=howmany?howmany:-1;
+                Uint32 textline_amount;
+                textline_amount  = howmany ? howmany : -1;
+                memcpy( &textline[TEXTLINE_AMOUNT], &textline_amount, sizeof( textline_amount ) );
               }
 						}
 						pagecounter--;
@@ -698,7 +706,9 @@ newt_select_menu (window, how, menu_list)
 							textline=textwindow->textlines[counter];
 							if (!strlen(textline)) continue;
 							if (textline[TEXTLINE_HYPHEN]=='-') textline[TEXTLINE_HYPHEN]='+';
-              textline[TEXTLINE_AMOUNT]=howmany?howmany:-1;
+              Uint32 textline_amount;
+              textline_amount  = howmany ? howmany : -1;
+              memcpy( &textline[TEXTLINE_AMOUNT], &textline_amount, sizeof( textline_amount ) );
 						}
 						pagecounter--;
             break;
@@ -716,7 +726,9 @@ newt_select_menu (window, how, menu_list)
 							if (!strlen(textline)) continue;
 							if (textline[TEXTLINE_HYPHEN]=='-'||textline[TEXTLINE_HYPHEN]=='+') {
                 textline[TEXTLINE_HYPHEN]=textline[TEXTLINE_HYPHEN]=='+'?'-':'+';
-                textline[TEXTLINE_AMOUNT]=howmany?howmany:-1;
+                Uint32 textline_amount;
+                textline_amount  = howmany ? howmany : -1;
+                memcpy( &textline[TEXTLINE_AMOUNT], &textline_amount, sizeof( textline_amount ) );
               }
 						}
 						pagecounter--;
@@ -750,7 +762,9 @@ newt_select_menu (window, how, menu_list)
 
 							if (input==textline[TEXTLINE_ACCEL_GROUP]||input==textline[TEXTLINE_ACCEL_USE_CHAR]) {
 								textline[TEXTLINE_HYPHEN]=(textline[TEXTLINE_HYPHEN]=='-')?(howmany?'#':'+'):'-';
-                textline[TEXTLINE_AMOUNT]=howmany?howmany:-1;
+                Uint32 textline_amount;
+                textline_amount  = howmany ? howmany : -1;
+                memcpy( &textline[TEXTLINE_AMOUNT], &textline_amount, sizeof( textline_amount ) );
 								if (input==textline[TEXTLINE_ACCEL_USE_CHAR]) break;
 							}
 						}
@@ -772,7 +786,9 @@ newt_select_menu (window, how, menu_list)
 			amount_selected++;
 			menu_list_use=(menu_item *)realloc(menu_list_use, sizeof(menu_item)*amount_selected);
 			menu_list_use[amount_selected-1].item=*textwindow->identifier[counter];
-			menu_list_use[amount_selected-1].count=textline[TEXTLINE_AMOUNT];
+      Uint32 textline_amount;
+      memcpy( &textline_amount, &textline[TEXTLINE_AMOUNT], sizeof( textline_amount ) );
+			menu_list_use[amount_selected-1].count=textline_amount;
 			textline[TEXTLINE_HYPHEN]='-';
 		}
 	}
