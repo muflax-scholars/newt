@@ -208,7 +208,7 @@ int newt_windowQueueRender()
 {
     int cleanupForward;
     int cleanupBackward;
-    int cleanupWindow;
+    winid cleanupWindow;
     int rendered;
 
     if (!newt_windowRenderQueueSize) return 0;
